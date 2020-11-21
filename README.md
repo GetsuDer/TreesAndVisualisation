@@ -9,19 +9,11 @@ Implementation of unbalanced N-ary trees and ability to visualize them by using 
 
 ## Starting
     Run 'make tree', then you have executable file tree, 
-    which requires three input parameters: input file, 
-    output file for readable by dot graph description
-    and output file for visualization
-
+    which requires input parameter: input file
+    The result of the program are two files: .dot and .png;
 ## Debug
     To turn debug on run make command with 'DEBUG=YES'
     It turns on -g option
-
-## Testing
-### Run tests
-    ...In process...
-### Tests format
-    ...In process...
 
 ### Dependences
     Linux, g++, make, eog, dot

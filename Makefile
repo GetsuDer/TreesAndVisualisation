@@ -10,7 +10,7 @@ ifeq ($(DEBUG), YES)
 	CFLAGS += -g
 endif
 
-.PHONY: all clean
+.PHONY: all clean tree
 
 all: tree
 	

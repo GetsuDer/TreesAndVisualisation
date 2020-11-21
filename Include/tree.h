@@ -4,13 +4,15 @@ class Node
 {
 private:
     int children_number;
+    int node_id;
     Node *parent;
     Node **childs;
     int operation;
     double value;
     int visualize(int fd);
-    int visualize_tree_rec(int fd);
+    double visualize_tree_rec(int fd);
 public:
+    static int id;
     Node(int _operation);
     Node(double _value);
     ~Node();
@@ -19,6 +21,7 @@ public:
     int get_children_number();
     Node **get_childs();
 };
+
 
 enum Node_Types {
     CONSTANT = 0,

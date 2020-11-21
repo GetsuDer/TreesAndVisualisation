@@ -2,20 +2,29 @@
 #include <cstdio>
 #include <cassert>
 #include <sys/mman.h>
+#include <cmath>
 
 #include "tree.h"
 #include "in_and_out.h"
 
-//! \brief Node constructor
+int Node::id = 0;
+
+//! \brief Node constructor for operations
+//! \param [in] _operation Operation identificator
 Node::Node(int _operation) {
     children_number = 0;
+    node_id = id;
+    id++;
     childs = NULL;
     parent = NULL;
     operation = _operation;
 }
-
+//! \brief Node constructor for constants
+//! \param [in] _value Value for constant
 Node::Node(double _value) {
     children_number = 0;
+    node_id = id;
+    id++;
     childs = NULL;
     parent = NULL;
     operation = CONSTANT;
@@ -27,6 +36,8 @@ Node::~Node() {
     free(childs);
 }
 
+//! \brief children_number getter
+//! \return Returns number of node children
 int
 Node::get_children_number() {
     return children_number;
@@ -63,25 +74,59 @@ Node::visualize(int fd) {
     } 
     return 0;
 }
-
+//! \brief Calculate value using specified operation
+//! \param [in] operation Operation
+//! \param [in] res Result
+//! \param [in] op1,op2 operands 
+static void 
+calculate(int operation, double *res, double op1, double op2) {
+    switch (operation) {
+        case ADD:
+            *res = op1 + op2;
+            break;
+        case SUB:
+            *res = op1 - op2;
+            break;
+        case MUL:
+            *res = op1 * op2;
+            break;
+        case DIV:
+            *res = op1 / op2;
+            break;
+        case POWER:
+            *res = pow(op1, op2);
+            break;
+        default:
+            break;
+    }
+    return;
+}
 //! \brief Recursive function for tree visualization generation
 //! \param [in] fd File descriptor
-//! \return Returns 0 in success -1 else
-int
+//! \return Returns counted value
+double
 Node::visualize_tree_rec(int fd) {
-    for (int i = 0; i < this->get_children_number(); i++) {
-        this->visualize(fd);
-        dprintf(fd, "->");
-        this->childs[i]->visualize(fd);
-        dprintf(fd, ";\n");
-        if (this->childs[i]->visualize_tree_rec(fd)) {
-            fprintf(stderr, "Error during recursive visualization\n");
-            return -1;
-        }
+    dprintf(fd, "%d [style = filled, label=", this->node_id);
+    this->visualize(fd);
+    double res = 0, left = 0, right = 0;
+    if (this->operation) {
+        dprintf(fd, ", shape = box, fillcolor=\"grey\"];\n");
+    } else {
+        res = this->value;
+        dprintf(fd, ", fillcolor=\"yellow\"];\n");
+        return res;
     }
-    return 0;
+    for (int i = 0; i < this->get_children_number(); i++) {
+        dprintf(fd, "%d->%d;\n", this->node_id, this->childs[i]->node_id);
+    }
+    left = this->childs[0]->visualize_tree_rec(fd);
+    right = this->childs[1]->visualize_tree_rec(fd);
+    calculate(this->operation, &res, left, right);
+    return res;
 }
 
+//! \brief childs getter
+//! \return Returns pointer to pointers to childs
 Node **
 Node::get_childs() {
     return childs;
@@ -100,8 +145,8 @@ Node::export_dot(int fd, char *graph_name) {
     } else {
         dprintf(fd, "G {\n");
     }
-    this->visualize_tree_rec(fd);
-    dprintf(fd, "}\n");
+    double res = this->visualize_tree_rec(fd);
+    dprintf(fd, "\"result=%lf\" [shape=box];\n}\n", res);
     return 0;
 }
 
@@ -122,12 +167,17 @@ Node::add_child(Node *child) {
     return 0;
 }
 
+//! \brief Skip space symbols
+//! \param [in,out] begin Begining of the symbols. Is shifted to the first non-space value
+//! \param [in] end First incorrect symbol
 static void
 skip(char **begin, char *end) {
     while (*begin < end && isspace(**begin)) (*begin)++;
     return;
 }
 
+//! \brief Recursively clear tree
+//! \param [in] root Tree root
 void
 rec_del(Node *root) {
     for (int i = 0; i < root->get_children_number(); i++) {
@@ -137,6 +187,9 @@ rec_del(Node *root) {
     return;
 }
 
+//! \brief Recognize operation
+//! \param [in,out] operation Operation to recognize
+//! \return Return operation identificator
 static int
 find_operation(char **operation) {
     switch (**operation) { //in future operation len may be more than one!
@@ -161,6 +214,10 @@ find_operation(char **operation) {
     return -1;
 }
 
+//! \brief Recursively parse input tree
+//! \param [in,out] begin Pointer to first symbol
+//! \param [in] end Pointer after last correct symbol
+//! \return Returns root of the parsed tree
 static Node*
 parse_rec(char **begin, char *end) {
     skip(begin, end);
@@ -206,6 +263,7 @@ parse_rec(char **begin, char *end) {
         }
         parent->add_child(first_child);
         parent->add_child(second_child);
+        (*begin)++;
         return parent;
 
     } else { //constant
@@ -228,6 +286,7 @@ parse_rec(char **begin, char *end) {
 
 
 }
+
 //! \brief Read expression from file and create tree
 //! \param [in] filename Input file
 //! \return Returns root of created tree or NULL if unsuccess

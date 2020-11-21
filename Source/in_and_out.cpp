@@ -8,6 +8,9 @@
 #include <errno.h>
 #include <string.h>
 
+//! \brief Mmaps file to read
+//! \param [in] file_in Name of mmaped file
+//! \param [out] file_size Size of the mmaped area
 char *mmap_file(char *file_in, int *file_size) 
 {
     assert(file_in);

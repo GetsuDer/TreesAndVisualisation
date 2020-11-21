@@ -1,0 +1,50 @@
+\hypertarget{tree_8cpp}{}\doxysection{Source/tree.cpp File Reference}
+\label{tree_8cpp}\index{Source/tree.cpp@{Source/tree.cpp}}
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$cstdio$>$}\newline
+{\ttfamily \#include $<$cassert$>$}\newline
+{\ttfamily \#include $<$sys/mman.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}tree.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}in\+\_\+and\+\_\+out.\+h\char`\"{}}\newline
+Include dependency graph for tree.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tree_8cpp__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{tree_8cpp_acff072d1d398da659c191343cad12cc9}{rec\+\_\+del}} (\mbox{\hyperlink{class_node}{Node}} $\ast$root)
+\item 
+\mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{tree_8cpp_ae599f095b9dc5ca190fd2271b3f87c15}{parse\+\_\+file\+\_\+create\+\_\+tree}} (char $\ast$filename)
+\begin{DoxyCompactList}\small\item\em Read expression from file and create tree. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{tree_8cpp_ae599f095b9dc5ca190fd2271b3f87c15}\label{tree_8cpp_ae599f095b9dc5ca190fd2271b3f87c15}} 
+\index{tree.cpp@{tree.cpp}!parse\_file\_create\_tree@{parse\_file\_create\_tree}}
+\index{parse\_file\_create\_tree@{parse\_file\_create\_tree}!tree.cpp@{tree.cpp}}
+\doxysubsubsection{\texorpdfstring{parse\_file\_create\_tree()}{parse\_file\_create\_tree()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_node}{Node}}$\ast$ parse\+\_\+file\+\_\+create\+\_\+tree (\begin{DoxyParamCaption}\item[{char $\ast$}]{filename }\end{DoxyParamCaption})}
+
+
+
+Read expression from file and create tree. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em filename} & Input file \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns root of created tree or N\+U\+LL if unsuccess 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tree_8cpp_acff072d1d398da659c191343cad12cc9}\label{tree_8cpp_acff072d1d398da659c191343cad12cc9}} 
+\index{tree.cpp@{tree.cpp}!rec\_del@{rec\_del}}
+\index{rec\_del@{rec\_del}!tree.cpp@{tree.cpp}}
+\doxysubsubsection{\texorpdfstring{rec\_del()}{rec\_del()}}
+{\footnotesize\ttfamily void rec\+\_\+del (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_node}{Node}} $\ast$}]{root }\end{DoxyParamCaption})}
+

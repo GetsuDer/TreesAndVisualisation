@@ -1,0 +1,132 @@
+\hypertarget{class_node}{}\doxysection{Node Class Reference}
+\label{class_node}\index{Node@{Node}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_node_ae1b5533d3d3b4b8f3db0c5ae46b7877b}{Node}} (int \+\_\+operation)
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_node}{Node}} constructor for operations. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node_a024d24b53e4fff070d6c38381bfa4cd8}{Node}} (double \+\_\+value)
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_node}{Node}} constructor for constants. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_node_aa0840c3cb5c7159be6d992adecd2097c}\label{class_node_aa0840c3cb5c7159be6d992adecd2097c}} 
+\mbox{\hyperlink{class_node_aa0840c3cb5c7159be6d992adecd2097c}{$\sim$\+Node}} ()
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_node}{Node}} destructor. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_node_a364762a99a068e11dda8418f605ed7be}{export\+\_\+dot}} (int fd, char $\ast$graph\+\_\+name=N\+U\+LL)
+\begin{DoxyCompactList}\small\item\em Writes tree description in dot-\/readable format. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_node_a04226ce946e78244480c5663243b36c7}{add\+\_\+child}} (\mbox{\hyperlink{class_node}{Node}} $\ast$child)
+\begin{DoxyCompactList}\small\item\em Made link between two nodes by adding one node as child to another. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_node_a9705e4699fe55d3e642d87d572663127}{get\+\_\+children\+\_\+number}} ()
+\begin{DoxyCompactList}\small\item\em children\+\_\+number getter \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node}{Node}} $\ast$$\ast$ \mbox{\hyperlink{class_node_afcb6228f4f113c5542e87e7a800ede78}{get\+\_\+childs}} ()
+\begin{DoxyCompactList}\small\item\em childs getter \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_node_a59a543130a10c95f1e8642cf8c5645e8}\label{class_node_a59a543130a10c95f1e8642cf8c5645e8}} 
+static int {\bfseries id} = 0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_node_ae1b5533d3d3b4b8f3db0c5ae46b7877b}\label{class_node_ae1b5533d3d3b4b8f3db0c5ae46b7877b}} 
+\index{Node@{Node}!Node@{Node}}
+\index{Node@{Node}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{Node()}{Node()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Node\+::\+Node (\begin{DoxyParamCaption}\item[{int}]{\+\_\+operation }\end{DoxyParamCaption})}
+
+
+
+\mbox{\hyperlink{class_node}{Node}} constructor for operations. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \+\_\+operation} & Operation identificator \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_node_a024d24b53e4fff070d6c38381bfa4cd8}\label{class_node_a024d24b53e4fff070d6c38381bfa4cd8}} 
+\index{Node@{Node}!Node@{Node}}
+\index{Node@{Node}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{Node()}{Node()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Node\+::\+Node (\begin{DoxyParamCaption}\item[{double}]{\+\_\+value }\end{DoxyParamCaption})}
+
+
+
+\mbox{\hyperlink{class_node}{Node}} constructor for constants. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \+\_\+value} & Value for constant \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_node_a04226ce946e78244480c5663243b36c7}\label{class_node_a04226ce946e78244480c5663243b36c7}} 
+\index{Node@{Node}!add\_child@{add\_child}}
+\index{add\_child@{add\_child}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{add\_child()}{add\_child()}}
+{\footnotesize\ttfamily int Node\+::add\+\_\+child (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_node}{Node}} $\ast$}]{child }\end{DoxyParamCaption})}
+
+
+
+Made link between two nodes by adding one node as child to another. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em child} & Pointer to new child node \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns 0 in success -\/1 else 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_a364762a99a068e11dda8418f605ed7be}\label{class_node_a364762a99a068e11dda8418f605ed7be}} 
+\index{Node@{Node}!export\_dot@{export\_dot}}
+\index{export\_dot@{export\_dot}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{export\_dot()}{export\_dot()}}
+{\footnotesize\ttfamily int Node\+::export\+\_\+dot (\begin{DoxyParamCaption}\item[{int}]{fd,  }\item[{char $\ast$}]{graph\+\_\+name = {\ttfamily NULL} }\end{DoxyParamCaption})}
+
+
+
+Writes tree description in dot-\/readable format. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em root} & Tree root \\
+\hline
+\mbox{\texttt{ in}}  & {\em fd} & File descriptor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns 0 in success, -\/1 else 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_a9705e4699fe55d3e642d87d572663127}\label{class_node_a9705e4699fe55d3e642d87d572663127}} 
+\index{Node@{Node}!get\_children\_number@{get\_children\_number}}
+\index{get\_children\_number@{get\_children\_number}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{get\_children\_number()}{get\_children\_number()}}
+{\footnotesize\ttfamily int Node\+::get\+\_\+children\+\_\+number (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+children\+\_\+number getter 
+
+\begin{DoxyReturn}{Returns}
+Returns number of node children 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_afcb6228f4f113c5542e87e7a800ede78}\label{class_node_afcb6228f4f113c5542e87e7a800ede78}} 
+\index{Node@{Node}!get\_childs@{get\_childs}}
+\index{get\_childs@{get\_childs}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{get\_childs()}{get\_childs()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_node}{Node}} $\ast$$\ast$ Node\+::get\+\_\+childs (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+childs getter 
+
+\begin{DoxyReturn}{Returns}
+Returns pointer to pointers to childs 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Include/tree.\+h\item 
+Source/tree.\+cpp\end{DoxyCompactItemize}
