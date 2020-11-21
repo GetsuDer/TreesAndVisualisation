@@ -16,6 +16,8 @@ public:
     ~Node();
     int export_dot(int fd, char *graph_name = NULL);
     int add_child(Node *child);
+    int get_children_number();
+    Node **get_childs();
 };
 
 enum Node_Types {
@@ -26,4 +28,7 @@ enum Node_Types {
     DIV,
     POWER
 };
+
+Node *parse_file_create_tree(char *filename);
+void rec_del(Node *root);
 #endif
