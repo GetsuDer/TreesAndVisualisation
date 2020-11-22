@@ -10,7 +10,7 @@ Result:
     Then picture of resulting graph is being created and pdf with source formula.
 
 ## Starting
-    Run 'make tree', then you have executable file tree, 
+    Run 'make tree; cd Testing', then you have executable file tree, 
     which requires three input parameter: 
     input file, open_png_flag (0 or 1), open_pdf_flag (0 or 1)
     Example: "./../tree exp6.in 1 1" will open firstly .png, then .pdf
