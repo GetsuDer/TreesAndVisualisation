@@ -1,6 +1,8 @@
 # Trees + Visualisation
 Implementation of unbalanced N-ary trees and ability to visualize them by using Graphviz
-
+Result:
+![alt text](https://github.com/GetsuDer/TreesAndVisualisation/blob/main/formula.jpg)
+![alt text](https://github.com/GetsuDer/TreesAndVisualisation/blob/main/graph.png)
 ## Description
     Expression written in format ((constant1) op (constant2))
     (each node is enclosed in brackets) is transformed into tree,
