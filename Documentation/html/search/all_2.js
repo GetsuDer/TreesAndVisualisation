@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['get_5fchildren_5fnumber_2',['get_children_number',['../class_node.html#a9705e4699fe55d3e642d87d572663127',1,'Node']]],
-  ['get_5fchilds_3',['get_childs',['../class_node.html#afcb6228f4f113c5542e87e7a800ede78',1,'Node']]]
+  ['constant_4',['CONSTANT',['../tree_8h.html#abc7258f0da73a4d5b16a1786f203acaca83972670b57415508523b5641bb46116',1,'tree.h']]]
 ];

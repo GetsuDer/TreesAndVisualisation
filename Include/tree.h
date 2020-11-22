@@ -11,12 +11,14 @@ private:
     double value;
     int visualize(int fd);
     double visualize_tree_rec(int fd);
+    double visualize_tree_rec_tex(int fd);
 public:
     static int id;
     Node(int _operation);
     Node(double _value);
     ~Node();
     int export_dot(int fd, char *graph_name = NULL);
+    int export_tex(int fd);
     int add_child(Node *child);
     int get_children_number();
     Node **get_childs();

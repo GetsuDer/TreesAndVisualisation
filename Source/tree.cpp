@@ -51,22 +51,22 @@ Node::visualize(int fd) {
     assert(fd > 0);
     switch (this->operation) {
         case CONSTANT: 
-            dprintf(fd, "\"%lf\"", this->value);
+            dprintf(fd, "%lf", this->value);
             break;
         case MUL:
-            dprintf(fd, "\"*\"");
+            dprintf(fd, "*");
             break;
         case DIV:
-            dprintf(fd, "\"/\"");
+            dprintf(fd, "/");
             break;
         case ADD:
-            dprintf(fd, "\"+\"");
+            dprintf(fd, "+");
             break;
         case SUB:
-            dprintf(fd, "\"-\"");
+            dprintf(fd, "-");
             break;
         case POWER:
-            dprintf(fd, "\"^\"");
+            dprintf(fd, "^");
             break;
         default:
             fprintf(stderr, "Wrong operation: %d\n", this->operation);
@@ -106,14 +106,14 @@ calculate(int operation, double *res, double op1, double op2) {
 //! \return Returns counted value
 double
 Node::visualize_tree_rec(int fd) {
-    dprintf(fd, "%d [style = filled, label=", this->node_id);
+    dprintf(fd, "%d [style = filled, label=\"", this->node_id);
     this->visualize(fd);
     double res = 0, left = 0, right = 0;
     if (this->operation) {
-        dprintf(fd, ", shape = box, fillcolor=\"grey\"];\n");
+        dprintf(fd, "\", shape = box, fillcolor=\"grey\"];\n");
     } else {
         res = this->value;
-        dprintf(fd, ", fillcolor=\"yellow\"];\n");
+        dprintf(fd, "\", fillcolor=\"yellow\"];\n");
         return res;
     }
     for (int i = 0; i < this->get_children_number(); i++) {
@@ -132,7 +132,6 @@ Node::get_childs() {
     return childs;
 }
 //! \brief Writes tree description in dot-readable format
-//! \param [in] root Tree root
 //! \param [in] fd File descriptor
 //! \return Returns 0 in success, -1 else
 int
@@ -147,6 +146,53 @@ Node::export_dot(int fd, char *graph_name) {
     }
     double res = this->visualize_tree_rec(fd);
     dprintf(fd, "\"result=%lf\" [shape=box];\n}\n", res);
+
+    return 0;
+}
+
+double
+Node::visualize_tree_rec_tex(int fd) {
+    double res = 0;
+    if (this->operation) {
+        dprintf(fd, "(");
+        if (this->operation == DIV) {
+            dprintf(fd, "{{");
+        }
+        double left = this->childs[0]->visualize_tree_rec_tex(fd);
+        if (this->operation == DIV) {
+            dprintf(fd, "}\\over {");
+        } else {
+            this->visualize(fd);
+        }
+        if (this->operation == POWER) {
+            dprintf(fd, "{");
+        }
+
+        double right = this->childs[1]->visualize_tree_rec_tex(fd);
+        if (this->operation == DIV || this->operation == POWER) {
+            dprintf(fd, "}");
+        }
+        if (this->operation == DIV) {
+            dprintf(fd, "}");
+        }
+        dprintf(fd, ")");
+        calculate(this->operation, &res, left, right);
+    } else {
+        this->visualize(fd);
+        res = this->value;
+    }
+    return res;
+}
+
+
+//! \brief Writes tree desription in tex format
+//! \param [in] fd File decriptor
+//! \return Return 0 in success, -1 else
+int Node::export_tex(int fd) {
+    assert(fd >= 0);
+    dprintf(fd, "$$ ");
+    double res = this->visualize_tree_rec_tex(fd);
+    dprintf(fd, " = %lf $$ \n \\end", res);
     return 0;
 }
 

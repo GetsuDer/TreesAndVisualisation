@@ -5,52 +5,126 @@
 #include <unistd.h>
 #include <cstring>
 #include <stdlib.h>
+#include <cerrno>
 
 #include "tree.h"
 #include "main.h"
+#include "in_and_out.h"
 
-int
-main(int argc, char **argv)
-{
-    if (argc < ARG_NUM) {
-        fprintf(stderr, "Specify in and out files, please\n");
+static int
+create_png(char *filename, Node *root, bool show) {
+    if (!root) {
         return 1;
     }
-    Node *root = parse_file_create_tree(argv[FILE_IN]);
 
-    int base_file_name = strlen(argv[FILE_IN]);
+    int base_file_name = strlen(filename);
 
-    char *file_out = (char *)calloc(1, base_file_name + DOT_PREF_SIZE);
+    char *file_out = (char *)calloc(1, base_file_name + sizeof(".dot") + 1); //do not forget \0 in the end
     if (!file_out) {
-        fprintf(stderr, "Memory error\n");
+        fprintf(stderr, "Can not allocate memory\n");
         rec_del(root);
         return 1;
     }
 
-    snprintf(file_out, base_file_name + DOT_PREF_SIZE, "%s.dot", argv[FILE_IN]);
-    fprintf(stderr, "%s\n", file_out);
+    snprintf(file_out, base_file_name + sizeof(".dot"), "%s.dot", filename);
     int out = open(file_out, O_WRONLY | O_CREAT | O_TRUNC, out_mode);
     if (out < 0) {
         fprintf(stderr, "Can not open out file %s\n", file_out);
         return 1;
     }
+
     root->export_dot(out);
     close(out);
-    rec_del(root);
 
-    int commands_len = base_file_name * 2 + DOT_PREF_SIZE * 2 + dot_com_size;
-    char *commands_buffer = (char *)calloc(commands_len + 2, sizeof(*commands_buffer));
+    char *commands_buffer = (char *)calloc(BUFFER_SIZE, sizeof(char));
+    if (!commands_buffer) {
+        fprintf(stderr, "Memory allocation error\n");
+        return 1;
+    }
 
-    snprintf(commands_buffer, commands_len + 2, "%s%s.png %s.dot", DOT_COMMAND, argv[FILE_IN], argv[FILE_IN]);
-    fprintf(stderr, "%s\n", commands_buffer);
+//create png
+    snprintf(commands_buffer, BUFFER_SIZE, "dot -Tpng -o%s.png %s.dot", filename, filename);
     system(commands_buffer);
-    
-    commands_len = base_file_name + DOT_PREF_SIZE + eog_com_size;
-    snprintf(commands_buffer, commands_len + 2, "%s %s.png", EOG_COMMAND, argv[FILE_IN]);
-    fprintf(stderr, "%s\n", commands_buffer);
-
-    system(commands_buffer);
-    
+//open png
+    if (show) {
+        snprintf(commands_buffer, BUFFER_SIZE, "eog %s.png", filename);
+        system(commands_buffer);
+    }
     free(commands_buffer);
+    return 0;
+}
+
+static int
+create_pdf(char *filename, Node *root, int show) {
+    if (!root) {
+        return 1;
+    }
+
+    int base_file_name = strlen(filename);
+
+    char *file_out = (char *)calloc(base_file_name + sizeof(".tex"), sizeof(char));
+    if (!file_out) {
+        fprintf(stderr, "Memory allocation error\n");
+        return 1;
+    }
+   
+    snprintf(file_out, base_file_name + sizeof(".tex"), "%s.tex", filename);
+
+    int fd = open(file_out, O_WRONLY | O_CREAT | O_TRUNC, out_mode);
+    if (fd < 0) {
+        fprintf(stderr, "Can not open file %s\n", file_out);
+        return 1;
+    }
+    
+    root->export_tex(fd);
+    close(fd);
+
+    char *commands_buffer = (char *)calloc(BUFFER_SIZE, sizeof(char));
+    if (!commands_buffer) {
+        fprintf(stderr, "Memory allocation error\n");
+        return 1;
+    }
+
+    snprintf(commands_buffer, BUFFER_SIZE, "pdftex %s.tex > pdftex_out; rm pdftex_out", filename);
+    system(commands_buffer);
+
+    if (show) {
+        snprintf(commands_buffer, BUFFER_SIZE, "gio open %s.pdf", filename);
+        system(commands_buffer);
+    }
+    return 0;
+
+}
+
+
+int
+main(int argc, char **argv)
+{
+    if (argc < ARG_NUM) {
+        fprintf(stderr, "Not enough input arguments: need in file and two flags: open png and open pdf\n");
+        return 1;
+    }
+
+    errno = 0;
+    int show = strtol(argv[SHOW_PNG], NULL, 10);
+    if (errno) {
+        fprintf(stderr, "Wrong input argument %s: expected int\n", argv[SHOW_PNG]);
+        return 1;
+    }
+
+    Node *root = parse_file_create_tree(argv[FILE_IN]);
+
+    create_png(argv[FILE_IN], root, show);
+    
+    errno = 0;
+    show = strtol(argv[SHOW_PDF], NULL, 10);
+    if (errno) {
+        fprintf(stderr, "Wrong inpus argument %s: expected int\n", argv[SHOW_PDF]);
+        return 1;
+    }
+
+    create_pdf(argv[FILE_IN], root, show);
+    
+    rec_del(root);
     return 0;
 }

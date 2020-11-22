@@ -29,4 +29,4 @@ $(OBJDIR):
 	mkdir $(OBJDIR)
 
 clean:
-	rm -rf *.o ObjectFiles tree
+	rm -rf *.o ObjectFiles tree Testing/*.png Testing/*.log Testing/*.pdf Testing/*.dot Testing/*.tex

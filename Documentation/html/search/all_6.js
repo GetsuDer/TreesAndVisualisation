@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['in_5fand_5fout_2ecpp_15',['in_and_out.cpp',['../in__and__out_8cpp.html',1,'']]],
-  ['in_5fand_5fout_2eh_16',['in_and_out.h',['../in__and__out_8h.html',1,'']]]
+  ['get_5fchildren_5fnumber_9',['get_children_number',['../class_node.html#a9705e4699fe55d3e642d87d572663127',1,'Node']]],
+  ['get_5fchilds_10',['get_childs',['../class_node.html#afcb6228f4f113c5542e87e7a800ede78',1,'Node']]]
 ];

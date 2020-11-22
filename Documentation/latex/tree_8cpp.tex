@@ -4,6 +4,7 @@
 {\ttfamily \#include $<$cstdio$>$}\newline
 {\ttfamily \#include $<$cassert$>$}\newline
 {\ttfamily \#include $<$sys/mman.\+h$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
 {\ttfamily \#include \char`\"{}tree.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}in\+\_\+and\+\_\+out.\+h\char`\"{}}\newline
 Include dependency graph for tree.\+cpp\+:
@@ -18,7 +19,7 @@ Include dependency graph for tree.\+cpp\+:
 \begin{DoxyCompactItemize}
 \item 
 void \mbox{\hyperlink{tree_8cpp_acff072d1d398da659c191343cad12cc9}{rec\+\_\+del}} (\mbox{\hyperlink{class_node}{Node}} $\ast$root)
-\item 
+\begin{DoxyCompactList}\small\item\em Recursively clear tree. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{tree_8cpp_ae599f095b9dc5ca190fd2271b3f87c15}{parse\+\_\+file\+\_\+create\+\_\+tree}} (char $\ast$filename)
 \begin{DoxyCompactList}\small\item\em Read expression from file and create tree. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
@@ -42,9 +43,26 @@ Read expression from file and create tree.
 \begin{DoxyReturn}{Returns}
 Returns root of created tree or N\+U\+LL if unsuccess 
 \end{DoxyReturn}
+
+
+Definition at line 340 of file tree.\+cpp.
+
 \mbox{\Hypertarget{tree_8cpp_acff072d1d398da659c191343cad12cc9}\label{tree_8cpp_acff072d1d398da659c191343cad12cc9}} 
 \index{tree.cpp@{tree.cpp}!rec\_del@{rec\_del}}
 \index{rec\_del@{rec\_del}!tree.cpp@{tree.cpp}}
 \doxysubsubsection{\texorpdfstring{rec\_del()}{rec\_del()}}
 {\footnotesize\ttfamily void rec\+\_\+del (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_node}{Node}} $\ast$}]{root }\end{DoxyParamCaption})}
+
+
+
+Recursively clear tree. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em root} & Tree root \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 228 of file tree.\+cpp.
 

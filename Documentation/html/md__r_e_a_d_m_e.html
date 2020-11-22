@@ -68,17 +68,20 @@ $(function() {
 <div class="textblock"><p>Implementation of unbalanced N-ary trees and ability to visualize them by using Graphviz</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
 Description</h1>
-<p>Expression written in format ((constant1) op (constant2)) (each node is enclosed in brackets) is transformed into tree, and tree is exported in format, readable by dot. Then picture of resulting graph is being created.</p>
+<p>Expression written in format ((constant1) op (constant2)) (each node is enclosed in brackets) is transformed into tree, and tree is exported in format, readable by dot. Then picture of resulting graph is being created and pdf with source formula.</p>
 <h1><a class="anchor" id="autotoc_md2"></a>
 Starting</h1>
-<p>Run 'make tree', then you have executable file tree, which requires input parameter: input file The result of the program are two files: .dot and .png; </p>
+<p>Run 'make tree', then you have executable file tree, which requires three input parameter: input file, open_png_flag (0 or 1), open_pdf_flag (0 or 1) Example: "./../tree exp6.in 1 1" will open firstly .png, then .pdf The result of the program are four files: .dot, .tex, .pdf and .png;</p>
 <h1><a class="anchor" id="autotoc_md3"></a>
 Debug</h1>
 <p>To turn debug on run make command with 'DEBUG=YES' It turns on -g option</p>
-<h2><a class="anchor" id="autotoc_md4"></a>
+<h1><a class="anchor" id="autotoc_md4"></a>
+Testing</h1>
+<p>Run 'make tree; cd Testing'. In Testing dir files *.in are test files. Run './../tree testname.in 0 0" to get .png and .pdf files. 1 instead 0 opens corresponding files.</p>
+<h2><a class="anchor" id="autotoc_md5"></a>
 Dependences</h2>
-<p>Linux, g++, make, eog, dot</p>
-<h1><a class="anchor" id="autotoc_md5"></a>
+<p>Linux, g++, make, eog, dot, gio, pdftex</p>
+<h1><a class="anchor" id="autotoc_md6"></a>
 Documentation</h1>
 <p>To see the whole documentation, download source code and run 'doxywizard Documentation/Config' (may be you should also update in dozywizard 'directory in which run doxywizard') </p>
 </div></div><!-- contents -->

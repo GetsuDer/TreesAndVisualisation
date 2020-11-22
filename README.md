@@ -5,18 +5,26 @@ Implementation of unbalanced N-ary trees and ability to visualize them by using 
     Expression written in format ((constant1) op (constant2))
     (each node is enclosed in brackets) is transformed into tree,
     and tree is exported in format, readable by dot.
-    Then picture of resulting graph is being created.
+    Then picture of resulting graph is being created and pdf with source formula.
 
 ## Starting
     Run 'make tree', then you have executable file tree, 
-    which requires input parameter: input file
-    The result of the program are two files: .dot and .png;
+    which requires three input parameter: 
+    input file, open_png_flag (0 or 1), open_pdf_flag (0 or 1)
+    Example: "./../tree exp6.in 1 1" will open firstly .png, then .pdf
+    The result of the program are four files: .dot, .tex, .pdf  and .png;
+
 ## Debug
     To turn debug on run make command with 'DEBUG=YES'
     It turns on -g option
 
+## Testing
+    Run 'make tree; cd Testing'. In Testing dir files *.in are test files.
+    Run './../tree testname.in 0 0" to get .png and .pdf files. 
+    1 instead 0 opens corresponding files.
+
 ### Dependences
-    Linux, g++, make, eog, dot
+    Linux, g++, make, eog, dot, gio, pdftex
 
 ## Documentation
 To see the whole documentation, download source code and run 'doxywizard Documentation/Config'

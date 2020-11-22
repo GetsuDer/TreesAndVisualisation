@@ -2,3 +2,8 @@
 Objectdir
 *.swp
 tree
+Testing/*.png
+Testing/*.dot
+Testing/*.tex
+Testing/*.pdf
+Testing/*.log

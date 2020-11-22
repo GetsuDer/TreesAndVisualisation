@@ -1,5 +1,9 @@
 \hypertarget{class_node}{}\doxysection{Node Class Reference}
 \label{class_node}\index{Node@{Node}}
+
+
+{\ttfamily \#include $<$tree.\+h$>$}
+
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -7,11 +11,12 @@
 \begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_node}{Node}} constructor for operations. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_node_a024d24b53e4fff070d6c38381bfa4cd8}{Node}} (double \+\_\+value)
 \begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_node}{Node}} constructor for constants. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{class_node_aa0840c3cb5c7159be6d992adecd2097c}\label{class_node_aa0840c3cb5c7159be6d992adecd2097c}} 
 \mbox{\hyperlink{class_node_aa0840c3cb5c7159be6d992adecd2097c}{$\sim$\+Node}} ()
 \begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_node}{Node}} destructor. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{class_node_a364762a99a068e11dda8418f605ed7be}{export\+\_\+dot}} (int fd, char $\ast$graph\+\_\+name=N\+U\+LL)
 \begin{DoxyCompactList}\small\item\em Writes tree description in dot-\/readable format. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_node_aaf15ecede43472bafa027b9406239161}{export\+\_\+tex}} (int fd)
+\begin{DoxyCompactList}\small\item\em Writes tree desription in tex format. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{class_node_a04226ce946e78244480c5663243b36c7}{add\+\_\+child}} (\mbox{\hyperlink{class_node}{Node}} $\ast$child)
 \begin{DoxyCompactList}\small\item\em Made link between two nodes by adding one node as child to another. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{class_node_a9705e4699fe55d3e642d87d572663127}{get\+\_\+children\+\_\+number}} ()
@@ -21,9 +26,15 @@ int \mbox{\hyperlink{class_node_a9705e4699fe55d3e642d87d572663127}{get\+\_\+chil
 \doxysubsection*{Static Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{class_node_a59a543130a10c95f1e8642cf8c5645e8}\label{class_node_a59a543130a10c95f1e8642cf8c5645e8}} 
-static int {\bfseries id} = 0
+static int \mbox{\hyperlink{class_node_a59a543130a10c95f1e8642cf8c5645e8}{id}} = 0
 \end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 3 of file tree.\+h.
+
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
@@ -42,6 +53,10 @@ static int {\bfseries id} = 0
 \mbox{\texttt{ in}}  & {\em \+\_\+operation} & Operation identificator \\
 \hline
 \end{DoxyParams}
+
+
+Definition at line 14 of file tree.\+cpp.
+
 \mbox{\Hypertarget{class_node_a024d24b53e4fff070d6c38381bfa4cd8}\label{class_node_a024d24b53e4fff070d6c38381bfa4cd8}} 
 \index{Node@{Node}!Node@{Node}}
 \index{Node@{Node}!Node@{Node}}
@@ -57,6 +72,24 @@ static int {\bfseries id} = 0
 \mbox{\texttt{ in}}  & {\em \+\_\+value} & Value for constant \\
 \hline
 \end{DoxyParams}
+
+
+Definition at line 24 of file tree.\+cpp.
+
+\mbox{\Hypertarget{class_node_aa0840c3cb5c7159be6d992adecd2097c}\label{class_node_aa0840c3cb5c7159be6d992adecd2097c}} 
+\index{Node@{Node}!````~Node@{$\sim$Node}}
+\index{````~Node@{$\sim$Node}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{$\sim$Node()}{~Node()}}
+{\footnotesize\ttfamily Node\+::$\sim$\+Node (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\mbox{\hyperlink{class_node}{Node}} destructor. 
+
+
+
+Definition at line 35 of file tree.\+cpp.
+
 
 
 \doxysubsection{Member Function Documentation}
@@ -78,6 +111,10 @@ Made link between two nodes by adding one node as child to another.
 \begin{DoxyReturn}{Returns}
 Returns 0 in success -\/1 else 
 \end{DoxyReturn}
+
+
+Definition at line 203 of file tree.\+cpp.
+
 \mbox{\Hypertarget{class_node_a364762a99a068e11dda8418f605ed7be}\label{class_node_a364762a99a068e11dda8418f605ed7be}} 
 \index{Node@{Node}!export\_dot@{export\_dot}}
 \index{export\_dot@{export\_dot}!Node@{Node}}
@@ -90,14 +127,38 @@ Writes tree description in dot-\/readable format.
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em root} & Tree root \\
-\hline
 \mbox{\texttt{ in}}  & {\em fd} & File descriptor \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 Returns 0 in success, -\/1 else 
 \end{DoxyReturn}
+
+
+Definition at line 138 of file tree.\+cpp.
+
+\mbox{\Hypertarget{class_node_aaf15ecede43472bafa027b9406239161}\label{class_node_aaf15ecede43472bafa027b9406239161}} 
+\index{Node@{Node}!export\_tex@{export\_tex}}
+\index{export\_tex@{export\_tex}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{export\_tex()}{export\_tex()}}
+{\footnotesize\ttfamily int Node\+::export\+\_\+tex (\begin{DoxyParamCaption}\item[{int}]{fd }\end{DoxyParamCaption})}
+
+
+
+Writes tree desription in tex format. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em fd} & File decriptor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return 0 in success, -\/1 else 
+\end{DoxyReturn}
+
+
+Definition at line 191 of file tree.\+cpp.
+
 \mbox{\Hypertarget{class_node_a9705e4699fe55d3e642d87d572663127}\label{class_node_a9705e4699fe55d3e642d87d572663127}} 
 \index{Node@{Node}!get\_children\_number@{get\_children\_number}}
 \index{get\_children\_number@{get\_children\_number}!Node@{Node}}
@@ -111,6 +172,10 @@ children\+\_\+number getter
 \begin{DoxyReturn}{Returns}
 Returns number of node children 
 \end{DoxyReturn}
+
+
+Definition at line 42 of file tree.\+cpp.
+
 \mbox{\Hypertarget{class_node_afcb6228f4f113c5542e87e7a800ede78}\label{class_node_afcb6228f4f113c5542e87e7a800ede78}} 
 \index{Node@{Node}!get\_childs@{get\_childs}}
 \index{get\_childs@{get\_childs}!Node@{Node}}
@@ -126,7 +191,24 @@ Returns pointer to pointers to childs
 \end{DoxyReturn}
 
 
+Definition at line 131 of file tree.\+cpp.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_node_a59a543130a10c95f1e8642cf8c5645e8}\label{class_node_a59a543130a10c95f1e8642cf8c5645e8}} 
+\index{Node@{Node}!id@{id}}
+\index{id@{id}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{id}{id}}
+{\footnotesize\ttfamily int Node\+::id = 0\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 16 of file tree.\+h.
+
+
+
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-Include/tree.\+h\item 
-Source/tree.\+cpp\end{DoxyCompactItemize}
+Include/\mbox{\hyperlink{tree_8h}{tree.\+h}}\item 
+Source/\mbox{\hyperlink{tree_8cpp}{tree.\+cpp}}\end{DoxyCompactItemize}

@@ -1,8 +1,0 @@
-digraph G {
-1 [style = filled, label="+", shape = box, fillcolor="grey"];
-1->0;
-1->2;
-0 [style = filled, label="3.000000", fillcolor="yellow"];
-2 [style = filled, label="5.000000", fillcolor="yellow"];
-"result=8.000000" [shape=box];
-}

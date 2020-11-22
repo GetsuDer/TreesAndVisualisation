@@ -75,6 +75,7 @@ $(function() {
 <code>#include &lt;cstdio&gt;</code><br />
 <code>#include &lt;cassert&gt;</code><br />
 <code>#include &lt;sys/mman.h&gt;</code><br />
+<code>#include &lt;cmath&gt;</code><br />
 <code>#include &quot;<a class="el" href="tree_8h_source.html">tree.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="in__and__out_8h_source.html">in_and_out.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -82,19 +83,23 @@ Include dependency graph for tree.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="tree_8cpp__incl.png" border="0" usemap="#_source_2tree_8cpp" alt=""/></div>
 <map name="_source_2tree_8cpp" id="_source_2tree_8cpp">
-<area shape="rect" title=" " alt="" coords="201,5,324,32"/>
+<area shape="rect" title=" " alt="" coords="257,5,380,32"/>
 <area shape="rect" title=" " alt="" coords="5,80,64,107"/>
 <area shape="rect" title=" " alt="" coords="88,80,149,107"/>
 <area shape="rect" title=" " alt="" coords="173,80,243,107"/>
 <area shape="rect" title=" " alt="" coords="267,80,370,107"/>
-<area shape="rect" href="tree_8h.html" title=" " alt="" coords="394,80,454,107"/>
-<area shape="rect" href="in__and__out_8h.html" title=" " alt="" coords="478,80,583,107"/>
+<area shape="rect" title=" " alt="" coords="394,80,457,107"/>
+<area shape="rect" href="tree_8h.html" title=" " alt="" coords="481,80,541,107"/>
+<area shape="rect" href="in__and__out_8h.html" title=" " alt="" coords="565,80,670,107"/>
 </map>
 </div>
-</div><table class="memberdecls">
+</div>
+<p><a href="tree_8cpp_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:acff072d1d398da659c191343cad12cc9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tree_8cpp.html#acff072d1d398da659c191343cad12cc9">rec_del</a> (<a class="el" href="class_node.html">Node</a> *root)</td></tr>
+<tr class="memdesc:acff072d1d398da659c191343cad12cc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively clear tree.  <a href="tree_8cpp.html#acff072d1d398da659c191343cad12cc9">More...</a><br /></td></tr>
 <tr class="separator:acff072d1d398da659c191343cad12cc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae599f095b9dc5ca190fd2271b3f87c15"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tree_8cpp.html#ae599f095b9dc5ca190fd2271b3f87c15">parse_file_create_tree</a> (char *filename)</td></tr>
 <tr class="memdesc:ae599f095b9dc5ca190fd2271b3f87c15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read expression from file and create tree.  <a href="tree_8cpp.html#ae599f095b9dc5ca190fd2271b3f87c15">More...</a><br /></td></tr>
@@ -126,6 +131,8 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns root of created tree or NULL if unsuccess </dd></dl>
 
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00340">340</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+
 </div>
 </div>
 <a id="acff072d1d398da659c191343cad12cc9"></a>
@@ -143,6 +150,16 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Recursively clear tree. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">root</td><td>Tree root </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00228">228</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>
