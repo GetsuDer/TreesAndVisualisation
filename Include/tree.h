@@ -21,6 +21,7 @@ public:
     int export_tex(int fd);
     int add_child(Node *child);
     int get_children_number();
+    int get_operation();
     Node **get_childs();
 };
 

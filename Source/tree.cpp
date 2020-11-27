@@ -43,6 +43,13 @@ Node::get_children_number() {
     return children_number;
 }
 
+//! \brief Operation getter
+//! \return Returns operation code
+int 
+Node::get_operation() {
+    return operation;
+}
+
 //! \brief Write description of node in graphivz-readable format
 //! \param [in] fd File descriptor
 //! \return Returns 0 in success -1 else
@@ -79,22 +86,22 @@ Node::visualize(int fd) {
 //! \param [in] res Result
 //! \param [in] op1,op2 operands 
 static void 
-calculate(int operation, double *res, double op1, double op2) {
+calculate(int operation, double *res, double operand) {
     switch (operation) {
         case ADD:
-            *res = op1 + op2;
+            *res += operand;
             break;
         case SUB:
-            *res = op1 - op2;
+            *res -= operand;
             break;
         case MUL:
-            *res = op1 * op2;
+            *res *= operand;
             break;
         case DIV:
-            *res = op1 / op2;
+            *res /= operand;
             break;
         case POWER:
-            *res = pow(op1, op2);
+            *res = pow(*res, operand);
             break;
         default:
             break;
@@ -108,7 +115,7 @@ double
 Node::visualize_tree_rec(int fd) {
     dprintf(fd, "%d [style = filled, label=\"", this->node_id);
     this->visualize(fd);
-    double res = 0, left = 0, right = 0;
+    double res = 0;
     if (this->operation) {
         dprintf(fd, "\", shape = box, fillcolor=\"grey\"];\n");
     } else {
@@ -118,10 +125,8 @@ Node::visualize_tree_rec(int fd) {
     }
     for (int i = 0; i < this->get_children_number(); i++) {
         dprintf(fd, "%d->%d;\n", this->node_id, this->childs[i]->node_id);
+        calculate(this->operation, &res, this->childs[i]->visualize_tree_rec(fd));
     }
-    left = this->childs[0]->visualize_tree_rec(fd);
-    right = this->childs[1]->visualize_tree_rec(fd);
-    calculate(this->operation, &res, left, right);
     return res;
 }
 
@@ -158,7 +163,7 @@ Node::visualize_tree_rec_tex(int fd) {
         if (this->operation == DIV) {
             dprintf(fd, "{{");
         }
-        double left = this->childs[0]->visualize_tree_rec_tex(fd);
+   //     double left = this->childs[0]->visualize_tree_rec_tex(fd);
         if (this->operation == DIV) {
             dprintf(fd, "}\\over {");
         } else {
@@ -168,7 +173,7 @@ Node::visualize_tree_rec_tex(int fd) {
             dprintf(fd, "{");
         }
 
-        double right = this->childs[1]->visualize_tree_rec_tex(fd);
+  //      double right = this->childs[1]->visualize_tree_rec_tex(fd);
         if (this->operation == DIV || this->operation == POWER) {
             dprintf(fd, "}");
         }
@@ -176,7 +181,7 @@ Node::visualize_tree_rec_tex(int fd) {
             dprintf(fd, "}");
         }
         dprintf(fd, ")");
-        calculate(this->operation, &res, left, right);
+     //   calculate(this->operation, &res, left, right);
     } else {
         this->visualize(fd);
         res = this->value;
@@ -274,42 +279,53 @@ parse_rec(char **begin, char *end) {
         fprintf(stderr, "Wrong input file format: %s\n Expected '('!\n", *begin);
         return NULL;
     }
-    (*begin)++;
+    (*begin)++; //skip '(' at the beginning of the node: ->(<- ... ) 
     skip(begin, end);
     if (*begin >= end) {
         fprintf(stderr, "Wrong input file format: %s\n Expected symbol\n", *begin);
         return NULL;
     }
     if (**begin == '(') { //not constant
-        //now should parse childs: ( (child1) op (child2) )
-        Node *first_child = parse_rec(begin, end);
-        skip(begin, end);
-        if (*begin >= end) {
-            fprintf(stderr, "No operation in input file: %s\n", *begin);
-            rec_del(first_child);
+        Node *parent = NULL;
+        Node *child = parse_rec(begin, end); // ( ->child1<- op child2 ... )
+        //now should parse childs: ( (child1) op (child2) op ... )
+        if (!child) {
+            fprintf(stderr, "Parsing error in : %s\n", *begin);
             return NULL;
         }
+        while (child) {
+            skip(begin, end); // ( .... ->op<- .... )
+            if (*begin >= end) {
+                fprintf(stderr, "No operation in input file: %s\n", *begin);
+                rec_del(child);
+                return NULL;
+            }
         //find operation
-        skip(begin, end);
-        int operation = find_operation(begin);
-        if (operation < 0) {
-            fprintf(stderr, "Can not work with this operation or can not recognize: %c\n", **begin);
-            rec_del(first_child);
-            return NULL;
+            if (**begin == ')') { // ( ... ->)<-
+                parent->add_child(child);
+                break; //no more childs
+            }
+            int operation = find_operation(begin);
+            if (operation < 0) {
+                fprintf(stderr, "Can not work with this operation or can not recognize: %c\n", **begin);
+                rec_del(child);
+                return NULL;
+            }
+            (*begin)++; //skip operation
+            if (!parent) {
+                parent = new Node(operation);
+            } else {
+                if (operation != parent->get_operation()) {
+                    fprintf(stderr, "Can not parse more than one operation types in node: %s\n", *begin);
+                }
+            }
+            parent->add_child(child);
+            child = parse_rec(begin, end);
         }
-        Node *parent = new Node(operation);
-
-        Node *second_child = parse_rec(begin, end);
-
-        if (!second_child) {
-            fprintf(stderr, "Only operation with two operands are permiterd!%s\n", *begin);
-            rec_del(first_child);
-            delete parent;
-            return NULL;
+        if (!parent) {
+            rec_del(child);
         }
-        parent->add_child(first_child);
-        parent->add_child(second_child);
-        (*begin)++;
+        (*begin)++; // last ')' in node parent
         return parent;
 
     } else { //constant
