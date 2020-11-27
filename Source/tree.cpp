@@ -125,7 +125,11 @@ Node::visualize_tree_rec(int fd) {
     }
     for (int i = 0; i < this->get_children_number(); i++) {
         dprintf(fd, "%d->%d;\n", this->node_id, this->childs[i]->node_id);
-        calculate(this->operation, &res, this->childs[i]->visualize_tree_rec(fd));
+        if (i) {
+            calculate(this->operation, &res, this->childs[i]->visualize_tree_rec(fd));
+        } else {
+            res = this->childs[i]->visualize_tree_rec(fd);
+        }
     }
     return res;
 }
@@ -160,28 +164,33 @@ Node::visualize_tree_rec_tex(int fd) {
     double res = 0;
     if (this->operation) {
         dprintf(fd, "(");
-        if (this->operation == DIV) {
-            dprintf(fd, "{{");
-        }
-   //     double left = this->childs[0]->visualize_tree_rec_tex(fd);
-        if (this->operation == DIV) {
-            dprintf(fd, "}\\over {");
-        } else {
-            this->visualize(fd);
-        }
-        if (this->operation == POWER) {
-            dprintf(fd, "{");
-        }
-
-  //      double right = this->childs[1]->visualize_tree_rec_tex(fd);
         if (this->operation == DIV || this->operation == POWER) {
-            dprintf(fd, "}");
+            for (int i = 0; i < this->children_number; i++) {
+                dprintf(fd, "{");
+            }
         }
-        if (this->operation == DIV) {
-            dprintf(fd, "}");
+        for (int i = 0; i < this->children_number; i++) {
+            if (i) {
+                if (this->operation == DIV) {
+                    dprintf(fd, "\\over {");
+                } else {
+                    this->visualize(fd);
+                }
+                if (this->operation == POWER) {
+                    dprintf(fd, "{");
+                }
+                calculate(this->operation, &res, this->childs[i]->visualize_tree_rec_tex(fd));
+            } else {
+                res = this->childs[i]->visualize_tree_rec_tex(fd);
+            }
+            if (this->operation == DIV || this->operation == POWER) {
+                dprintf(fd, "}");
+            }
+            if (i && ((this->operation == DIV) || (this->operation == POWER))) {
+                dprintf(fd, "}");
+            }
         }
         dprintf(fd, ")");
-     //   calculate(this->operation, &res, left, right);
     } else {
         this->visualize(fd);
         res = this->value;
