@@ -22,17 +22,24 @@ public:
     int add_child(Node *child);
     int get_children_number();
     int get_operation();
+    bool is_constant();
+    Node *copy();
+    Node *derivate();
     Node **get_childs();
 };
 
 
 enum Node_Types {
     CONSTANT = 0,
+    VAR,
     ADD,
     SUB,
     MUL,
     DIV,
-    POWER
+    POWER,
+    LN,
+    SIN,
+    COS
 };
 
 Node *parse_file_create_tree(char *filename);

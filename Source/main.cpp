@@ -115,7 +115,16 @@ main(int argc, char **argv)
     Node *root = parse_file_create_tree(argv[FILE_IN]);
 
     create_png(argv[FILE_IN], root, show);
-    
+
+    Node *der = root->derivate();
+   
+    int file_name_size = strlen(argv[FILE_IN]);
+    char *der_name = (char *)calloc(1, file_name_size + 4);
+    strncpy(der_name, argv[FILE_IN], file_name_size);
+    strncpy(der_name + file_name_size, "_der", 5);
+
+    create_png(der_name, der, show);
+
     errno = 0;
     show = strtol(argv[SHOW_PDF], NULL, 10);
     if (errno) {
@@ -124,7 +133,8 @@ main(int argc, char **argv)
     }
 
     create_pdf(argv[FILE_IN], root, show);
-    
+    create_pdf(der_name, der, show);
     rec_del(root);
+    rec_del(der);
     return 0;
 }

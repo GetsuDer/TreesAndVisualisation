@@ -3,6 +3,7 @@
 #include <cassert>
 #include <sys/mman.h>
 #include <cmath>
+#include <string.h>
 
 #include "tree.h"
 #include "in_and_out.h"
@@ -75,6 +76,18 @@ Node::visualize(int fd) {
         case POWER:
             dprintf(fd, "^");
             break;
+        case LN:
+            dprintf(fd, "ln");
+            break;
+        case SIN:
+            dprintf(fd, "sin");
+            break;
+        case COS:
+            dprintf(fd, "cos");
+            break;
+        case VAR:
+            dprintf(fd, "x");
+            break;
         default:
             fprintf(stderr, "Wrong operation: %d\n", this->operation);
             return -1;
@@ -103,6 +116,17 @@ calculate(int operation, double *res, double operand) {
         case POWER:
             *res = pow(*res, operand);
             break;
+        case LN:
+            *res = log(operand);
+            break;
+        case SIN:
+            *res = sin(operand);
+            break;
+        case COS:
+            *res = cos(operand);
+            break;
+        case VAR: //do nothing. may be changed in the future
+            break;
         default:
             break;
     }
@@ -113,11 +137,17 @@ calculate(int operation, double *res, double operand) {
 //! \return Returns counted value
 double
 Node::visualize_tree_rec(int fd) {
-    dprintf(fd, "%d [style = filled, label=\"", this->node_id);
-    this->visualize(fd);
+    dprintf(fd, "%d [style = filled, label=\"", node_id);
+    visualize(fd);
     double res = 0;
-    if (this->operation) {
-        dprintf(fd, "\", shape = box, fillcolor=\"grey\"];\n");
+    if (operation) {
+        dprintf(fd, "\", shape = box, fillcolor=");
+        if (operation == VAR) {
+            dprintf(fd, "\"green\"");
+        } else {
+            dprintf(fd, "\"grey\"");
+        }
+        dprintf(fd, "];\n");
     } else {
         res = this->value;
         dprintf(fd, "\", fillcolor=\"yellow\"];\n");
@@ -154,46 +184,58 @@ Node::export_dot(int fd, char *graph_name) {
         dprintf(fd, "G {\n");
     }
     double res = this->visualize_tree_rec(fd);
-    dprintf(fd, "\"result=%lf\" [shape=box];\n}\n", res);
-
+    if (is_constant()) {
+        dprintf(fd, "\"result=%lf\" [shape=box];", res);
+    }
+    dprintf(fd, "\n}\n");
     return 0;
 }
 
 double
 Node::visualize_tree_rec_tex(int fd) {
     double res = 0;
-    if (this->operation) {
+    if (operation && operation != VAR) {
         dprintf(fd, "(");
-        if (this->operation == DIV || this->operation == POWER) {
-            for (int i = 0; i < this->children_number; i++) {
+        if (operation == DIV || operation == POWER) {
+            for (int i = 0; i < children_number; i++) {
                 dprintf(fd, "{");
             }
         }
-        for (int i = 0; i < this->children_number; i++) {
+        if (operation == COS || operation == SIN) {
+            visualize(fd);
+            dprintf(fd, "(");
+        }
+        if (operation == LN) {
+            dprintf(fd, "\\ln{");
+        }
+        for (int i = 0; i < children_number; i++) {
             if (i) {
-                if (this->operation == DIV) {
+                if (operation == DIV) {
                     dprintf(fd, "\\over {");
                 } else {
-                    this->visualize(fd);
+                    visualize(fd);
                 }
-                if (this->operation == POWER) {
+                if (operation == POWER) {
                     dprintf(fd, "{");
                 }
-                calculate(this->operation, &res, this->childs[i]->visualize_tree_rec_tex(fd));
+                calculate(operation, &res, childs[i]->visualize_tree_rec_tex(fd));
             } else {
-                res = this->childs[i]->visualize_tree_rec_tex(fd);
+                res = childs[i]->visualize_tree_rec_tex(fd);
             }
-            if (this->operation == DIV || this->operation == POWER) {
+            if (operation == DIV || operation == POWER || operation == LN) {
                 dprintf(fd, "}");
             }
-            if (i && ((this->operation == DIV) || (this->operation == POWER))) {
+            if (i && ((operation == DIV) || (operation == POWER))) {
                 dprintf(fd, "}");
             }
         }
+        if (operation == SIN || operation == COS) {
+            dprintf(fd, ")");
+        }
         dprintf(fd, ")");
     } else {
-        this->visualize(fd);
-        res = this->value;
+        visualize(fd);
+        res = value;
     }
     return res;
 }
@@ -206,7 +248,10 @@ int Node::export_tex(int fd) {
     assert(fd >= 0);
     dprintf(fd, "$$ ");
     double res = this->visualize_tree_rec_tex(fd);
-    dprintf(fd, " = %lf $$ \n \\end", res);
+    if (is_constant()) {
+        dprintf(fd, " = %lf ", res);
+    }
+    dprintf(fd, "$$ \n \\end");
     return 0;
 }
 
@@ -268,6 +313,18 @@ find_operation(char **operation) {
         case '^':
             (*operation)++;
             return POWER;
+        case 's':
+            if (!strncmp(*operation, "sin", 3)) return -1;
+            (*operation) += 3;
+            return SIN;
+        case 'c':
+            if (!strncmp(*operation, "cos", 3)) return -1;
+            (*operation) += 3;
+            return COS;
+        case 'l':
+            if (!strncmp(*operation, "ln", 2)) return -1;
+            (*operation) += 2;
+            return LN;
         default:
             return -1;
     }
@@ -320,7 +377,7 @@ parse_rec(char **begin, char *end) {
                 rec_del(child);
                 return NULL;
             }
-            (*begin)++; //skip operation
+           // (*begin)++; //skip operation (may be incorrect??)
             if (!parent) {
                 parent = new Node(operation);
             } else {
@@ -337,7 +394,34 @@ parse_rec(char **begin, char *end) {
         (*begin)++; // last ')' in node parent
         return parent;
 
-    } else { //constant
+    } else { //constant or sin or cos or ln or x
+        if (!strncmp(*begin, "sin", 3)) { // ( sin ( ... ) )
+            Node *parent = new Node(SIN);
+            (*begin) += 3;
+            parent->add_child(parse_rec(begin, end));
+            (*begin)++; // ')'
+            return parent;
+        }
+        if (!strncmp(*begin, "cos", 3)) { // ( cos ( ... ) )
+            Node *parent = new Node(COS);
+            (*begin) += 3;
+            parent->add_child(parse_rec(begin, end));
+            (*begin)++; // ')'
+            return parent;
+        }
+        if (!strncmp(*begin, "ln", 2)) {
+            Node *parent = new Node(LN);
+            (*begin) += 2;
+            parent->add_child(parse_rec(begin, end));
+            (*begin)++; // ')';
+            return parent;
+        }
+        if (**begin == 'x') {
+            Node *parent = new Node(VAR);
+            (*begin)++; // x
+            (*begin)++; // )
+            return parent;
+        }
         char *endptr = NULL;
         errno = 0;
         double value = strtod(*begin, &endptr);
@@ -377,5 +461,179 @@ parse_file_create_tree(char *filename) {
     char *old_exp = exp;
     Node *root = parse_rec(&exp, exp + file_size);
     munmap(old_exp, file_size);
+    return root;
+}
+
+//! \brief Copy tree
+//! \return Returns root of the copied tree
+Node *
+Node::copy() {
+    Node *root = NULL;
+    if (this->operation) {
+        root = new Node(this->operation);
+    } else {
+        root = new Node(this->value);
+    }
+    for (int i = 0; i < children_number; i++) {
+        root->add_child(this->childs[i]->copy());
+    }
+    return root;
+}
+
+
+//! \brief Find, if the expression is constant (can be calculated). It means no VAR nodes
+//! \return Returns true, if no VAR nodes, false else
+bool
+Node::is_constant() {
+    if (operation == VAR) {
+        return false;
+    }
+    for (int i = 0; i < children_number; i++) {
+        if (!childs[i]->is_constant()) {
+            return false;
+        }
+    }
+    return true;
+}
+
+//! \brief Create new tree with derivate of old tree
+//! \return Returns root of the new tree
+Node *
+Node::derivate() {
+    Node *root = NULL;
+    Node *tmp = NULL;
+    switch (operation) {
+        case CONSTANT:
+            root = new Node(0);
+            break;
+        case VAR:
+            root = new Node(1.0);
+            break;
+        case ADD:
+            root = new Node(ADD); // (a + b + c)` = a` + b` + c`
+            for (int i = 0; i < children_number; i++) {
+                root->add_child(childs[i]->derivate());
+            }
+            break;
+        case SUB:
+            root = new Node(SUB); // (a - b - c)` = a` - b` - c`
+            for (int i = 0; i < children_number; i++) {
+                root->add_child(childs[i]->derivate());
+            }
+            break;
+        case MUL:
+            root = new Node(ADD); // (a * b * c)` = a` * b * c + a * b` * c + a * b * c`
+            for (int i = 0; i < children_number; i++) {
+                root->add_child(new Node(MUL));
+                for (int j = 0; j < children_number; j++) {
+                    root->childs[i]->add_child((i == j) ? (childs[j]->derivate()) : (childs[j]->copy()));
+                }
+            }
+            break;
+        case DIV: // (a / b)` = (a` * b - a * b`) / (b * b)
+           // (a / b / c)` = ((a / b) / c)` = (((a / b)` * c - (a / b) * c`)) / (c * c) 
+            root = new Node(DIV);
+            if (children_number > 2) {
+                tmp = new Node(DIV);
+                for (int i = 0; i < children_number - 1; i++) {
+                    tmp->add_child(childs[i]->copy());
+                }
+            } else {
+                tmp = childs[0]->copy();
+            }
+            //now take derivate as for (a / b)
+            root->add_child(new Node(SUB)); // see above: (a` * b) - (a * b`)
+            root->childs[0]->add_child(new Node(MUL)); // a` * b
+            root->childs[0]->add_child(new Node(MUL)); // a * b`
+            root->childs[0]->childs[0]->add_child(tmp->derivate()); // a`
+            root->childs[0]->childs[0]->add_child(childs[children_number - 1]->copy()); // b
+            root->childs[0]->childs[1]->add_child(tmp->copy()); // a
+            root->childs[0]->childs[1]->add_child(childs[children_number - 1]->derivate()); // b`
+            delete tmp;
+            tmp = NULL; // may be better make b ^ 2? 
+            root->add_child(new Node(MUL)); // (b * b)
+            root->childs[1]->add_child(childs[children_number - 1]->copy()); // b
+            root->childs[1]->add_child(childs[children_number - 1]->copy()); // b
+            break;
+        case POWER: // three ways: f(x) ^ C, C ^ f(x), f(x) ^ g(x)
+            // (a ^ b ^ c)` = ((a ^ b) ^ c)` (as for DIVision)
+            if (children_number > 2) {
+                tmp = new Node(POWER);
+                for (int i = 0; i < children_number - 1; i++) {
+                    tmp->add_child(childs[i]);
+                }
+            } else {
+                tmp = childs[0]->copy();
+            }
+            if (tmp->is_constant()) { // (C ^ x)` = (ln C) * (C ^ x) * x`
+                root = new Node(MUL);
+                root->add_child(new Node(LN)); // ln
+                root->childs[0]->add_child(tmp->copy()); // ln C
+
+                root->add_child(this->copy()); // C ^ x
+                
+                root->add_child(childs[children_number - 1]->derivate());
+                break;
+            }
+            if (childs[children_number - 1]->is_constant()) { // (x ^ C)` = C * (x ^ (C - 1)) * x`
+                root = new Node(MUL);
+                root->add_child(childs[children_number - 1]->copy()); // C
+                
+                root->add_child(new Node(POWER));
+                root->childs[1]->add_child(tmp->copy()); // x ^
+                root->childs[1]->add_child(new Node(SUB)); // (C - 1)
+                root->childs[1]->childs[1]->add_child(childs[children_number - 1]->copy()); // C
+                root->childs[1]->childs[1]->add_child(new Node(1.0)); // 1
+
+                root->add_child(tmp->derivate()); // x`
+                break;
+            }
+            // (f(x) ^ g(x))` = (f ^ g) * (g` * ln(f) + g / f * f`) = 
+            // = (f ^ g) * g` * ln(f) + (f ^ (g - 1)) * g * f`
+            root = new Node(ADD); // +
+
+            root->add_child(new Node(MUL)); // *
+            root->childs[0]->add_child(copy()); // f ^ g
+            root->childs[0]->add_child(childs[children_number - 1]->derivate()); // g`
+            root->childs[0]->add_child(new Node(LN)); // ln
+            root->childs[0]->childs[2]->add_child(tmp->copy()); // ln f
+
+            root->add_child(new Node(MUL)); // *
+            root->childs[1]->add_child(new Node(POWER)); // f ^ (g - 1)
+
+            root->childs[1]->childs[0]->add_child(tmp->copy()); // f
+            root->childs[1]->childs[0]->add_child(new Node(SUB)); // g - 1
+            root->childs[1]->childs[0]->childs[1]->add_child(childs[children_number - 1]->copy()); // g
+            root->childs[1]->childs[0]->childs[1]->add_child(new Node(1.0)); // 1
+            
+            root->childs[1]->add_child(tmp->copy()); // g
+            root->childs[1]->add_child(childs[children_number - 1]->derivate()); // f`
+            
+            break;
+        case LN: // (ln x)` = (1 / x) * x`
+            root = new Node(MUL);
+            root->add_child(new Node(DIV)); // 1 / x
+            root->childs[0]->add_child(new Node(1.0)); // 1
+            root->childs[0]->add_child(childs[0]->copy()); // x
+            
+            root->add_child(childs[0]->derivate()); // x`
+            break;
+        case SIN: // (sin x)` = (cos x) * x`
+            root = new Node(MUL);
+            root->add_child(new Node(COS)); // cos
+            root->childs[0]->add_child(childs[0]->copy()); // x
+            root->add_child(childs[0]->derivate()); // x`
+            break;
+        case COS: // (cos x)` = - sin(x) * x` = (-1) * sin (x) * x`
+            root = new Node(MUL);
+            root->add_child(new Node(-1.0));
+            root->add_child(new Node(SIN)); // sin
+            root->childs[1]->add_child(childs[0]->copy()); // x
+            root->add_child(childs[0]->derivate()); // x`
+            break;
+        default:
+            fprintf(stderr, "Derivate error: unknown operation %d\n", operation);
+            break;
+    }
     return root;
 }

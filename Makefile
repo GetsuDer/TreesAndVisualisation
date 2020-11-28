@@ -14,6 +14,9 @@ endif
 
 all: tree
 	
+test: tree
+	cd Testing; ./run_tests; cd ..
+
 tree: $(OBJDIR)main.o $(OBJDIR)tree.o $(OBJDIR)in_and_out.o
 	$(CC) -o tree $(OBJDIR)tree.o $(OBJDIR)main.o $(OBJDIR)in_and_out.o $(CFLAGS)
 
@@ -29,4 +32,4 @@ $(OBJDIR):
 	mkdir $(OBJDIR)
 
 clean:
-	rm -rf *.o ObjectFiles tree Testing/*.png Testing/*.log Testing/*.pdf Testing/*.dot Testing/*.tex
+	rm -rf *.o ObjectFiles tree Testing/*.log Testing/*.dot Testing/*.tex

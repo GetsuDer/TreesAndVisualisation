@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+for test in *.in
+do
+    ./../tree $test 0 0
+done
