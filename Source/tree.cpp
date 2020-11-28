@@ -4,6 +4,7 @@
 #include <sys/mman.h>
 #include <cmath>
 #include <string.h>
+#include <algorithm>
 
 #include "tree.h"
 #include "in_and_out.h"
@@ -504,7 +505,7 @@ Node::derivate() {
     Node *tmp = NULL;
     switch (operation) {
         case CONSTANT:
-            root = new Node(0);
+            root = new Node(0.0);
             break;
         case VAR:
             root = new Node(1.0);
@@ -636,4 +637,80 @@ Node::derivate() {
             break;
     }
     return root;
+}
+
+//! \brief Get expression value
+//! \return Returns value (NAN, if not-Constant, but caller is responsible for it)
+double
+Node::get_val() {
+    if (!operation) {
+        return value;
+    }
+    double res = 0;
+    if (operation == VAR) {
+        fprintf(stderr, "Try to get val from non-constant expression\n");
+        return NAN;
+    }
+    if (operation == LN) {
+        return log(childs[0]->get_val());
+    }
+    if (operation == SIN) {
+        return sin(childs[0]->get_val());
+    }
+    if (operation == COS) {
+        return cos(childs[0]->get_val());
+    }
+    // from this place all operations have two and more operands
+    res = childs[0]->get_val();   
+    for (int i = 1; i < children_number; i++) {
+        calculate(operation, &res, childs[i]->get_val());
+    }
+    return res;
+}
+
+bool
+operation_cmp(Node *first, Node *second) {
+    return first->get_operation() > second->get_operation();
+}
+
+//! \brief Try to simplify expression
+void
+Node::simplify() {
+    if (operation == CONSTANT || operation == VAR) {
+        return;
+    }
+    for (int i = 0; i < children_number; i++) {
+        childs[i]->simplify();
+    }   
+
+    if (is_constant()) {
+// node and all sub-tree may be replaced by one constant
+        double res = get_val();
+        operation = CONSTANT;
+        value = res;
+        for (int i = 0; i < children_number; i++) {
+            rec_del(childs[i]);
+        }
+        children_number = 0;
+        return; // now this subtree is one node with type CONS
+    }
+
+    std::sort(childs, childs + children_number, operation_cmp);
+
+    int const_end = children_number - 1, const_begin = const_end;
+    double cons_res = 0;
+    while ((childs[const_begin]->operation == CONSTANT)) {
+        calculate(operation, &cons_res, childs[const_begin]->value);
+        const_begin--; //childs[0]->operation != CONST, because !is_constant()
+    }
+    if (const_end - const_begin > 1) {
+//replace constants by one constant
+        Node *new_const = new Node(cons_res);
+        for (int i = const_begin + 1; i < const_end; i++) {
+            rec_del(childs[i]);
+        }
+        childs[const_begin + 1] = new_const;
+        children_number -= (const_end - const_begin - 1);
+    }
+    return;
 }

@@ -125,6 +125,25 @@ main(int argc, char **argv)
 
     create_png(der_name, der, show);
 
+    char *simp_name = (char *)calloc(1, file_name_size + 5);
+    strncpy(simp_name, argv[FILE_IN], file_name_size);
+    strncpy(simp_name + file_name_size, "_simp", 6);
+
+    Node *tmp = root->copy();
+    root->simplify();
+    Node *root_simp = root;
+    root = tmp;
+
+    create_png(simp_name, root_simp, show);
+
+    char *simp_der_name = (char *)calloc(1, file_name_size + 5 + 4);
+    strncpy(simp_der_name, simp_name, file_name_size + 5);
+    strncpy(simp_der_name + file_name_size + 5, "_der", 5);
+
+    Node *der_simp = root_simp->derivate();
+
+    create_png(simp_der_name, der_simp, show);
+
     errno = 0;
     show = strtol(argv[SHOW_PDF], NULL, 10);
     if (errno) {
@@ -134,7 +153,12 @@ main(int argc, char **argv)
 
     create_pdf(argv[FILE_IN], root, show);
     create_pdf(der_name, der, show);
+    create_pdf(simp_name, root_simp, show);
+    create_pdf(simp_der_name, der_simp, show);
+
     rec_del(root);
     rec_del(der);
+    rec_del(root_simp);
+    rec_del(der_simp);
     return 0;
 }

@@ -25,6 +25,8 @@ public:
     bool is_constant();
     Node *copy();
     Node *derivate();
+    void simplify();
+    double get_val();
     Node **get_childs();
 };
 
