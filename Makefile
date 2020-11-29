@@ -4,7 +4,7 @@ OBJDIR = ObjectFiles/
 INCDIR = Include/
 CC = g++
 DEBUG = NO
-CFLAGS = -Wall -Wextra -Wformat -std=c++14 -IInclude -ISource 
+CFLAGS = -Wall -Wextra -Wformat -std=c++14 -IInclude 
 
 ifeq ($(DEBUG), YES)
 	CFLAGS += -g

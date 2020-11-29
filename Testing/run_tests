@@ -2,7 +2,9 @@
 
 for test in *.in
 do
+    echo Running test $test...
     ./../tree $test 0 0
+
 done
 
 mv *.pdf pdf/

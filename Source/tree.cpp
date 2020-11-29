@@ -46,6 +46,11 @@ Node::~Node() {
     free(childs);
 }
 
+//! \brief Value getter
+double
+Node::get_value() {
+    return value;
+}
 //! \brief children_number getter
 //! \return Returns number of node children
 int
@@ -833,7 +838,7 @@ Node::tree_eq(Node *other) {
     return true;
 }
 
-//! \brief For MUL, ADD, SUB union layers
+//! \brief For MUL, ADD, SUB, POW union layers
 void
 Node::union_layers() {
     int old_num = 0;
@@ -871,6 +876,16 @@ Node::union_layers() {
                 }
             }
             return;
+        case POWER: // (x ^ y) ^ z = x ^ y ^ x, but x ^ (y ^ z) != x ^ y ^ z
+            if (childs[0]->operation == POWER) {
+                tmp = childs[0];
+                childs[0] = tmp->childs[0];
+                tmp->childs[0]->parent = this;
+                for (int i = 1; i < tmp->children_number; i++) {
+                    add_child(tmp->childs[i]);
+                }
+                free(tmp);
+            }
         default:
             return;
     }
@@ -970,7 +985,7 @@ Node::transform_vars() {
            ind++;
        }
    }  
-   if (var_num == 1) {
+   if (var_num == 1 && operation != SUB) {
        add_child(new Node(VAR)); 
        return;
    }
@@ -1015,9 +1030,109 @@ Node::transform_vars() {
        add_child(tmp->childs[1]);
        operation = tmp->operation;
        free(tmp);
+   } else {
+       add_child(tmp);
    }
    return;
     
+}
+
+//! \brief x * a
+//! \param [in] node x * a
+//! \return node == x * a
+static bool
+var_mul_coef(Node *node) {
+    if (node->get_operation() == VAR) return true;
+    if (node->get_operation() != MUL) return false;
+    if (node->get_children_number() != 2) return false;
+    int first = node->get_childs()[0]->get_operation();
+    int second = node->get_childs()[1]->get_operation(); 
+    if ((first == VAR && second == CONSTANT) || (first == CONSTANT && second == VAR)) return true;
+    return false;
+}
+
+
+//! \brief x * a --> a
+//! \param [in] node x * a
+//! \return a
+static double
+get_coef(Node *node) {
+    if (node->get_operation() == VAR) return 1.0;
+
+    assert(node->get_children_number() == 2);
+    Node **childs = node->get_childs();
+    if (childs[0]->get_operation() == CONSTANT) {
+        return childs[0]->get_value();
+    } else {
+        return childs[1]->get_value();
+    }
+}
+
+//! \brief Work with x * a + x * b etc
+// x * a + x * b = x * (a + b)
+// x * a - x * b = x * (a - b)
+// (x * a) / (x * b) = a / b
+// A / (x * a) / (x * b) = A / (x * x * a * b)
+void
+Node::simp_var() {
+    double res = 0;
+    int ind;
+    int flag = 0;
+    int first = -1;
+    switch (operation) {
+        case ADD:
+            ind = 0;
+            while (ind < children_number) {
+                if (var_mul_coef(childs[ind])) {
+                    res += get_coef(childs[ind]);
+                    flag++;
+                    if (flag == 1) {
+                        first = ind;
+                        ind++;
+                    } else {
+                        cut_child(ind);
+                    }
+                } else {
+                    ind++;
+                }
+            }
+            if (flag > 1) {
+                if (childs[first]->childs[0]->operation == VAR) {
+                    childs[first]->childs[1]->value = res;
+                } else {
+                    childs[first]->childs[0]->value = res;
+                }
+            }
+            break;
+        case SUB:
+            res = 0;
+            ind = 1;
+            while (ind < children_number) {
+                if (var_mul_coef(childs[ind])) {
+                    res += get_coef(childs[ind]);
+                    flag = true; 
+                    cut_child(ind);
+                } else {
+                    ind++;
+                }
+            }
+            if (flag) {
+               if (var_mul_coef(childs[0])) {
+                   res = get_coef(childs[ind]) - res;
+                   free(childs[0]);
+                   childs[0]->operation = MUL;
+                   childs[0]->add_child(new Node(VAR));
+                   childs[0]->add_child(new Node(res));
+               } else {
+                   add_child(new Node(MUL));
+                   childs[children_number - 1]->add_child(new Node(VAR));
+                   childs[children_number - 1]->add_child(new Node(res));
+               } 
+            }
+        default:
+            break;
+    }
+    return;
 }
 
 //! \brief Try to simplify expression
@@ -1039,6 +1154,7 @@ Node::simplify() {
         union_layers();
         transform_constants();
         transform_vars();
+        simp_var();
     } while (!tree_eq(old));
     return;
 }

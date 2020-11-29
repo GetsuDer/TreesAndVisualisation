@@ -18,6 +18,7 @@ private:
     void transform_constants();
     void transform_vars();
     void union_layers();
+    void simp_var();
 public:
     static int id;
     Node(int _operation);
@@ -28,6 +29,7 @@ public:
     int add_child(Node *child);
     int get_children_number();
     int get_operation();
+    double get_value();
     Node *cut_child(int child_ind);
     bool is_constant();
     Node *copy();
