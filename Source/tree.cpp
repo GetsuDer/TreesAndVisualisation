@@ -709,7 +709,7 @@ Node::remove_neitrals() {
         return;
     }
     int ind = (operation == SUB || operation == DIV || operation == POWER) ? 1 : 0;
-    double neitral = (operation == ADD || operation == SUB) ? 0 : 1;
+    double neitral = get_neitral(operation);
     Node *tmp = NULL;
     while (ind < children_number) {
         if (childs[ind]->operation == CONSTANT && is_eq(neitral, childs[ind]->value)) {
@@ -726,7 +726,8 @@ Node::remove_neitrals() {
     if (children_number == 1) { // only one childs is alive
         tmp = cut_child(0);
         operation = tmp->operation;
-        for (int i = 0; i < tmp->children_number; i++) {
+        int children_number_old = tmp->children_number;
+        for (int i = 0; i < children_number_old; i++) {
             add_child(tmp->cut_child(0));
         }
         value = tmp->value;
@@ -794,6 +795,7 @@ Node::specific_simpling() {
 }
 
 
+
 //! \brief If there is no VARs in the tree, value can be calculated directly
 void
 Node::calculate_values() {
@@ -831,6 +833,192 @@ Node::tree_eq(Node *other) {
     return true;
 }
 
+//! \brief For MUL, ADD, SUB union layers
+void
+Node::union_layers() {
+    int old_num = 0;
+    Node *tmp = NULL;
+    switch(operation) {
+        case MUL:
+        case ADD:
+            old_num = children_number;
+            for (int i = 0; i < old_num; i++) {
+                if (childs[i]->operation == operation) {
+                    tmp = childs[i];
+                    childs[i] = tmp->childs[0];
+                    childs[i]->parent = this;
+                    for (int j = 1; j < tmp->children_number; j++) {
+                        add_child(tmp->childs[j]);
+                    }
+                    free(tmp);
+                    tmp = NULL;
+                }
+            }
+            return;
+        case SUB:
+            old_num = children_number;
+            for (int i = 1; i < old_num; i++) {
+                if (childs[i]->operation == ADD) {
+                    tmp = childs[i];
+                    childs[i] = tmp->childs[0];
+                    childs[i]->parent = this;
+                    for (int j = 1; j < tmp->children_number; j++) {
+                        add_child(tmp->childs[j]);
+                    }
+                    free(tmp);
+                    tmp = NULL;
+                    continue;
+                }
+            }
+            return;
+        default:
+            return;
+    }
+    return;
+}
+
+//! \brief Get neitral element
+//! \param [in] operation Operation
+//! \return Returns neitral element as int
+int
+get_neitral(int operation) {
+    switch (operation) {
+        case ADD:
+        case SUB:
+            return 0;
+        case MUL:
+        case DIV:
+        case POWER:
+            return 1;
+        default:
+            return -1;
+    }
+    return -1;
+}
+
+
+//! \brief Get operation for (op1 op op2 op op3) = ((op1) op (op2 op_op op3))
+int 
+get_opposite(int operation) {
+    switch (operation) {
+        case ADD:
+            return ADD;
+        case SUB:
+            return ADD;
+        case DIV:
+            return MUL;
+        case MUL:
+            return MUL;
+        case POWER:
+            return MUL;
+        default:
+            return -1;
+    }
+}
+
+//! \brief 1 + 1 --> 2
+void
+Node::transform_constants() {
+    if (operation != ADD && operation != SUB && operation != MUL && operation != DIV && operation != POWER) {
+        return;
+    }
+    if (children_number <= 2) {
+        return; // will be calculated in calculate_values, if possible
+    }
+    int num = 0;
+    for (int i = 0; i < children_number; i++) {
+        if (childs[i]->operation == CONSTANT) {
+            num++;
+        }
+    }
+    if (num <= 1) {
+        return;
+    }
+    double res = get_neitral(operation);
+    int ind = 1;
+    int op = get_opposite(operation);
+    // constants
+    while (ind < children_number) {
+        if (childs[ind]->operation == CONSTANT) {
+            calculate(op, &res, childs[ind]->value);
+            cut_child(ind);
+        } else {
+            ind++;
+        }
+    }
+    if (childs[0]->operation == CONSTANT) {
+        calculate(operation, &(childs[0]->value), res); 
+    } else {
+        add_child(new Node(res));
+    }
+    return;
+}
+
+//! \brief x + x --> x * 2; x - x --> x * 0; x * x --> x ^ 2;
+void
+Node::transform_vars() {
+   if (operation != ADD && operation != SUB && operation != MUL) {
+       return;
+   }
+   int var_num = 0;
+   int ind = (operation == SUB) ? 1 : 0;
+   while (ind < children_number) {
+       if (childs[ind]->operation == VAR) {
+            var_num++;
+            cut_child(ind);
+       } else {
+           ind++;
+       }
+   }  
+   if (var_num == 1) {
+       add_child(new Node(VAR)); 
+       return;
+   }
+   if (var_num == 0) {
+       return;
+   }
+   Node *tmp = NULL;
+   switch (operation) {
+       case ADD:
+           tmp = new Node(MUL);
+           tmp->add_child(new Node(VAR));
+           tmp->add_child(new Node((double)var_num));
+           break;
+       case MUL:
+           tmp = new Node(POWER);
+           tmp->add_child(new Node(VAR));
+           tmp->add_child(new Node((double)var_num));
+           break;
+       case SUB: 
+           tmp = new Node(MUL); // 1 - nx
+           tmp->add_child(new Node(VAR));
+           if (childs[0]->operation == VAR) {   // x - (n - 1)x = x * (2 - n)            
+               tmp->add_child(new Node((double)(1 - var_num)));
+               free(childs[0]);
+               childs[0] = tmp;
+               childs[0]->parent = this;
+               if (children_number == 1) {
+                   operation = MUL;
+                   tmp = cut_child(0);
+                   add_child(tmp->childs[0]);
+                   add_child(tmp->childs[1]);
+                   free(tmp);
+               }
+           } else {
+               tmp->add_child(new Node((double)var_num));
+               add_child(tmp); 
+           }
+           return;
+   } 
+   if (!children_number) {
+       add_child(tmp->childs[0]);
+       add_child(tmp->childs[1]);
+       operation = tmp->operation;
+       free(tmp);
+   }
+   return;
+    
+}
 
 //! \brief Try to simplify expression
 void
@@ -848,6 +1036,9 @@ Node::simplify() {
         remove_neitrals();    
         specific_simpling();
         calculate_values();
+        union_layers();
+        transform_constants();
+        transform_vars();
     } while (!tree_eq(old));
     return;
 }

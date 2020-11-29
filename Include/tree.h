@@ -15,6 +15,9 @@ private:
     void remove_neitrals();
     void specific_simpling();
     void calculate_values();
+    void transform_constants();
+    void transform_vars();
+    void union_layers();
 public:
     static int id;
     Node(int _operation);
@@ -51,4 +54,6 @@ enum Node_Types {
 
 Node *parse_file_create_tree(char *filename);
 void rec_del(Node *root);
+int get_neitral(int operation);
+int get_opposite(int operation);
 #endif
