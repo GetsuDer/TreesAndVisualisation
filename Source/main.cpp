@@ -106,59 +106,43 @@ main(int argc, char **argv)
     }
 
     errno = 0;
-    int show = strtol(argv[SHOW_PNG], NULL, 10);
+    int show_png = strtol(argv[SHOW_PNG], NULL, 10);
     if (errno) {
         fprintf(stderr, "Wrong input argument %s: expected int\n", argv[SHOW_PNG]);
         return 1;
     }
+    
+    int show_pdf = strtol(argv[SHOW_PDF], NULL, 10);
+    if (errno) {
+        fprintf(stderr, "Wrong input argument %s: expected int\n", argv[SHOW_PDF]);
+    }
 
-    Node *root = parse_file_create_tree(argv[FILE_IN]);
-
-    create_png(argv[FILE_IN], root, show);
-
-    Node *der = root->derivate();
-   
     int file_name_size = strlen(argv[FILE_IN]);
+    // root->simplify()
+    char *simp_name = (char *)calloc(1, file_name_size + 5);
+    strncpy(simp_name, argv[FILE_IN], file_name_size);
+    strncpy(simp_name + file_name_size, "_simp", 6);
+    
+    // root->derivate()
     char *der_name = (char *)calloc(1, file_name_size + 4);
     strncpy(der_name, argv[FILE_IN], file_name_size);
     strncpy(der_name + file_name_size, "_der", 5);
 
-    create_png(der_name, der, show);
+    Node *root = parse_file_create_tree(argv[FILE_IN]);
 
-    char *simp_name = (char *)calloc(1, file_name_size + 5);
-    strncpy(simp_name, argv[FILE_IN], file_name_size);
-    strncpy(simp_name + file_name_size, "_simp", 6);
-
-    Node *tmp = root->copy();
+    create_png(argv[FILE_IN], root, show_png);
+    create_pdf(argv[FILE_IN], root, show_pdf);
+    
     root->simplify();
-    Node *root_simp = root;
-    root = tmp;
+    create_png(simp_name, root, show_png);
+    create_png(simp_name, root, show_pdf);
 
-    create_png(simp_name, root_simp, show);
-
-    char *simp_der_name = (char *)calloc(1, file_name_size + 5 + 4);
-    strncpy(simp_der_name, simp_name, file_name_size + 5);
-    strncpy(simp_der_name + file_name_size + 5, "_der", 5);
-
-    Node *der_simp = root_simp->derivate();
-
-    create_png(simp_der_name, der_simp, show);
-
-    errno = 0;
-    show = strtol(argv[SHOW_PDF], NULL, 10);
-    if (errno) {
-        fprintf(stderr, "Wrong inpus argument %s: expected int\n", argv[SHOW_PDF]);
-        return 1;
-    }
-
-    create_pdf(argv[FILE_IN], root, show);
-    create_pdf(der_name, der, show);
-    create_pdf(simp_name, root_simp, show);
-    create_pdf(simp_der_name, der_simp, show);
-
+    Node *der = root->derivate();
+    der->simplify();
+    create_png(der_name, der, show_png);
+    create_png(der_name, der, show_pdf);
+    
     rec_del(root);
     rec_del(der);
-    rec_del(root_simp);
-    rec_del(der_simp);
     return 0;
 }

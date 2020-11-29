@@ -4,3 +4,9 @@ for test in *.in
 do
     ./../tree $test 0 0
 done
+
+mv *.pdf pdf/
+mv *.png png/
+mv *.dot dot/
+mv *.tex tex/
+rm *.log

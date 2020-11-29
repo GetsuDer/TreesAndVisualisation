@@ -22,6 +22,7 @@ public:
     int add_child(Node *child);
     int get_children_number();
     int get_operation();
+    Node *cut_child(int child_ind);
     bool is_constant();
     Node *copy();
     Node *derivate();

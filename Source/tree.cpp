@@ -10,7 +10,15 @@
 #include "in_and_out.h"
 
 int Node::id = 0;
+constexpr double EPS = 1e-7;
 
+//! \brief Check for equality of two values
+//! \param [in] val1,val2 Values to check
+//! \return Return result
+bool
+is_eq(double val1, double val2) {
+    return fabs(val1 - val2) < EPS;
+}
 //! \brief Node constructor for operations
 //! \param [in] _operation Operation identificator
 Node::Node(int _operation) {
@@ -668,6 +676,29 @@ Node::get_val() {
     return res;
 }
 
+Node *
+Node::cut_child(int child_ind) {
+    if (child_ind < 0 || child_ind > children_number) {
+        return NULL;
+    }
+    Node *cutted = childs[child_ind];
+    cutted->parent = NULL;
+    for (int i = child_ind; i < children_number - 1; i++) {
+        childs[i] = childs[i + 1];
+    }
+    children_number--; // now have more memory, than necessary for this number of childs
+    Node **tmp = (Node **)realloc(childs, sizeof(*tmp) * children_number);
+    if (children_number && !tmp) {
+        fprintf(stderr, "Memory reallocation error in cut_child for child_ind %d\n", child_ind);
+        return cutted; // Do not break *this
+    } 
+    childs = tmp;
+    return cutted;
+}
+
+//! \brief Comparator for child sort
+//! \param [in] first,second Childs to compare
+//! \return Return first > second
 bool
 operation_cmp(Node *first, Node *second) {
     return first->get_operation() > second->get_operation();
@@ -681,7 +712,24 @@ Node::simplify() {
     }
     for (int i = 0; i < children_number; i++) {
         childs[i]->simplify();
-    }   
+    }
+    Node *tmp = NULL;
+   // Move same operations of childs into this layer
+   // One time, because childs are already simplified
+    if (operation != SIN && operation != COS && operation != LN) { // these operations must have only one operand
+        int children_number_old = children_number;
+        for (int i = 0; i < children_number_old; i++) {
+            if (childs[i]->operation == operation) {
+                tmp = childs[i];
+                childs[i] = tmp->childs[0]; // in the middle of child list
+                for (int j = 1; j < tmp->children_number; j++) {
+                    add_child(tmp->childs[j]); // at the end of child list
+                }
+                free(tmp); // not rec_del, because we are not copying childs, we just relink them to new parent
+                tmp = NULL;
+            }
+        }
+    } 
 
     if (is_constant()) {
 // node and all sub-tree may be replaced by one constant
@@ -694,11 +742,12 @@ Node::simplify() {
         children_number = 0;
         return; // now this subtree is one node with type CONS
     }
-
-    std::sort(childs, childs + children_number, operation_cmp);
-
+    if (operation == ADD || operation == MUL) {
+        std::sort(childs, childs + children_number, operation_cmp);
+    }
+// try to join constants
     int const_end = children_number - 1, const_begin = const_end;
-    double cons_res = 0;
+    double cons_res = (operation == ADD || operation == SUB) ? 0 : 1;
     while ((childs[const_begin]->operation == CONSTANT)) {
         calculate(operation, &cons_res, childs[const_begin]->value);
         const_begin--; //childs[0]->operation != CONST, because !is_constant()
@@ -707,10 +756,90 @@ Node::simplify() {
 //replace constants by one constant
         Node *new_const = new Node(cons_res);
         for (int i = const_begin + 1; i < const_end; i++) {
-            rec_del(childs[i]);
+            tmp = cut_child(const_begin + 1); // because children_number is decreased with each cut
+            rec_del(tmp);
+            tmp = NULL;
         }
-        childs[const_begin + 1] = new_const;
-        children_number -= (const_end - const_begin - 1);
+        add_child(new_const);
     }
+
+// try to join VARs (+ -> *, - -> *, * -> ^)
+    int var_end = const_begin, var_begin = const_end;
+    int var_num = 0;
+    while ((var_begin >= 0) && (childs[var_begin]->operation == VAR)) {
+        var_num++;
+        var_begin--;
+    } 
+    if (var_end - var_begin > 1) {
+        switch (operation) {
+            case ADD: // x + x + x -> 3 * x
+                tmp = new Node(MUL);
+                tmp->add_child(new Node(VAR));            
+                tmp->add_child(new Node((double)var_num));
+                break;
+            case SUB:
+                tmp = new Node(MUL);
+                tmp->add_child(new Node(VAR));
+                tmp->add_child(new Node((double)(2 - var_num)));
+                break;
+            case MUL:
+                tmp = new Node(POWER);
+                tmp->add_child(new Node(VAR));
+                tmp->add_child(new Node((double)var_num));
+                break;
+            default:
+                break; // do nothing
+        }
+        if (tmp) { // replace VARs by one node
+            for (int i = var_begin + 1; i <= var_end; i++) {
+                rec_del(cut_child(var_begin + 1));
+            }
+            if (children_number == 0) {
+                // instead making new node, link all tmp childs to *this
+                for (int i = 0; i < tmp->children_number; i++) {
+                    add_child(tmp->childs[i]);
+                }
+                operation = tmp->operation;
+                free(tmp);
+            } else {
+                add_child(tmp);
+            }
+            tmp = NULL;
+        }
+    }
+    // remove neitral elements
+    int neitral = -1;
+    switch (operation) {
+        case ADD: // 0
+        case SUB: // 0
+            neitral = 0;
+            break;
+        case MUL: // 1
+        case DIV: // 1
+        case POWER:
+            neitral = 1;
+            break;
+    }
+    if (neitral != -1) {
+        int ind = 0;
+        while (ind < children_number) {
+            if (children_number > 1  && childs[ind]->operation == CONSTANT && is_eq(neitral, childs[ind]->value)) {
+                cut_child(ind);
+            } else {
+                ind++;
+            }
+        }
+        if (children_number == 1) {
+// replace unuseful this by its only child
+            this->operation = childs[0]->operation;
+            tmp = cut_child(0);
+            for (int i = 0; i < tmp->children_number; i++) {
+                add_child(tmp->childs[i]);
+            }
+            free(tmp);
+            tmp = NULL;
+        }
+    }
+
     return;
 }
