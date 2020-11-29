@@ -294,6 +294,9 @@ skip(char **begin, char *end) {
 //! \param [in] root Tree root
 void
 rec_del(Node *root) {
+    if (!root) {
+        return;
+    }
     for (int i = 0; i < root->get_children_number(); i++) {
         rec_del(root->get_childs()[i]);
     }
@@ -676,6 +679,9 @@ Node::get_val() {
     return res;
 }
 
+//! \brief Cut child 
+//! \param [in] Child index
+//! \return Returns cutted child
 Node *
 Node::cut_child(int child_ind) {
     if (child_ind < 0 || child_ind > children_number) {
@@ -696,150 +702,152 @@ Node::cut_child(int child_ind) {
     return cutted;
 }
 
-//! \brief Comparator for child sort
-//! \param [in] first,second Childs to compare
-//! \return Return first > second
-bool
-operation_cmp(Node *first, Node *second) {
-    return first->get_operation() > second->get_operation();
+//! \brief Remove neitral elements
+void
+Node::remove_neitrals() {
+    if (operation != SUB && operation != DIV && operation != POWER && operation != ADD && operation != MUL) {
+        return;
+    }
+    int ind = (operation == SUB || operation == DIV || operation == POWER) ? 1 : 0;
+    double neitral = (operation == ADD || operation == SUB) ? 0 : 1;
+    Node *tmp = NULL;
+    while (ind < children_number) {
+        if (childs[ind]->operation == CONSTANT && is_eq(neitral, childs[ind]->value)) {
+            free(cut_child(ind));
+        } else {
+            ind++; 
+        } 
+    }
+    if (!children_number) { // all childs were neitral elements
+        operation = CONSTANT;
+        value = neitral;
+        return;
+    }
+    if (children_number == 1) { // only one childs is alive
+        tmp = cut_child(0);
+        operation = tmp->operation;
+        for (int i = 0; i < tmp->children_number; i++) {
+            add_child(tmp->cut_child(0));
+        }
+        value = tmp->value;
+        free(tmp);
+    }
+    return;
 }
+
+//! \brief Some algebraic rules
+void
+Node::specific_simpling() {
+    if (operation == DIV) {
+        if (childs[0]->operation == CONSTANT && is_eq(0.0, childs[0]->value)) {
+// 0 / ... = 0 (if ... = 0, expression is illegal)
+            int children_number_old = children_number;
+            for (int i = 0; i < children_number_old; i++) {
+                rec_del(cut_child(0));
+            }
+            operation = CONSTANT;
+            value = 0.0;
+        }
+        return;
+    }    
+    if (operation == MUL) {
+        for (int i = 0; i < children_number; i++) {
+            if (childs[i]->operation == CONSTANT && is_eq(0.0, childs[i]->value)) {
+// 0 * x = 0
+                int children_number_old = children_number;
+                for (int j = 0; j < children_number_old; j++) {
+                    rec_del(cut_child(0));
+                }
+                operation = CONSTANT;
+                value = 0.0;
+                return;
+            }
+
+        }
+    }
+
+    if (operation == POWER) {
+        if (childs[0]->operation == CONSTANT && is_eq(0.0, childs[0]->value)) {
+// 0 ^ x = 0
+            int children_number_old = children_number;
+            for (int i = 0; i < children_number_old; i++) {
+                rec_del(cut_child(0));
+            }
+            operation = CONSTANT;
+            value = 0.0;
+            return;
+        }
+        for (int i = 1; i < children_number; i++) {
+            if (childs[i]->operation == CONSTANT && is_eq(0.0, childs[i]->value)) {
+                // x ^ 0 = 1
+                int children_number_old = children_number;
+                for (int j = 0; j < children_number_old; j++) {
+                    rec_del(cut_child(0));
+                }
+                operation = CONSTANT;
+                value = 1.0;
+                return;
+            }
+        }
+    }
+    return;
+}
+
+
+//! \brief If there is no VARs in the tree, value can be calculated directly
+void
+Node::calculate_values() {
+    if (is_constant()) {
+        double res = get_val();
+        int children_number_old = children_number;
+        for (int i = 0; i < children_number_old; i++) {
+            rec_del(cut_child(0));
+        }
+        operation = CONSTANT;
+        value = res;
+    }
+    return;
+}
+
+//! \brief Check if two trees are the same
+//! \param [in] other Other tree
+//! \return Returns true if the same, false else
+bool
+Node::tree_eq(Node *other) {
+    if (!other) {
+        return false;
+    }
+    if (operation != other->operation) {
+        return false;
+    }
+    if (children_number != other->children_number) {
+        return false;
+    }
+    for (int i = 0; i < children_number; i++) {
+        if (!childs[i]->tree_eq(other->childs[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+
 
 //! \brief Try to simplify expression
 void
 Node::simplify() {
-    if (operation == CONSTANT || operation == VAR) {
-        return;
-    }
-    for (int i = 0; i < children_number; i++) {
-        childs[i]->simplify();
-    }
-    Node *tmp = NULL;
-   // Move same operations of childs into this layer
-   // One time, because childs are already simplified
-    if (operation != SIN && operation != COS && operation != LN) { // these operations must have only one operand
-        int children_number_old = children_number;
-        for (int i = 0; i < children_number_old; i++) {
-            if (childs[i]->operation == operation) {
-                tmp = childs[i];
-                childs[i] = tmp->childs[0]; // in the middle of child list
-                for (int j = 1; j < tmp->children_number; j++) {
-                    add_child(tmp->childs[j]); // at the end of child list
-                }
-                free(tmp); // not rec_del, because we are not copying childs, we just relink them to new parent
-                tmp = NULL;
-            }
+    Node *old = NULL;
+    do {
+        if (operation == CONSTANT || operation == VAR) {
+            return;
         }
-    } 
-
-    if (is_constant()) {
-// node and all sub-tree may be replaced by one constant
-        double res = get_val();
-        operation = CONSTANT;
-        value = res;
         for (int i = 0; i < children_number; i++) {
-            rec_del(childs[i]);
+            childs[i]->simplify();
         }
-        children_number = 0;
-        return; // now this subtree is one node with type CONS
-    }
-    if (operation == ADD || operation == MUL) {
-        std::sort(childs, childs + children_number, operation_cmp);
-    }
-// try to join constants
-    int const_end = children_number - 1, const_begin = const_end;
-    double cons_res = (operation == ADD || operation == SUB) ? 0 : 1;
-    while ((childs[const_begin]->operation == CONSTANT)) {
-        calculate(operation, &cons_res, childs[const_begin]->value);
-        const_begin--; //childs[0]->operation != CONST, because !is_constant()
-    }
-    if (const_end - const_begin > 1) {
-//replace constants by one constant
-        Node *new_const = new Node(cons_res);
-        for (int i = const_begin + 1; i < const_end; i++) {
-            tmp = cut_child(const_begin + 1); // because children_number is decreased with each cut
-            rec_del(tmp);
-            tmp = NULL;
-        }
-        add_child(new_const);
-    }
-
-// try to join VARs (+ -> *, - -> *, * -> ^)
-    int var_end = const_begin, var_begin = const_end;
-    int var_num = 0;
-    while ((var_begin >= 0) && (childs[var_begin]->operation == VAR)) {
-        var_num++;
-        var_begin--;
-    } 
-    if (var_end - var_begin > 1) {
-        switch (operation) {
-            case ADD: // x + x + x -> 3 * x
-                tmp = new Node(MUL);
-                tmp->add_child(new Node(VAR));            
-                tmp->add_child(new Node((double)var_num));
-                break;
-            case SUB:
-                tmp = new Node(MUL);
-                tmp->add_child(new Node(VAR));
-                tmp->add_child(new Node((double)(2 - var_num)));
-                break;
-            case MUL:
-                tmp = new Node(POWER);
-                tmp->add_child(new Node(VAR));
-                tmp->add_child(new Node((double)var_num));
-                break;
-            default:
-                break; // do nothing
-        }
-        if (tmp) { // replace VARs by one node
-            for (int i = var_begin + 1; i <= var_end; i++) {
-                rec_del(cut_child(var_begin + 1));
-            }
-            if (children_number == 0) {
-                // instead making new node, link all tmp childs to *this
-                for (int i = 0; i < tmp->children_number; i++) {
-                    add_child(tmp->childs[i]);
-                }
-                operation = tmp->operation;
-                free(tmp);
-            } else {
-                add_child(tmp);
-            }
-            tmp = NULL;
-        }
-    }
-    // remove neitral elements
-    int neitral = -1;
-    switch (operation) {
-        case ADD: // 0
-        case SUB: // 0
-            neitral = 0;
-            break;
-        case MUL: // 1
-        case DIV: // 1
-        case POWER:
-            neitral = 1;
-            break;
-    }
-    if (neitral != -1) {
-        int ind = 0;
-        while (ind < children_number) {
-            if (children_number > 1  && childs[ind]->operation == CONSTANT && is_eq(neitral, childs[ind]->value)) {
-                cut_child(ind);
-            } else {
-                ind++;
-            }
-        }
-        if (children_number == 1) {
-// replace unuseful this by its only child
-            this->operation = childs[0]->operation;
-            tmp = cut_child(0);
-            for (int i = 0; i < tmp->children_number; i++) {
-                add_child(tmp->childs[i]);
-            }
-            free(tmp);
-            tmp = NULL;
-        }
-    }
-
+        rec_del(old);
+        old = copy();
+        remove_neitrals();    
+        specific_simpling();
+        calculate_values();
+    } while (!tree_eq(old));
     return;
 }

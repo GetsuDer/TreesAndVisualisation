@@ -135,12 +135,12 @@ main(int argc, char **argv)
     
     root->simplify();
     create_png(simp_name, root, show_png);
-    create_png(simp_name, root, show_pdf);
+    create_pdf(simp_name, root, show_pdf);
 
     Node *der = root->derivate();
     der->simplify();
     create_png(der_name, der, show_png);
-    create_png(der_name, der, show_pdf);
+    create_pdf(der_name, der, show_pdf);
     
     rec_del(root);
     rec_del(der);

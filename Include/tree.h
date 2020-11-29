@@ -12,6 +12,9 @@ private:
     int visualize(int fd);
     double visualize_tree_rec(int fd);
     double visualize_tree_rec_tex(int fd);
+    void remove_neitrals();
+    void specific_simpling();
+    void calculate_values();
 public:
     static int id;
     Node(int _operation);
@@ -28,6 +31,7 @@ public:
     Node *derivate();
     void simplify();
     double get_val();
+    bool tree_eq(Node *other);
     Node **get_childs();
 };
 
