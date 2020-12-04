@@ -3,5 +3,6 @@ Objectdir
 *.swp
 tree
 Testing/pdf/*
+Testing/png/t.png
 Testing/dot/*
 Testing/tex/*

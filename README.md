@@ -21,7 +21,8 @@ Result:
     It turns on -g option
 
 ## Testing
-    Run 'make tree; cd Testing'. In Testing dir files *.in are test files.
+    Run 'make test'.
+    Or from directory Testing run './../tree testname.in show_png show_pdf'
     Run './../tree testname.in 0 0" to get .png and .pdf files. 
     1 instead 0 opens corresponding files.
 

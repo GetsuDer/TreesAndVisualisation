@@ -28,7 +28,66 @@ Node::Node(int _operation) {
     childs = NULL;
     parent = NULL;
     operation = _operation;
+    name_len = 1;
+    name = (char *) calloc(name_len, sizeof(char));
+    switch (operation) {
+        case MUL:
+            strncpy(name, "*", name_len);
+            break;
+        case DIV:
+            strncpy(name, "/", name_len);
+            break;
+        case SUB:
+            strncpy(name, "-", name_len);
+            break;
+        case ADD:
+            strncpy(name, "+", name_len);
+            break;
+        case POWER:
+            strncpy(name, "^", name_len);
+            break;
+        case LN:
+            name_len = 2;
+            name = (char *)realloc(name, name_len * sizeof(char));
+            strncpy(name, "ln", name_len);
+            break;
+        case COS:
+            name_len = 3;
+            name = (char *)realloc(name, name_len * sizeof(char));
+            strncpy(name, "cos", name_len);
+            break;
+        case SIN:
+            name_len = 3;
+            name = (char *)realloc(name, name_len * sizeof(char));
+            strncpy(name, "sin", name_len);
+            break;
+        case VAR:
+            strncpy(name, "x", name_len);
+            break;
+        default:
+            name_len = 0;
+            free(name);
+            name = NULL;
+            break;
+    }
 }
+
+
+//! \brief Node constructor for vars (to make possible different vars)
+//! \param [in] _operation Operation identificator
+//! \param [in] _name Oprator name
+Node::Node(int _operation, char *_name) {
+    children_number = 0;
+    node_id = id;
+    id++;
+    childs = NULL;
+    parent = NULL;
+    operation = _operation;
+    name_len = strlen(_name);
+    name = (char *)calloc(name_len + 1, sizeof(char *));
+    strncpy(name, _name, name_len + 1);
+}
+
 //! \brief Node constructor for constants
 //! \param [in] _value Value for constant
 Node::Node(double _value) {
@@ -39,6 +98,8 @@ Node::Node(double _value) {
     parent = NULL;
     operation = CONSTANT;
     value = _value;
+    name_len = 0;
+    name = NULL;
 }
 
 //! \brief Node destructor
@@ -71,41 +132,11 @@ Node::get_operation() {
 int
 Node::visualize(int fd) {
     assert(fd > 0);
-    switch (this->operation) {
-        case CONSTANT: 
-            dprintf(fd, "%lf", this->value);
-            break;
-        case MUL:
-            dprintf(fd, "*");
-            break;
-        case DIV:
-            dprintf(fd, "/");
-            break;
-        case ADD:
-            dprintf(fd, "+");
-            break;
-        case SUB:
-            dprintf(fd, "-");
-            break;
-        case POWER:
-            dprintf(fd, "^");
-            break;
-        case LN:
-            dprintf(fd, "ln");
-            break;
-        case SIN:
-            dprintf(fd, "sin");
-            break;
-        case COS:
-            dprintf(fd, "cos");
-            break;
-        case VAR:
-            dprintf(fd, "x");
-            break;
-        default:
-            fprintf(stderr, "Wrong operation: %d\n", this->operation);
-            return -1;
-    } 
+    if (operation == CONSTANT) {
+        dprintf(fd, "%lf", value);
+    } else {
+        dprintf(fd, "%s", name);
+    }
     return 0;
 }
 //! \brief Calculate value using specified operation
@@ -394,7 +425,6 @@ parse_rec(char **begin, char *end) {
                 rec_del(child);
                 return NULL;
             }
-           // (*begin)++; //skip operation (may be incorrect??)
             if (!parent) {
                 parent = new Node(operation);
             } else {
@@ -486,13 +516,17 @@ parse_file_create_tree(char *filename) {
 Node *
 Node::copy() {
     Node *root = NULL;
-    if (this->operation) {
-        root = new Node(this->operation);
+    if (operation) {
+        if (name) {
+            root = new Node(operation, name);
+        } else {
+            root = new Node(operation);
+        }
     } else {
-        root = new Node(this->value);
+        root = new Node(value);
     }
     for (int i = 0; i < children_number; i++) {
-        root->add_child(this->childs[i]->copy());
+        root->add_child(childs[i]->copy());
     }
     return root;
 }
@@ -726,11 +760,17 @@ Node::remove_neitrals() {
     if (!children_number) { // all childs were neitral elements
         operation = CONSTANT;
         value = neitral;
+        free(name);
+        name = NULL;
+        name_len = 0;
         return;
     }
     if (children_number == 1) { // only one childs is alive
         tmp = cut_child(0);
         operation = tmp->operation;
+        free(name);
+        name = tmp->name;
+        name_len = tmp->name_len;
         int children_number_old = tmp->children_number;
         for (int i = 0; i < children_number_old; i++) {
             add_child(tmp->cut_child(0));
@@ -752,6 +792,9 @@ Node::specific_simpling() {
                 rec_del(cut_child(0));
             }
             operation = CONSTANT;
+            free(name);
+            name = NULL;
+            name_len = 0;
             value = 0.0;
         }
         return;
@@ -765,6 +808,9 @@ Node::specific_simpling() {
                     rec_del(cut_child(0));
                 }
                 operation = CONSTANT;
+                free(name);
+                name = NULL;
+                name_len = 0;
                 value = 0.0;
                 return;
             }
@@ -780,6 +826,9 @@ Node::specific_simpling() {
                 rec_del(cut_child(0));
             }
             operation = CONSTANT;
+            name_len = 0;
+            free(name);
+            name = NULL;
             value = 0.0;
             return;
         }
@@ -791,6 +840,9 @@ Node::specific_simpling() {
                     rec_del(cut_child(0));
                 }
                 operation = CONSTANT;
+                free(name);
+                name = NULL;
+                name_len = 0;
                 value = 1.0;
                 return;
             }
@@ -811,6 +863,9 @@ Node::calculate_values() {
             rec_del(cut_child(0));
         }
         operation = CONSTANT;
+        free(name);
+        name = NULL;
+        name_len = 0;
         value = res;
     }
     return;
@@ -825,6 +880,12 @@ Node::tree_eq(Node *other) {
         return false;
     }
     if (operation != other->operation) {
+        return false;
+    }
+    if (name_len != other->name_len) {
+        return false;
+    }
+    if (strncmp(name, other->name, name_len)) {
         return false;
     }
     if (children_number != other->children_number) {
@@ -855,6 +916,7 @@ Node::union_layers() {
                     for (int j = 1; j < tmp->children_number; j++) {
                         add_child(tmp->childs[j]);
                     }
+                    free(tmp->name);
                     free(tmp);
                     tmp = NULL;
                 }
@@ -870,6 +932,7 @@ Node::union_layers() {
                     for (int j = 1; j < tmp->children_number; j++) {
                         add_child(tmp->childs[j]);
                     }
+                    free(tmp->name);
                     free(tmp);
                     tmp = NULL;
                     continue;
@@ -884,6 +947,7 @@ Node::union_layers() {
                 for (int i = 1; i < tmp->children_number; i++) {
                     add_child(tmp->childs[i]);
                 }
+                free(tmp->name);
                 free(tmp);
             }
         default:
@@ -1029,6 +1093,8 @@ Node::transform_vars() {
        add_child(tmp->childs[0]);
        add_child(tmp->childs[1]);
        operation = tmp->operation;
+       name = tmp->name;
+       name_len = tmp->name_len;
        free(tmp);
    } else {
        add_child(tmp);

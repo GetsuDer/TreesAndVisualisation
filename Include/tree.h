@@ -9,6 +9,8 @@ private:
     Node **childs;
     int operation;
     double value;
+    char *name;
+    int name_len;
     int visualize(int fd);
     double visualize_tree_rec(int fd);
     double visualize_tree_rec_tex(int fd);
@@ -22,6 +24,7 @@ private:
 public:
     static int id;
     Node(int _operation);
+    Node(int _operation, char *name);
     Node(double _value);
     ~Node();
     int export_dot(int fd, char *graph_name = NULL);
