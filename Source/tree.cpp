@@ -438,14 +438,16 @@ parse_rec(char **begin, char *end) {
         if (!parent) {
             rec_del(child);
         }
+        skip(begin, end);
         (*begin)++; // last ')' in node parent
         return parent;
 
-    } else { //constant or sin or cos or ln or x
+    } else { //constant or sin or cos or ln or var
         if (!strncmp(*begin, "sin", 3)) { // ( sin ( ... ) )
             Node *parent = new Node(SIN);
             (*begin) += 3;
             parent->add_child(parse_rec(begin, end));
+            skip(begin, end);
             (*begin)++; // ')'
             return parent;
         }
@@ -453,6 +455,7 @@ parse_rec(char **begin, char *end) {
             Node *parent = new Node(COS);
             (*begin) += 3;
             parent->add_child(parse_rec(begin, end));
+            skip(begin, end);
             (*begin)++; // ')'
             return parent;
         }
@@ -460,30 +463,41 @@ parse_rec(char **begin, char *end) {
             Node *parent = new Node(LN);
             (*begin) += 2;
             parent->add_child(parse_rec(begin, end));
+            skip(begin, end);
             (*begin)++; // ')';
-            return parent;
-        }
-        if (**begin == 'x') {
-            Node *parent = new Node(VAR);
-            (*begin)++; // x
-            (*begin)++; // )
             return parent;
         }
         char *endptr = NULL;
         errno = 0;
         double value = strtod(*begin, &endptr);
-        if (errno || endptr == *begin) {
-            fprintf(stderr, "Wrong input file format: wrong double value: %s\n", *begin);
+        if (!errno &&  endptr != *begin) {
+            *begin = endptr;
+            skip(begin, end);
+            if (*begin >= end) {
+                fprintf(stderr, "Wrong input file format: %s\n Expected ')'\n", *begin);
+                return NULL;
+            }
+            (*begin)++;
+            return new Node(value);
+        }
+        // now we suppose var type with unknown yet name.
+        int name_len = 0;
+        char *tmp = *begin;
+        while (tmp < end && isalnum(*tmp)) {
+            name_len++;
+            tmp++;
+        }
+        if (!name_len) {
+            fprintf(stderr, "Wrong input file format: can not recoginse var name %s\n", *begin);
             return NULL;
         }
-        *begin = endptr;
+        char *name = (char *)calloc(name_len + 1, sizeof(char));
+        strncpy(name, *begin, name_len);
+        Node *parent = new Node(VAR, name);
+        (*begin) += name_len; // name
         skip(begin, end);
-        if (*begin >= end) {
-            fprintf(stderr, "Wrong input file format: %s\n Expected ')'\n", *begin);
-            return NULL;
-        }
         (*begin)++;
-        return new Node(value);
+        return parent;
     }
 
 
@@ -550,26 +564,32 @@ Node::is_constant() {
 //! \brief Create new tree with derivate of old tree
 //! \return Returns root of the new tree
 Node *
-Node::derivate() {
+Node::derivate(char *var_name) {
     Node *root = NULL;
     Node *tmp = NULL;
+    int var_name_len = 0;
     switch (operation) {
         case CONSTANT:
             root = new Node(0.0);
             break;
         case VAR:
+            var_name_len = strlen(var_name);
+            if ((var_name_len != name_len) || strncmp(name, var_name, var_name_len)) {
+                root = new Node(0.0);
+                break;
+            }
             root = new Node(1.0);
             break;
         case ADD:
             root = new Node(ADD); // (a + b + c)` = a` + b` + c`
             for (int i = 0; i < children_number; i++) {
-                root->add_child(childs[i]->derivate());
+                root->add_child(childs[i]->derivate(var_name));
             }
             break;
         case SUB:
             root = new Node(SUB); // (a - b - c)` = a` - b` - c`
             for (int i = 0; i < children_number; i++) {
-                root->add_child(childs[i]->derivate());
+                root->add_child(childs[i]->derivate(var_name));
             }
             break;
         case MUL:
@@ -577,7 +597,7 @@ Node::derivate() {
             for (int i = 0; i < children_number; i++) {
                 root->add_child(new Node(MUL));
                 for (int j = 0; j < children_number; j++) {
-                    root->childs[i]->add_child((i == j) ? (childs[j]->derivate()) : (childs[j]->copy()));
+                    root->childs[i]->add_child((i == j) ? (childs[j]->derivate(var_name)) : (childs[j]->copy()));
                 }
             }
             break;
@@ -596,10 +616,10 @@ Node::derivate() {
             root->add_child(new Node(SUB)); // see above: (a` * b) - (a * b`)
             root->childs[0]->add_child(new Node(MUL)); // a` * b
             root->childs[0]->add_child(new Node(MUL)); // a * b`
-            root->childs[0]->childs[0]->add_child(tmp->derivate()); // a`
+            root->childs[0]->childs[0]->add_child(tmp->derivate(var_name)); // a`
             root->childs[0]->childs[0]->add_child(childs[children_number - 1]->copy()); // b
             root->childs[0]->childs[1]->add_child(tmp->copy()); // a
-            root->childs[0]->childs[1]->add_child(childs[children_number - 1]->derivate()); // b`
+            root->childs[0]->childs[1]->add_child(childs[children_number - 1]->derivate(var_name)); // b`
             delete tmp;
             tmp = NULL; // may be better make b ^ 2? 
             root->add_child(new Node(MUL)); // (b * b)
@@ -623,7 +643,7 @@ Node::derivate() {
 
                 root->add_child(this->copy()); // C ^ x
                 
-                root->add_child(childs[children_number - 1]->derivate());
+                root->add_child(childs[children_number - 1]->derivate(var_name));
                 break;
             }
             if (childs[children_number - 1]->is_constant()) { // (x ^ C)` = C * (x ^ (C - 1)) * x`
@@ -636,7 +656,7 @@ Node::derivate() {
                 root->childs[1]->childs[1]->add_child(childs[children_number - 1]->copy()); // C
                 root->childs[1]->childs[1]->add_child(new Node(1.0)); // 1
 
-                root->add_child(tmp->derivate()); // x`
+                root->add_child(tmp->derivate(var_name)); // x`
                 break;
             }
             // (f(x) ^ g(x))` = (f ^ g) * (g` * ln(f) + g / f * f`) = 
@@ -645,7 +665,7 @@ Node::derivate() {
 
             root->add_child(new Node(MUL)); // *
             root->childs[0]->add_child(copy()); // f ^ g
-            root->childs[0]->add_child(childs[children_number - 1]->derivate()); // g`
+            root->childs[0]->add_child(childs[children_number - 1]->derivate(var_name)); // g`
             root->childs[0]->add_child(new Node(LN)); // ln
             root->childs[0]->childs[2]->add_child(tmp->copy()); // ln f
 
@@ -658,7 +678,7 @@ Node::derivate() {
             root->childs[1]->childs[0]->childs[1]->add_child(new Node(1.0)); // 1
             
             root->childs[1]->add_child(tmp->copy()); // g
-            root->childs[1]->add_child(childs[children_number - 1]->derivate()); // f`
+            root->childs[1]->add_child(childs[children_number - 1]->derivate(var_name)); // f`
             
             break;
         case LN: // (ln x)` = (1 / x) * x`
@@ -667,20 +687,20 @@ Node::derivate() {
             root->childs[0]->add_child(new Node(1.0)); // 1
             root->childs[0]->add_child(childs[0]->copy()); // x
             
-            root->add_child(childs[0]->derivate()); // x`
+            root->add_child(childs[0]->derivate(var_name)); // x`
             break;
         case SIN: // (sin x)` = (cos x) * x`
             root = new Node(MUL);
             root->add_child(new Node(COS)); // cos
             root->childs[0]->add_child(childs[0]->copy()); // x
-            root->add_child(childs[0]->derivate()); // x`
+            root->add_child(childs[0]->derivate(var_name)); // x`
             break;
         case COS: // (cos x)` = - sin(x) * x` = (-1) * sin (x) * x`
             root = new Node(MUL);
             root->add_child(new Node(-1.0));
             root->add_child(new Node(SIN)); // sin
             root->childs[1]->add_child(childs[0]->copy()); // x
-            root->add_child(childs[0]->derivate()); // x`
+            root->add_child(childs[0]->derivate(var_name)); // x`
             break;
         default:
             fprintf(stderr, "Derivate error: unknown operation %d\n", operation);
@@ -1033,24 +1053,50 @@ Node::transform_constants() {
     return;
 }
 
+char **
+Node::get_node_vars(int *var_num) {
+    *var_num = 0;
+    char **var_names = NULL;
+    for (int i = 0; i < children_number; i++) {
+        if (childs[i]->operation == VAR) {
+            bool flag = false;
+            for (int j = 0; j < *var_num; j++) {
+                if (!strcmp(childs[i]->name, var_names[j])) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag) {
+                (*var_num)++;
+                var_names = (char **)realloc(var_names, (*var_num) * sizeof(char *)); 
+                var_names[*var_num - 1] = childs[i]->name;
+            }
+        }
+    }
+    return var_names;
+}
+
+
 //! \brief x + x --> x * 2; x - x --> x * 0; x * x --> x ^ 2;
 void
-Node::transform_vars() {
+Node::transform_vars(char *var_name) {
    if (operation != ADD && operation != SUB && operation != MUL) {
        return;
    }
    int var_num = 0;
    int ind = (operation == SUB) ? 1 : 0;
+   int var_name_len = strlen(var_name);
    while (ind < children_number) {
-       if (childs[ind]->operation == VAR) {
+       if (childs[ind]->operation == VAR && childs[ind]->name_len == var_name_len && 
+               !strncmp(childs[ind]->name, var_name, var_name_len)) {
             var_num++;
             cut_child(ind);
        } else {
            ind++;
        }
    }  
-   if (var_num == 1 && operation != SUB) {
-       add_child(new Node(VAR)); 
+   if (var_num == 1 && operation != SUB) { // x - x will be later
+       add_child(new Node(VAR, var_name)); 
        return;
    }
    if (var_num == 0) {
@@ -1060,19 +1106,23 @@ Node::transform_vars() {
    switch (operation) {
        case ADD:
            tmp = new Node(MUL);
-           tmp->add_child(new Node(VAR));
+           tmp->add_child(new Node(VAR, var_name));
            tmp->add_child(new Node((double)var_num));
            break;
        case MUL:
            tmp = new Node(POWER);
-           tmp->add_child(new Node(VAR));
+           tmp->add_child(new Node(VAR, var_name));
            tmp->add_child(new Node((double)var_num));
            break;
        case SUB: 
            tmp = new Node(MUL); // 1 - nx
-           tmp->add_child(new Node(VAR));
-           if (childs[0]->operation == VAR) {   // x - (n - 1)x = x * (2 - n)            
+           tmp->add_child(new Node(VAR, var_name));
+           if (childs[0]->operation == VAR && childs[0]->name_len == var_name_len &&
+                   !strncmp(childs[0]->name, var_name, var_name_len)) {
+               // y - y - y
+            // x - (n - 1)x = x * (2 - n)            
                tmp->add_child(new Node((double)(1 - var_num)));
+               free(childs[0]->name);
                free(childs[0]);
                childs[0] = tmp;
                childs[0]->parent = this;
@@ -1103,17 +1153,32 @@ Node::transform_vars() {
     
 }
 
+//! \brief Getter for var name
+char *
+Node::get_name() {
+    return name;
+}
+
+//! \brief Getter for name len
+int 
+Node::get_name_len() {
+    return name_len;
+}
+
 //! \brief x * a
 //! \param [in] node x * a
 //! \return node == x * a
 static bool
-var_mul_coef(Node *node) {
-    if (node->get_operation() == VAR) return true;
+var_mul_coef(Node *node, char *var_name) {
+    int var_name_len = strlen(var_name);
+    if (node->get_operation() == VAR && !strncmp(node->get_name(), var_name, var_name_len)) return true;
     if (node->get_operation() != MUL) return false;
     if (node->get_children_number() != 2) return false;
-    int first = node->get_childs()[0]->get_operation();
-    int second = node->get_childs()[1]->get_operation(); 
-    if ((first == VAR && second == CONSTANT) || (first == CONSTANT && second == VAR)) return true;
+    Node *first = node->get_childs()[0];
+    Node *second = node->get_childs()[1]; 
+    if ((first->get_operation() == VAR && first->get_name_len() == var_name_len && !strncmp(first->get_name(), var_name, var_name_len) && second->get_operation() == CONSTANT) || (first->get_operation() == CONSTANT && second->get_operation() == VAR && second->get_name_len() == var_name_len && !strncmp(second->get_name(), var_name, var_name_len))) {
+        return true;
+    }
     return false;
 }
 
@@ -1140,7 +1205,8 @@ get_coef(Node *node) {
 // (x * a) / (x * b) = a / b
 // A / (x * a) / (x * b) = A / (x * x * a * b)
 void
-Node::simp_var() {
+Node::simp_var(char *var_name) {
+    int var_name_len = strlen(var_name);
     double res = 0;
     int ind;
     int flag = 0;
@@ -1149,7 +1215,7 @@ Node::simp_var() {
         case ADD:
             ind = 0;
             while (ind < children_number) {
-                if (var_mul_coef(childs[ind])) {
+                if (var_mul_coef(childs[ind], var_name)) {
                     res += get_coef(childs[ind]);
                     flag++;
                     if (flag == 1) {
@@ -1163,7 +1229,8 @@ Node::simp_var() {
                 }
             }
             if (flag > 1) {
-                if (childs[first]->childs[0]->operation == VAR) {
+                if (childs[first]->childs[0]->operation == VAR && childs[first]->childs[0]->name_len == var_name_len
+                        && !strncmp(childs[first]->childs[0]->name, var_name, var_name_len)) {
                     childs[first]->childs[1]->value = res;
                 } else {
                     childs[first]->childs[0]->value = res;
@@ -1174,7 +1241,7 @@ Node::simp_var() {
             res = 0;
             ind = 1;
             while (ind < children_number) {
-                if (var_mul_coef(childs[ind])) {
+                if (var_mul_coef(childs[ind], var_name)) {
                     res += get_coef(childs[ind]);
                     flag = true; 
                     cut_child(ind);
@@ -1183,15 +1250,15 @@ Node::simp_var() {
                 }
             }
             if (flag) {
-               if (var_mul_coef(childs[0])) {
+               if (var_mul_coef(childs[0], var_name)) {
                    res = get_coef(childs[ind]) - res;
                    free(childs[0]);
                    childs[0]->operation = MUL;
-                   childs[0]->add_child(new Node(VAR));
+                   childs[0]->add_child(new Node(VAR, var_name));
                    childs[0]->add_child(new Node(res));
                } else {
                    add_child(new Node(MUL));
-                   childs[children_number - 1]->add_child(new Node(VAR));
+                   childs[children_number - 1]->add_child(new Node(VAR, var_name));
                    childs[children_number - 1]->add_child(new Node(res));
                } 
             }
@@ -1219,8 +1286,12 @@ Node::simplify() {
         calculate_values();
         union_layers();
         transform_constants();
-        transform_vars();
-        simp_var();
+        int var_num = 0;
+        char **vars = get_node_vars(&var_num);
+        for (int i = 0; i < var_num; i++) {
+            transform_vars(vars[i]);
+            simp_var(vars[i]);
+        }
     } while (!tree_eq(old));
     return;
 }

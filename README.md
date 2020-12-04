@@ -8,7 +8,7 @@ Result:
     (each node is enclosed in brackets) is transformed into tree,
     and tree is exported in format, readable by dot.
     Then picture of resulting graph is being created and pdf with source formula.
-
+    Now are available: source expression, simplified expression, derivate for 'x' (derivations for all variables can be taken, of course)
 ## Starting
     Run 'make tree; cd Testing', then you have executable file tree, 
     which requires three input parameter: 

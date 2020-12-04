@@ -18,9 +18,10 @@ private:
     void specific_simpling();
     void calculate_values();
     void transform_constants();
-    void transform_vars();
+    void transform_vars(char *var_name);
     void union_layers();
-    void simp_var();
+    void simp_var(char *var_name);
+    char **get_node_vars(int *var_num);
 public:
     static int id;
     Node(int _operation);
@@ -32,11 +33,13 @@ public:
     int add_child(Node *child);
     int get_children_number();
     int get_operation();
+    int get_name_len();
+    char *get_name();
     double get_value();
     Node *cut_child(int child_ind);
     bool is_constant();
     Node *copy();
-    Node *derivate();
+    Node *derivate(char *var_name);
     void simplify();
     double get_val();
     bool tree_eq(Node *other);

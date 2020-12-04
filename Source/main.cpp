@@ -137,7 +137,8 @@ main(int argc, char **argv)
     create_png(simp_name, root, show_png);
     create_pdf(simp_name, root, show_pdf);
 
-    Node *der = root->derivate();
+    char var[] = "x";
+    Node *der = root->derivate(var);
     der->simplify();
     create_png(der_name, der, show_png);
     create_pdf(der_name, der, show_pdf);
