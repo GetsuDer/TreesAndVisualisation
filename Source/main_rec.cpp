@@ -5,8 +5,8 @@
 #include <unistd.h>
 #include <malloc.h>
 
-#include "rec_desc.h"
-
+#include "tree.h"
+#include "visualize.h"
 
 int
 main(int argc, char **argv) {
@@ -40,8 +40,11 @@ main(int argc, char **argv) {
     close(fd);
 
     expr_str[str_size - 1] = '$';
-    double val = Parse_All(expr_str, str_size);
-    fprintf(stdout, "Res = %lf\n", val);
+    Node *val = Parse_All(expr_str, str_size);
+
+    char *res_name = (char *)calloc(BUFFER_SIZE, sizeof(char));
+    snprintf(res_name, BUFFER_SIZE, "res");
+    create_png(res_name, val, 1);
 
     return 0;
 }

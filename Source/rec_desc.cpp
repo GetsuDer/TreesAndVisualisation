@@ -2,7 +2,7 @@
 #include <ctype.h>
 #include <cmath>
 
-#include "rec_desc.h"
+#include "tree.h"
 
 #define REQUIRE(a, env) \
     { if ((env)->current_ind >= (env)->str_size) (env)->error = NO_SYMBOL;\
@@ -38,48 +38,81 @@ GetNumber(struct Env *env) {
 }
 
 
-static double
+Node *
 GetDouble(struct Env *env) {
     skip_spaces(env);
     if (env->current_ind >= env->str_size) {
         env->error = NO_SYMBOL;
-        return NAN;
+        return NULL;
     }
-    double res = GetNumber(env);
-    
+
+    double res = GetNumber(env);    
     if (NEXT('.', env)) {
         env->current_ind++;
         int old_ind = env->current_ind;
         res += GetNumber(env) / pow(10, env->current_ind - old_ind);
     }
-    return res;
+    return new Node(res);
 }
 
-static double 
+static Node *
 GetSum(struct Env *env) {
     if (env->current_ind >= env->str_size) {
         env->error = NO_SYMBOL;
-        return NAN;
+        return NULL;
     }
-    double res = GetDouble(env);
+    Node *root = GetDouble(env);
+    Node *tmp = NULL, *tmp2 = NULL;
+
     while (true) {
         skip_spaces(env);
         switch(env->str[env->current_ind]) {
             case '+':
                 env->current_ind++;
-                res += GetDouble(env);   
+                tmp2 = GetDouble(env);   
+                if (root->get_operation() == CONSTANT) {
+                    tmp = root;
+                    root = new Node(ADD);
+                    root->add_child(tmp);
+                    root->add_child(tmp2);
+                    break;
+                }
+                if (root->get_operation() == ADD) {
+                    root->add_child(tmp2);
+                    break;
+                }
+                tmp = root;
+                root = new Node(ADD);
+                root->add_child(tmp);
+                root->add_child(tmp2);
                 break;
             case '-':
                 env->current_ind++;
-                res -= GetDouble(env);
+                tmp2 = GetDouble(env);
+                if (root->get_operation() == CONSTANT) {
+                    tmp = root;
+                    root = new Node(SUB);
+                    root->add_child(tmp);
+                    root->add_child(tmp2);
+                    tmp = NULL;
+                    break;
+                }
+                if (root->get_operation() == SUB) {
+                    root->add_child(tmp2);
+                    break;
+                }
+                tmp = root;
+                root = new Node(SUB);
+                root->add_child(tmp);
+                root->add_child(tmp2);
                 break;
             default:
-                return res;
+                return root;
         }
     }
 }
 
-double
+Node *
 Parse_All(char *str, int str_length) {
     struct Env env;
     env.str = str;
@@ -87,11 +120,11 @@ Parse_All(char *str, int str_length) {
     env.str_size = str_length;
     env.error = OK;
     
-    double res = GetSum(&env);
+    Node *root = GetSum(&env);
     REQUIRE('$', &env);
     if (env.error) {
         fprintf(stderr, "Error during recursive descent\n");
-        res = 0;
+        root = NULL;
     }
-    return res;
+    return root;
 }

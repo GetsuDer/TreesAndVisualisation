@@ -14,14 +14,14 @@ endif
 
 all: tree rec_desc
 
-rec_desc: $(OBJDIR)rec_desc.o $(OBJDIR)main_rec.o 
-	$(CC) -o rec_desc $(OBJDIR)rec_desc.o $(OBJDIR)main_rec.o $(CFLAGS)
+rec_desc: $(OBJDIR)rec_desc.o $(OBJDIR)main_rec.o $(OBJDIR)visualize.o $(OBJDIR)tree.o $(OBJDIR)in_and_out.o
+	$(CC) -o rec_desc $(OBJDIR)rec_desc.o $(OBJDIR)main_rec.o $(OBJDIR)visualize.o $(OBJDIR)tree.o $(OBJDIR)in_and_out.o $(CFLAGS)
 	
 test: tree
 	cd Testing; ./run_tests; cd ..
 
-tree: $(OBJDIR)main.o $(OBJDIR)tree.o $(OBJDIR)in_and_out.o
-	$(CC) -o tree $(OBJDIR)tree.o $(OBJDIR)main.o $(OBJDIR)in_and_out.o $(CFLAGS)
+tree: $(OBJDIR)main.o $(OBJDIR)tree.o $(OBJDIR)in_and_out.o $(OBJDIR)visualize.o
+	$(CC) -o tree $(OBJDIR)tree.o $(OBJDIR)main.o $(OBJDIR)in_and_out.o $(OBJDIR)visualize.o $(CFLAGS)
 
 $(OBJDIR)tree.o: $(SRCDIR)tree.cpp $(OBJDIR) $(INCDIR)tree.h
 	$(CC) -c -o $(OBJDIR)tree.o $(SRCDIR)tree.cpp $(CFLAGS)
@@ -32,11 +32,14 @@ $(OBJDIR)main.o: $(SRCDIR)main.cpp $(OBJDIR) $(INCDIR)tree.h
 $(OBJDIR)in_and_out.o: $(SRCDIR)in_and_out.cpp $(OBDJIR) $(INCDIR)in_and_out.h
 	$(CC) -c -o $(OBJDIR)in_and_out.o $(SRCDIR)in_and_out.cpp $(CFLAFS)
 
-$(OBJDIR)rec_desc.o: $(SRCDIR)rec_desc.cpp $(OBJDIR) $(INCDIR)rec_desc.h
+$(OBJDIR)rec_desc.o: $(SRCDIR)rec_desc.cpp $(OBJDIR) $(INCDIR)tree.h
 	$(CC) -c -o $(OBJDIR)rec_desc.o $(SRCDIR)rec_desc.cpp $(CFLAGS)
 
 $(OBJDIR)main_rec.o: $(SRCDIR)main_rec.cpp $(OBJDIR)
 	$(CC) -c -o $(OBJDIR)main_rec.o $(SRCDIR)main_rec.cpp $(CFLAGS)
+
+$(OBJDIR)visualize.o: $(SRCDIR)visualize.cpp $(OBJDIR)
+	$(CC) -c -o $(OBJDIR)visualize.o $(SRCDIR)visualize.cpp $(CFLAGS)
 
 $(OBJDIR):
 	mkdir $(OBJDIR)
