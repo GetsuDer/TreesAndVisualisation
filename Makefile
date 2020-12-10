@@ -3,16 +3,19 @@ SRCDIR = Source/
 OBJDIR = ObjectFiles/
 INCDIR = Include/
 CC = g++
-DEBUG = NO
+DEBUG = YES
 CFLAGS = -Wall -Wextra -Wformat -std=c++14 -IInclude 
 
 ifeq ($(DEBUG), YES)
 	CFLAGS += -g
 endif
 
-.PHONY: all clean tree
+.PHONY: all clean tree rec_desc
 
-all: tree
+all: tree rec_desc
+
+rec_desc: $(OBJDIR)rec_desc.o $(OBJDIR)main_rec.o 
+	$(CC) -o rec_desc $(OBJDIR)rec_desc.o $(OBJDIR)main_rec.o $(CFLAGS)
 	
 test: tree
 	cd Testing; ./run_tests; cd ..
@@ -28,8 +31,15 @@ $(OBJDIR)main.o: $(SRCDIR)main.cpp $(OBJDIR) $(INCDIR)tree.h
 
 $(OBJDIR)in_and_out.o: $(SRCDIR)in_and_out.cpp $(OBDJIR) $(INCDIR)in_and_out.h
 	$(CC) -c -o $(OBJDIR)in_and_out.o $(SRCDIR)in_and_out.cpp $(CFLAFS)
+
+$(OBJDIR)rec_desc.o: $(SRCDIR)rec_desc.cpp $(OBJDIR) $(INCDIR)rec_desc.h
+	$(CC) -c -o $(OBJDIR)rec_desc.o $(SRCDIR)rec_desc.cpp $(CFLAGS)
+
+$(OBJDIR)main_rec.o: $(SRCDIR)main_rec.cpp $(OBJDIR)
+	$(CC) -c -o $(OBJDIR)main_rec.o $(SRCDIR)main_rec.cpp $(CFLAGS)
+
 $(OBJDIR):
 	mkdir $(OBJDIR)
 
 clean:
-	rm -rf *.o ObjectFiles tree Testing/*.log Testing/*.dot Testing/*.tex
+	rm -rf *.o ObjectFiles tree Testing/*.log Testing/*.dot Testing/*.tex rec_desc

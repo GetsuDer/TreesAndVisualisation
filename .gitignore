@@ -2,6 +2,7 @@
 Objectdir
 *.swp
 tree
+rec_desc
 Testing/pdf/*
 Testing/png/t.png
 Testing/dot/*
