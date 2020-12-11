@@ -100,7 +100,7 @@ GetPart(struct Env *env) {
             REQUIRE('n', env);
             env->current_ind++;
             root = new Node(SIN);
-            root->add_child(GetSum(env));
+            root->add_child(GetPart(env));
             skip_spaces(env);
             return root;
 
@@ -129,6 +129,42 @@ GetPart(struct Env *env) {
     }
 }
 
+
+//! \brief Parse expr (^ expr)*
+//! \param [in] env String and linked vars
+//! \return Return root of the resulting tree 
+Node *
+GetPower(struct Env *env) {
+    if (env->error != OK) {
+        return NULL;
+    }
+    if (env->current_ind >= env->str_size) {
+        env->error = NO_SYMBOL;
+        return NULL;
+    }
+    skip_spaces(env);
+    Node *root = GetPart(env);
+    Node *tmp1 = NULL;
+    skip_spaces(env);
+    while (true) {
+        switch(env->str[env->current_ind]) {
+            case '^':
+                tmp1 = root;
+                env->current_ind++;
+                skip_spaces(env);
+                root = new Node(POWER);
+                root->add_child(tmp1);
+                root->add_child(GetPart(env));
+                return root;
+            default:
+                return root;        
+        }
+
+    }
+
+}
+
+
 //! \brief Read 'expr ['*', '/'] expr*'
 //! \param [in] env String and linked vars
 //! \return Return root of the resulting tree
@@ -141,14 +177,15 @@ GetMul(struct Env *env) {
         env->error = NO_SYMBOL;
         return NULL;
     }
-    Node *root = GetPart(env);
+    skip_spaces(env);
+    Node *root = GetPower(env);
     Node *tmp1 = NULL, *tmp2 = NULL;
     skip_spaces(env);
     while (true) {
         switch(env->str[env->current_ind]) {
             case '*':
                 env->current_ind++;
-                tmp2 = GetPart(env);
+                tmp2 = GetPower(env);
                 tmp1 = root;
                 root = new Node(MUL);
                 root->add_child(tmp1);
@@ -157,7 +194,7 @@ GetMul(struct Env *env) {
                 break;
             case '/':
                 env->current_ind++;
-                tmp2 = GetPart(env);
+                tmp2 = GetPower(env);
                 tmp1 = root;
                 root = new Node(DIV);
                 root->add_child(tmp1);

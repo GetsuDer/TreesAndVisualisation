@@ -29,6 +29,8 @@ int \mbox{\hyperlink{rec__desc_8cpp_a2f02037d921cc94090af18dfbcc7080d}{Get\+Numb
 \begin{DoxyCompactList}\small\item\em Read double. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{rec__desc_8cpp_a52d25310f6e1b7d8b879cd9ab32b71e9}{Get\+Part}} (struct \mbox{\hyperlink{struct_env}{Env}} $\ast$env)
 \begin{DoxyCompactList}\small\item\em Get expression (expr) $\vert$ double $\vert$ func(expr) \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{rec__desc_8cpp_a77f43b106f2c6122cbe17413901e719f}{Get\+Power}} (struct \mbox{\hyperlink{struct_env}{Env}} $\ast$env)
+\begin{DoxyCompactList}\small\item\em Parse expr ($^\wedge$ expr)$\ast$. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{rec__desc_8cpp_ad77dbc1df4980aabe91bed72c929b9db}{Get\+Mul}} (struct \mbox{\hyperlink{struct_env}{Env}} $\ast$env)
 \begin{DoxyCompactList}\small\item\em Read \textquotesingle{}expr \mbox{[}\textquotesingle{}$\ast$\textquotesingle{}, \textquotesingle{}/\textquotesingle{}\mbox{]} expr$\ast$\textquotesingle{}. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{rec__desc_8cpp_ad193e59772ecedbfe4ba3859990d6127}{Parse\+\_\+\+All}} (char $\ast$str, int str\+\_\+length)
@@ -108,7 +110,7 @@ Return root of the resulting tree
 \end{DoxyReturn}
 
 
-Definition at line 136 of file rec\+\_\+desc.\+cpp.
+Definition at line 172 of file rec\+\_\+desc.\+cpp.
 
 \mbox{\Hypertarget{rec__desc_8cpp_a2f02037d921cc94090af18dfbcc7080d}\label{rec__desc_8cpp_a2f02037d921cc94090af18dfbcc7080d}} 
 \index{rec\_desc.cpp@{rec\_desc.cpp}!GetNumber@{GetNumber}}
@@ -155,6 +157,29 @@ Returns root of the resulting tree
 
 Definition at line 77 of file rec\+\_\+desc.\+cpp.
 
+\mbox{\Hypertarget{rec__desc_8cpp_a77f43b106f2c6122cbe17413901e719f}\label{rec__desc_8cpp_a77f43b106f2c6122cbe17413901e719f}} 
+\index{rec\_desc.cpp@{rec\_desc.cpp}!GetPower@{GetPower}}
+\index{GetPower@{GetPower}!rec\_desc.cpp@{rec\_desc.cpp}}
+\doxysubsubsection{\texorpdfstring{GetPower()}{GetPower()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_node}{Node}}$\ast$ Get\+Power (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct_env}{Env}} $\ast$}]{env }\end{DoxyParamCaption})}
+
+
+
+Parse expr ($^\wedge$ expr)$\ast$. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em env} & String and linked vars \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return root of the resulting tree ~\newline
+ 
+\end{DoxyReturn}
+
+
+Definition at line 137 of file rec\+\_\+desc.\+cpp.
+
 \mbox{\Hypertarget{rec__desc_8cpp_ae22bd8cf695cefedb8d3828f7eae2506}\label{rec__desc_8cpp_ae22bd8cf695cefedb8d3828f7eae2506}} 
 \index{rec\_desc.cpp@{rec\_desc.cpp}!GetSum@{GetSum}}
 \index{GetSum@{GetSum}!rec\_desc.cpp@{rec\_desc.cpp}}
@@ -175,7 +200,7 @@ Return resulting tree
 \end{DoxyReturn}
 
 
-Definition at line 179 of file rec\+\_\+desc.\+cpp.
+Definition at line 216 of file rec\+\_\+desc.\+cpp.
 
 \mbox{\Hypertarget{rec__desc_8cpp_ad193e59772ecedbfe4ba3859990d6127}\label{rec__desc_8cpp_ad193e59772ecedbfe4ba3859990d6127}} 
 \index{rec\_desc.cpp@{rec\_desc.cpp}!Parse\_All@{Parse\_All}}
@@ -199,5 +224,5 @@ Return root of the resulting tree
 \end{DoxyReturn}
 
 
-Definition at line 221 of file rec\+\_\+desc.\+cpp.
+Definition at line 258 of file rec\+\_\+desc.\+cpp.
 

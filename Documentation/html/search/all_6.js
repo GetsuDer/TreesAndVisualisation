@@ -13,5 +13,6 @@ var searchData=
   ['getmul_30',['GetMul',['../rec__desc_8cpp.html#ad77dbc1df4980aabe91bed72c929b9db',1,'rec_desc.cpp']]],
   ['getnumber_31',['GetNumber',['../rec__desc_8cpp.html#a2f02037d921cc94090af18dfbcc7080d',1,'rec_desc.cpp']]],
   ['getpart_32',['GetPart',['../rec__desc_8cpp.html#a52d25310f6e1b7d8b879cd9ab32b71e9',1,'rec_desc.cpp']]],
-  ['getsum_33',['GetSum',['../rec__desc_8cpp.html#ae22bd8cf695cefedb8d3828f7eae2506',1,'rec_desc.cpp']]]
+  ['getpower_33',['GetPower',['../rec__desc_8cpp.html#a77f43b106f2c6122cbe17413901e719f',1,'rec_desc.cpp']]],
+  ['getsum_34',['GetSum',['../rec__desc_8cpp.html#ae22bd8cf695cefedb8d3828f7eae2506',1,'rec_desc.cpp']]]
 ];
