@@ -11,6 +11,9 @@
 
 #define NEXT(a, env) ((env)->current_ind < (env)->str_size && (env)->str[(env)->current_ind] == a)
 
+Node *GetSum(struct Env *env);
+
+
 static void
 skip_spaces(struct Env *env) {
     while (env->current_ind < env->str_size && 
@@ -21,7 +24,7 @@ skip_spaces(struct Env *env) {
 }
 
 //! \brief Read unsigned integer
-static int 
+int 
 GetNumber(struct Env *env) {
     skip_spaces(env);
     if (env->error != OK) {
@@ -61,7 +64,64 @@ GetDouble(struct Env *env) {
     return new Node(res);
 }
 
-static Node *
+Node *
+GetPart(struct Env *env) {
+    if (env->error != OK) {
+        return NULL;
+    }
+    if (env->current_ind >= env->str_size) {
+        env->error = NO_SYMBOL;
+        return NULL;
+    }
+    Node *root = NULL;
+    skip_spaces(env);
+    switch(env->str[env->current_ind]) {
+        case '(':
+            env->current_ind++;
+            root = GetSum(env);
+            skip_spaces(env);
+            REQUIRE(')', env);
+            env->current_ind++;
+            skip_spaces(env);
+            return root;
+        case 's':
+            env->current_ind++;
+            REQUIRE('i', env);
+            env->current_ind++;
+            REQUIRE('n', env);
+            env->current_ind++;
+            root = new Node(SIN);
+            root->add_child(GetSum(env));
+            skip_spaces(env);
+            return root;
+
+        case 'c':
+            env->current_ind++;
+            REQUIRE('o', env);
+            env->current_ind++;
+            REQUIRE('s', env);
+            env->current_ind++;
+            root = new Node(COS);
+            root->add_child(GetPart(env));
+            skip_spaces(env);
+            return root;
+        case 'l':
+            env->current_ind++;
+            REQUIRE('n', env);
+            env->current_ind++;
+            root = new Node(LN);
+            root->add_child(GetPart(env));
+            skip_spaces(env);
+            return root;
+        default:
+            root = GetDouble(env);
+            skip_spaces(env);
+            return root;
+    }
+}
+
+
+Node *
 GetMul(struct Env *env) {
     if (env->error != OK) {
         return NULL;
@@ -70,26 +130,28 @@ GetMul(struct Env *env) {
         env->error = NO_SYMBOL;
         return NULL;
     }
-    Node *root = GetDouble(env);
+    Node *root = GetPart(env);
     Node *tmp1 = NULL, *tmp2 = NULL;
-
+    skip_spaces(env);
     while (true) {
         switch(env->str[env->current_ind]) {
             case '*':
                 env->current_ind++;
-                tmp2 = GetDouble(env);
+                tmp2 = GetPart(env);
                 tmp1 = root;
                 root = new Node(MUL);
                 root->add_child(tmp1);
                 root->add_child(tmp2);
+                skip_spaces(env);
                 break;
             case '/':
                 env->current_ind++;
-                tmp2 = GetDouble(env);
+                tmp2 = GetPart(env);
                 tmp1 = root;
                 root = new Node(DIV);
                 root->add_child(tmp1);
                 root->add_child(tmp2);
+                skip_spaces(env);
                 break;
 
             default:
@@ -98,7 +160,7 @@ GetMul(struct Env *env) {
     }    
 }
 
-static Node *
+Node *
 GetSum(struct Env *env) {
     if (env->error != OK) {
         return NULL;
@@ -109,7 +171,7 @@ GetSum(struct Env *env) {
     }
     Node *root = GetMul(env);
     Node *tmp = NULL, *tmp2 = NULL;
-
+    skip_spaces(env);
     while (true) {
         switch(env->str[env->current_ind]) {
             case '+':
@@ -119,6 +181,7 @@ GetSum(struct Env *env) {
                 root = new Node(ADD);
                 root->add_child(tmp);
                 root->add_child(tmp2);
+                skip_spaces(env);
                 break;
             case '-':
                 env->current_ind++;
@@ -127,6 +190,7 @@ GetSum(struct Env *env) {
                 root = new Node(SUB);
                 root->add_child(tmp);
                 root->add_child(tmp2);
+                skip_spaces(env);
                 break;
             default:
                 return root;
@@ -141,8 +205,9 @@ Parse_All(char *str, int str_length) {
     env.current_ind = 0;
     env.str_size = str_length;
     env.error = OK;
-    
+
     Node *root = GetSum(&env);
+    skip_spaces(&env);
     REQUIRE('$', &env);
     if (env.error) {
         fprintf(stderr, "Error during recursive descent\n");

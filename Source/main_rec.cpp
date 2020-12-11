@@ -45,6 +45,6 @@ main(int argc, char **argv) {
     char *res_name = (char *)calloc(BUFFER_SIZE, sizeof(char));
     snprintf(res_name, BUFFER_SIZE, "res");
     create_png(res_name, val, 1);
-
+    create_pdf(res_name, val, 1);
     return 0;
 }

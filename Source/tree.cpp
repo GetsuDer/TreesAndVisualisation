@@ -194,16 +194,20 @@ Node::visualize_tree_rec(int fd) {
         }
         dprintf(fd, "];\n");
     } else {
-        res = this->value;
+        res = value;
         dprintf(fd, "\", fillcolor=\"yellow\"];\n");
         return res;
     }
-    for (int i = 0; i < this->get_children_number(); i++) {
-        dprintf(fd, "%d->%d;\n", this->node_id, this->childs[i]->node_id);
+    for (int i = 0; i < get_children_number(); i++) {
+        dprintf(fd, "%d->%d;\n", node_id, childs[i]->node_id);
         if (i) {
-            calculate(this->operation, &res, this->childs[i]->visualize_tree_rec(fd));
+            calculate(operation, &res, childs[i]->visualize_tree_rec(fd));
         } else {
-            res = this->childs[i]->visualize_tree_rec(fd);
+            if (operation == SIN || operation == COS || operation == LN) {
+                calculate(operation, &res, childs[i]->visualize_tree_rec(fd));
+            } else {
+                res = childs[i]->visualize_tree_rec(fd);
+            }
         }
     }
     return res;
@@ -228,7 +232,7 @@ Node::export_dot(int fd, char *graph_name) {
     } else {
         dprintf(fd, "G {\n");
     }
-    double res = this->visualize_tree_rec(fd);
+    double res = visualize_tree_rec(fd);
     if (is_constant()) {
         dprintf(fd, "\"result=%lf\" [shape=box];", res);
     }
@@ -265,7 +269,11 @@ Node::visualize_tree_rec_tex(int fd) {
                 }
                 calculate(operation, &res, childs[i]->visualize_tree_rec_tex(fd));
             } else {
-                res = childs[i]->visualize_tree_rec_tex(fd);
+                if (operation == SIN || operation == COS || operation == LN) {
+                    calculate(operation, &res, childs[i]->visualize_tree_rec_tex(fd));
+                } else {
+                    res = childs[i]->visualize_tree_rec_tex(fd);
+                }
             }
             if (operation == DIV || operation == POWER || operation == LN) {
                 dprintf(fd, "}");
@@ -292,7 +300,7 @@ Node::visualize_tree_rec_tex(int fd) {
 int Node::export_tex(int fd) {
     assert(fd >= 0);
     dprintf(fd, "$$ ");
-    double res = this->visualize_tree_rec_tex(fd);
+    double res = visualize_tree_rec_tex(fd);
     if (is_constant()) {
         dprintf(fd, " = %lf ", res);
     }
@@ -641,7 +649,7 @@ Node::derivate(char *var_name) {
                 root->add_child(new Node(LN)); // ln
                 root->childs[0]->add_child(tmp->copy()); // ln C
 
-                root->add_child(this->copy()); // C ^ x
+                root->add_child(copy()); // C ^ x
                 
                 root->add_child(childs[children_number - 1]->derivate(var_name));
                 break;
