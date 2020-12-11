@@ -66,7 +66,8 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">tree.cpp File Reference</div>  </div>
 </div><!--header-->
@@ -76,6 +77,8 @@ $(function() {
 <code>#include &lt;cassert&gt;</code><br />
 <code>#include &lt;sys/mman.h&gt;</code><br />
 <code>#include &lt;cmath&gt;</code><br />
+<code>#include &lt;string.h&gt;</code><br />
+<code>#include &lt;algorithm&gt;</code><br />
 <code>#include &quot;<a class="el" href="tree_8h_source.html">tree.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="in__and__out_8h_source.html">in_and_out.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -83,14 +86,16 @@ Include dependency graph for tree.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="tree_8cpp__incl.png" border="0" usemap="#_source_2tree_8cpp" alt=""/></div>
 <map name="_source_2tree_8cpp" id="_source_2tree_8cpp">
-<area shape="rect" title=" " alt="" coords="257,5,380,32"/>
+<area shape="rect" title=" " alt="" coords="364,5,487,32"/>
 <area shape="rect" title=" " alt="" coords="5,80,64,107"/>
 <area shape="rect" title=" " alt="" coords="88,80,149,107"/>
 <area shape="rect" title=" " alt="" coords="173,80,243,107"/>
 <area shape="rect" title=" " alt="" coords="267,80,370,107"/>
 <area shape="rect" title=" " alt="" coords="394,80,457,107"/>
-<area shape="rect" href="tree_8h.html" title=" " alt="" coords="481,80,541,107"/>
-<area shape="rect" href="in__and__out_8h.html" title=" " alt="" coords="565,80,670,107"/>
+<area shape="rect" title=" " alt="" coords="481,80,551,107"/>
+<area shape="rect" title=" " alt="" coords="576,80,661,107"/>
+<area shape="rect" href="tree_8h.html" title=" " alt="" coords="686,80,746,107"/>
+<area shape="rect" href="in__and__out_8h.html" title=" " alt="" coords="770,80,875,107"/>
 </map>
 </div>
 </div>
@@ -98,14 +103,118 @@ Include dependency graph for tree.cpp:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ac395795a053e1e3b437e62e8deb144f2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tree_8cpp.html#ac395795a053e1e3b437e62e8deb144f2">is_eq</a> (double val1, double val2)</td></tr>
+<tr class="memdesc:ac395795a053e1e3b437e62e8deb144f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for equality of two values.  <a href="tree_8cpp.html#ac395795a053e1e3b437e62e8deb144f2">More...</a><br /></td></tr>
+<tr class="separator:ac395795a053e1e3b437e62e8deb144f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acff072d1d398da659c191343cad12cc9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tree_8cpp.html#acff072d1d398da659c191343cad12cc9">rec_del</a> (<a class="el" href="class_node.html">Node</a> *root)</td></tr>
 <tr class="memdesc:acff072d1d398da659c191343cad12cc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively clear tree.  <a href="tree_8cpp.html#acff072d1d398da659c191343cad12cc9">More...</a><br /></td></tr>
 <tr class="separator:acff072d1d398da659c191343cad12cc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae599f095b9dc5ca190fd2271b3f87c15"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tree_8cpp.html#ae599f095b9dc5ca190fd2271b3f87c15">parse_file_create_tree</a> (char *filename)</td></tr>
 <tr class="memdesc:ae599f095b9dc5ca190fd2271b3f87c15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read expression from file and create tree.  <a href="tree_8cpp.html#ae599f095b9dc5ca190fd2271b3f87c15">More...</a><br /></td></tr>
 <tr class="separator:ae599f095b9dc5ca190fd2271b3f87c15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52dc91829f3ebf594385d39c7ec5ac6c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tree_8cpp.html#a52dc91829f3ebf594385d39c7ec5ac6c">get_neitral</a> (int operation)</td></tr>
+<tr class="memdesc:a52dc91829f3ebf594385d39c7ec5ac6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get neitral element.  <a href="tree_8cpp.html#a52dc91829f3ebf594385d39c7ec5ac6c">More...</a><br /></td></tr>
+<tr class="separator:a52dc91829f3ebf594385d39c7ec5ac6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a385a83982a8a3f1adbbbdf1a65d255da"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tree_8cpp.html#a385a83982a8a3f1adbbbdf1a65d255da">get_opposite</a> (int operation)</td></tr>
+<tr class="memdesc:a385a83982a8a3f1adbbbdf1a65d255da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get operation for (op1 op op2 op op3) = ((op1) op (op2 op_op op3))  <a href="tree_8cpp.html#a385a83982a8a3f1adbbbdf1a65d255da">More...</a><br /></td></tr>
+<tr class="separator:a385a83982a8a3f1adbbbdf1a65d255da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a2346c0b2688c2a22f93206637f6a2f8b"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tree_8cpp.html#a2346c0b2688c2a22f93206637f6a2f8b">EPS</a> = 1e-7</td></tr>
+<tr class="separator:a2346c0b2688c2a22f93206637f6a2f8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a52dc91829f3ebf594385d39c7ec5ac6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52dc91829f3ebf594385d39c7ec5ac6c">&#9670;&nbsp;</a></span>get_neitral()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int get_neitral </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>operation</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get neitral element. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">operation</td><td>Operation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns neitral element as int </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00991">991</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a385a83982a8a3f1adbbbdf1a65d255da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a385a83982a8a3f1adbbbdf1a65d255da">&#9670;&nbsp;</a></span>get_opposite()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int get_opposite </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>operation</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get operation for (op1 op op2 op op3) = ((op1) op (op2 op_op op3)) </p>
+
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l01009">1009</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ac395795a053e1e3b437e62e8deb144f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac395795a053e1e3b437e62e8deb144f2">&#9670;&nbsp;</a></span>is_eq()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool is_eq </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>val1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>val2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check for equality of two values. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">val1,val2</td><td>Values to check </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Return result </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00019">19</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+
+</div>
+</div>
 <a id="ae599f095b9dc5ca190fd2271b3f87c15"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae599f095b9dc5ca190fd2271b3f87c15">&#9670;&nbsp;</a></span>parse_file_create_tree()</h2>
 
@@ -131,7 +240,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns root of created tree or NULL if unsuccess </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00340">340</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00518">518</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>
@@ -159,7 +268,32 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00228">228</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00340">340</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a2346c0b2688c2a22f93206637f6a2f8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2346c0b2688c2a22f93206637f6a2f8b">&#9670;&nbsp;</a></span>EPS</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr double EPS = 1e-7</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00013">13</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>

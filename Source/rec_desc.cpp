@@ -13,7 +13,8 @@
 
 Node *GetSum(struct Env *env);
 
-
+//! \brief Skip space symbols for expression string
+//! \param [in] env String and linked vars
 static void
 skip_spaces(struct Env *env) {
     while (env->current_ind < env->str_size && 
@@ -24,6 +25,8 @@ skip_spaces(struct Env *env) {
 }
 
 //! \brief Read unsigned integer
+//! \param [in] env String and linked vars
+//! \return Return read integer 
 int 
 GetNumber(struct Env *env) {
     skip_spaces(env);
@@ -42,7 +45,9 @@ GetNumber(struct Env *env) {
     return val;
 }
 
-
+//! \brief Read double
+//! \param [in] env String and linked vars
+//! \return Returns tree node with read double
 Node *
 GetDouble(struct Env *env) {
     if (env->error != OK) {
@@ -64,6 +69,10 @@ GetDouble(struct Env *env) {
     return new Node(res);
 }
 
+
+//! \brief Get expression (expr) | double | func(expr)
+//! \param [in] env String and linked vars
+//! \return Returns root of the resulting tree
 Node *
 GetPart(struct Env *env) {
     if (env->error != OK) {
@@ -120,7 +129,9 @@ GetPart(struct Env *env) {
     }
 }
 
-
+//! \brief Read 'expr ['*', '/'] expr*'
+//! \param [in] env String and linked vars
+//! \return Return root of the resulting tree
 Node *
 GetMul(struct Env *env) {
     if (env->error != OK) {
@@ -160,6 +171,10 @@ GetMul(struct Env *env) {
     }    
 }
 
+
+//! \brief Read 'expr ['+', '-'] expr*'
+//! \param [in] env String and linked vars
+//! \return Return resulting tree
 Node *
 GetSum(struct Env *env) {
     if (env->error != OK) {
@@ -198,6 +213,10 @@ GetSum(struct Env *env) {
     }
 }
 
+//! \brief Parse whole expression
+//! \param [in] str String with expression
+//! \param [in] str_length Expression string length
+//! \return Return root of the resulting tree
 Node *
 Parse_All(char *str, int str_length) {
     struct Env env;

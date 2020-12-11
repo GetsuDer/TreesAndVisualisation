@@ -1,0 +1,6 @@
+digraph G {
+4 [style = filled, label="cos", shape = box, fillcolor="grey"];
+4->6;
+6 [style = filled, label="x", shape = box, fillcolor="green"];
+
+}

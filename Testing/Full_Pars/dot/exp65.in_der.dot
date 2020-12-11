@@ -1,0 +1,10 @@
+digraph G {
+21 [style = filled, label="*", shape = box, fillcolor="grey"];
+21->25;
+25 [style = filled, label="2.000000", fillcolor="yellow"];
+21->86;
+86 [style = filled, label="y", shape = box, fillcolor="green"];
+21->87;
+87 [style = filled, label="x", shape = box, fillcolor="green"];
+
+}

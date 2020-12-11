@@ -1,5 +1,8 @@
 <map id="Include/tree.h" name="Include/tree.h">
-<area shape="rect" id="node1" title=" " alt="" coords="90,5,201,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="363,5,474,32"/>
 <area shape="rect" id="node2" href="$main_8cpp.html" title=" " alt="" coords="5,80,136,107"/>
-<area shape="rect" id="node3" href="$tree_8cpp.html" title=" " alt="" coords="160,80,283,107"/>
+<area shape="rect" id="node3" href="$main__rec_8cpp.html" title=" " alt="" coords="160,80,317,107"/>
+<area shape="rect" id="node4" href="$rec__desc_8cpp.html" title=" " alt="" coords="341,80,496,107"/>
+<area shape="rect" id="node5" href="$tree_8cpp.html" title=" " alt="" coords="520,80,643,107"/>
+<area shape="rect" id="node6" href="$visualize_8cpp.html" title=" " alt="" coords="667,80,821,107"/>
 </map>

@@ -3,7 +3,7 @@ SRCDIR = Source/
 OBJDIR = ObjectFiles/
 INCDIR = Include/
 CC = g++
-DEBUG = YES
+DEBUG = NO
 CFLAGS = -Wall -Wextra -Wformat -std=c++14 -IInclude 
 
 ifeq ($(DEBUG), YES)
@@ -17,6 +17,9 @@ all: tree rec_desc
 rec_desc: $(OBJDIR)rec_desc.o $(OBJDIR)main_rec.o $(OBJDIR)visualize.o $(OBJDIR)tree.o $(OBJDIR)in_and_out.o
 	$(CC) -o rec_desc $(OBJDIR)rec_desc.o $(OBJDIR)main_rec.o $(OBJDIR)visualize.o $(OBJDIR)tree.o $(OBJDIR)in_and_out.o $(CFLAGS)
 	
+test_rec: rec_desc
+	cd Testing; ./run_tests_rec; cd ..
+
 test: tree
 	cd Testing; ./run_tests; cd ..
 

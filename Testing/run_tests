@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
-for test in *.in
+for test in Full_Pars/*.in
 do
     echo Running test $test...
     ./../tree $test 0 0
 
 done
 
-mv *.pdf pdf/
-mv *.png png/
-mv *.dot dot/
-mv *.tex tex/
+mv *.pdf Full_Pars/pdf/
+mv Full_Pars/*.png Full_Pars/png/
+mv Full_Pars/*.dot Full_Pars/dot/
+mv Full_Pars/*.tex Full_Pars/tex/
 rm *.log

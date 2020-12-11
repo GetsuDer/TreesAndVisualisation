@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['parse_5ffile_5fcreate_5ftree_49',['parse_file_create_tree',['../tree_8h.html#ae599f095b9dc5ca190fd2271b3f87c15',1,'parse_file_create_tree(char *filename):&#160;tree.cpp'],['../tree_8cpp.html#ae599f095b9dc5ca190fd2271b3f87c15',1,'parse_file_create_tree(char *filename):&#160;tree.cpp']]]
+  ['is_5fconstant_110',['is_constant',['../class_node.html#ae2bfcbddacca90a8891f9ac6503e6cb7',1,'Node']]],
+  ['is_5feq_111',['is_eq',['../tree_8cpp.html#ac395795a053e1e3b437e62e8deb144f2',1,'tree.cpp']]]
 ];

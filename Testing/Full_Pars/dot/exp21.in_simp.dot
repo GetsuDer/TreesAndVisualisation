@@ -1,0 +1,4 @@
+digraph G {
+1 [style = filled, label="1024.000000", fillcolor="yellow"];
+"result=1024.000000" [shape=box];
+}

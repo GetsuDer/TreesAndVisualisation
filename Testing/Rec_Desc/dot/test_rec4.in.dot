@@ -1,0 +1,24 @@
+digraph G {
+10 [style = filled, label="+", shape = box, fillcolor="grey"];
+10->8;
+8 [style = filled, label="-", shape = box, fillcolor="grey"];
+8->4;
+4 [style = filled, label="+", shape = box, fillcolor="grey"];
+4->0;
+0 [style = filled, label="1.000000", fillcolor="yellow"];
+4->3;
+3 [style = filled, label="*", shape = box, fillcolor="grey"];
+3->1;
+1 [style = filled, label="2.000000", fillcolor="yellow"];
+3->2;
+2 [style = filled, label="3.000000", fillcolor="yellow"];
+8->7;
+7 [style = filled, label="/", shape = box, fillcolor="grey"];
+7->5;
+5 [style = filled, label="4.000000", fillcolor="yellow"];
+7->6;
+6 [style = filled, label="2.000000", fillcolor="yellow"];
+10->9;
+9 [style = filled, label="4.000000", fillcolor="yellow"];
+"result=9.000000" [shape=box];
+}

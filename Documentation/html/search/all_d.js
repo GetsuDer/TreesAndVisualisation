@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['show_5fpdf_26',['SHOW_PDF',['../main_8h.html#a888c2bdbafde86b56a40901f6dd57942',1,'main.h']]],
-  ['show_5fpng_27',['SHOW_PNG',['../main_8h.html#a3d302cd8847a3a391a6fa707973c8905',1,'main.h']]],
-  ['sub_28',['SUB',['../tree_8h.html#abc7258f0da73a4d5b16a1786f203acaca12b733d4941495e86811fe6ceeeff9da',1,'tree.h']]]
+  ['readme_2emd_55',['README.md',['../_r_e_a_d_m_e_8md.html',1,'']]],
+  ['rec_5fdel_56',['rec_del',['../tree_8h.html#acff072d1d398da659c191343cad12cc9',1,'rec_del(Node *root):&#160;tree.cpp'],['../tree_8cpp.html#acff072d1d398da659c191343cad12cc9',1,'rec_del(Node *root):&#160;tree.cpp']]],
+  ['rec_5fdesc_2ecpp_57',['rec_desc.cpp',['../rec__desc_8cpp.html',1,'']]],
+  ['require_58',['REQUIRE',['../rec__desc_8cpp.html#a26d05ed950fc4ea39910caa39e307b76',1,'rec_desc.cpp']]]
 ];

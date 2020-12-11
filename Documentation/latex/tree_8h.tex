@@ -4,25 +4,37 @@ This graph shows which files directly or indirectly include this file\+:\nopageb
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=288pt]{tree_8h__dep__incl}
+\includegraphics[width=350pt]{tree_8h__dep__incl}
 \end{center}
 \end{figure}
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
 class \mbox{\hyperlink{class_node}{Node}}
+\item 
+struct \mbox{\hyperlink{struct_env}{Env}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Enumerations}
 \begin{DoxyCompactItemize}
 \item 
 enum \mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acac}{Node\+\_\+\+Types}} \{ \newline
 \mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acaca83972670b57415508523b5641bb46116}{C\+O\+N\+S\+T\+A\+NT}} = 0, 
+\mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acacaf68346ce0bfce7ab2ca0a240f5132863}{V\+AR}}, 
 \mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acacacfcf145f2788bf340ff3f3098bc54909}{A\+DD}}, 
 \mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acaca12b733d4941495e86811fe6ceeeff9da}{S\+UB}}, 
-\mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acaca086ab1f2f4dac104b6826ebe0eaba8fd}{M\+UL}}, 
 \newline
+\mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acaca086ab1f2f4dac104b6826ebe0eaba8fd}{M\+UL}}, 
 \mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acaca8565f0d60c3ba6d468661c49d86e9744}{D\+IV}}, 
-\mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acaca316771101d4b4b1dea7d7e2a82ef1658}{P\+O\+W\+ER}}
+\mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acaca316771101d4b4b1dea7d7e2a82ef1658}{P\+O\+W\+ER}}, 
+\mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acaca7c696b1784e3a62b696699016dda8227}{LN}}, 
+\newline
+\mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acaca55720cf0d1ebf3d6f0eac12f2dffbfa2}{S\+IN}}, 
+\mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acaca493e49dc3b2f8cf43d8ae13fcdde6639}{C\+OS}}
+ \}
+\item 
+enum \mbox{\hyperlink{tree_8h_ada31fa1be5aadf4697ce6329d768c08e}{Env\+\_\+\+Errors}} \{ \mbox{\hyperlink{tree_8h_ada31fa1be5aadf4697ce6329d768c08ea2bc49ec37d6a5715dd23e85f1ff5bb59}{OK}} = 0, 
+\mbox{\hyperlink{tree_8h_ada31fa1be5aadf4697ce6329d768c08eab4f175d3a62bc7be04b2175a2af8b806}{N\+O\+\_\+\+S\+Y\+M\+B\+OL}}, 
+\mbox{\hyperlink{tree_8h_ada31fa1be5aadf4697ce6329d768c08ea4f4fac225490024c5b9762f8e24e30a5}{W\+R\+O\+N\+G\+\_\+\+S\+Y\+M\+B\+OL}}
  \}
 \end{DoxyCompactItemize}
 \doxysubsection*{Functions}
@@ -31,10 +43,40 @@ enum \mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acac}{Node\+\_\+\+Typ
 \mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{tree_8h_ae599f095b9dc5ca190fd2271b3f87c15}{parse\+\_\+file\+\_\+create\+\_\+tree}} (char $\ast$filename)
 \begin{DoxyCompactList}\small\item\em Read expression from file and create tree. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{tree_8h_acff072d1d398da659c191343cad12cc9}{rec\+\_\+del}} (\mbox{\hyperlink{class_node}{Node}} $\ast$root)
-\begin{DoxyCompactList}\small\item\em Recursively clear tree. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Recursively clear tree. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{tree_8h_a52dc91829f3ebf594385d39c7ec5ac6c}{get\+\_\+neitral}} (int operation)
+\begin{DoxyCompactList}\small\item\em Get neitral element. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{tree_8h_a385a83982a8a3f1adbbbdf1a65d255da}{get\+\_\+opposite}} (int operation)
+\begin{DoxyCompactList}\small\item\em Get operation for (op1 op op2 op op3) = ((op1) op (op2 op\+\_\+op op3)) \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{tree_8h_ad193e59772ecedbfe4ba3859990d6127}{Parse\+\_\+\+All}} (char $\ast$str, int str\+\_\+length)
+\begin{DoxyCompactList}\small\item\em Parse whole expression. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{tree_8h_ada31fa1be5aadf4697ce6329d768c08e}\label{tree_8h_ada31fa1be5aadf4697ce6329d768c08e}} 
+\index{tree.h@{tree.h}!Env\_Errors@{Env\_Errors}}
+\index{Env\_Errors@{Env\_Errors}!tree.h@{tree.h}}
+\doxysubsubsection{\texorpdfstring{Env\_Errors}{Env\_Errors}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{tree_8h_ada31fa1be5aadf4697ce6329d768c08e}{Env\+\_\+\+Errors}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{OK@{OK}!tree.h@{tree.h}}\index{tree.h@{tree.h}!OK@{OK}}}\mbox{\Hypertarget{tree_8h_ada31fa1be5aadf4697ce6329d768c08ea2bc49ec37d6a5715dd23e85f1ff5bb59}\label{tree_8h_ada31fa1be5aadf4697ce6329d768c08ea2bc49ec37d6a5715dd23e85f1ff5bb59}} 
+OK&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NO\_SYMBOL@{NO\_SYMBOL}!tree.h@{tree.h}}\index{tree.h@{tree.h}!NO\_SYMBOL@{NO\_SYMBOL}}}\mbox{\Hypertarget{tree_8h_ada31fa1be5aadf4697ce6329d768c08eab4f175d3a62bc7be04b2175a2af8b806}\label{tree_8h_ada31fa1be5aadf4697ce6329d768c08eab4f175d3a62bc7be04b2175a2af8b806}} 
+N\+O\+\_\+\+S\+Y\+M\+B\+OL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{WRONG\_SYMBOL@{WRONG\_SYMBOL}!tree.h@{tree.h}}\index{tree.h@{tree.h}!WRONG\_SYMBOL@{WRONG\_SYMBOL}}}\mbox{\Hypertarget{tree_8h_ada31fa1be5aadf4697ce6329d768c08ea4f4fac225490024c5b9762f8e24e30a5}\label{tree_8h_ada31fa1be5aadf4697ce6329d768c08ea4f4fac225490024c5b9762f8e24e30a5}} 
+W\+R\+O\+N\+G\+\_\+\+S\+Y\+M\+B\+OL&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 77 of file tree.\+h.
+
 \mbox{\Hypertarget{tree_8h_abc7258f0da73a4d5b16a1786f203acac}\label{tree_8h_abc7258f0da73a4d5b16a1786f203acac}} 
 \index{tree.h@{tree.h}!Node\_Types@{Node\_Types}}
 \index{Node\_Types@{Node\_Types}!tree.h@{tree.h}}
@@ -44,6 +86,10 @@ void \mbox{\hyperlink{tree_8h_acff072d1d398da659c191343cad12cc9}{rec\+\_\+del}} 
 \begin{DoxyEnumFields}{Enumerator}
 \raisebox{\heightof{T}}[0pt][0pt]{\index{CONSTANT@{CONSTANT}!tree.h@{tree.h}}\index{tree.h@{tree.h}!CONSTANT@{CONSTANT}}}\mbox{\Hypertarget{tree_8h_abc7258f0da73a4d5b16a1786f203acaca83972670b57415508523b5641bb46116}\label{tree_8h_abc7258f0da73a4d5b16a1786f203acaca83972670b57415508523b5641bb46116}} 
 C\+O\+N\+S\+T\+A\+NT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{VAR@{VAR}!tree.h@{tree.h}}\index{tree.h@{tree.h}!VAR@{VAR}}}\mbox{\Hypertarget{tree_8h_abc7258f0da73a4d5b16a1786f203acacaf68346ce0bfce7ab2ca0a240f5132863}\label{tree_8h_abc7258f0da73a4d5b16a1786f203acacaf68346ce0bfce7ab2ca0a240f5132863}} 
+V\+AR&\\
 \hline
 
 \raisebox{\heightof{T}}[0pt][0pt]{\index{ADD@{ADD}!tree.h@{tree.h}}\index{tree.h@{tree.h}!ADD@{ADD}}}\mbox{\Hypertarget{tree_8h_abc7258f0da73a4d5b16a1786f203acacacfcf145f2788bf340ff3f3098bc54909}\label{tree_8h_abc7258f0da73a4d5b16a1786f203acacacfcf145f2788bf340ff3f3098bc54909}} 
@@ -66,14 +112,86 @@ D\+IV&\\
 P\+O\+W\+ER&\\
 \hline
 
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LN@{LN}!tree.h@{tree.h}}\index{tree.h@{tree.h}!LN@{LN}}}\mbox{\Hypertarget{tree_8h_abc7258f0da73a4d5b16a1786f203acaca7c696b1784e3a62b696699016dda8227}\label{tree_8h_abc7258f0da73a4d5b16a1786f203acaca7c696b1784e3a62b696699016dda8227}} 
+LN&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SIN@{SIN}!tree.h@{tree.h}}\index{tree.h@{tree.h}!SIN@{SIN}}}\mbox{\Hypertarget{tree_8h_abc7258f0da73a4d5b16a1786f203acaca55720cf0d1ebf3d6f0eac12f2dffbfa2}\label{tree_8h_abc7258f0da73a4d5b16a1786f203acaca55720cf0d1ebf3d6f0eac12f2dffbfa2}} 
+S\+IN&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{COS@{COS}!tree.h@{tree.h}}\index{tree.h@{tree.h}!COS@{COS}}}\mbox{\Hypertarget{tree_8h_abc7258f0da73a4d5b16a1786f203acaca493e49dc3b2f8cf43d8ae13fcdde6639}\label{tree_8h_abc7258f0da73a4d5b16a1786f203acaca493e49dc3b2f8cf43d8ae13fcdde6639}} 
+C\+OS&\\
+\hline
+
 \end{DoxyEnumFields}
 
 
-Definition at line 28 of file tree.\+h.
+Definition at line 50 of file tree.\+h.
 
 
 
 \doxysubsection{Function Documentation}
+\mbox{\Hypertarget{tree_8h_a52dc91829f3ebf594385d39c7ec5ac6c}\label{tree_8h_a52dc91829f3ebf594385d39c7ec5ac6c}} 
+\index{tree.h@{tree.h}!get\_neitral@{get\_neitral}}
+\index{get\_neitral@{get\_neitral}!tree.h@{tree.h}}
+\doxysubsubsection{\texorpdfstring{get\_neitral()}{get\_neitral()}}
+{\footnotesize\ttfamily int get\+\_\+neitral (\begin{DoxyParamCaption}\item[{int}]{operation }\end{DoxyParamCaption})}
+
+
+
+Get neitral element. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em operation} & Operation \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns neitral element as int 
+\end{DoxyReturn}
+
+
+Definition at line 991 of file tree.\+cpp.
+
+\mbox{\Hypertarget{tree_8h_a385a83982a8a3f1adbbbdf1a65d255da}\label{tree_8h_a385a83982a8a3f1adbbbdf1a65d255da}} 
+\index{tree.h@{tree.h}!get\_opposite@{get\_opposite}}
+\index{get\_opposite@{get\_opposite}!tree.h@{tree.h}}
+\doxysubsubsection{\texorpdfstring{get\_opposite()}{get\_opposite()}}
+{\footnotesize\ttfamily int get\+\_\+opposite (\begin{DoxyParamCaption}\item[{int}]{operation }\end{DoxyParamCaption})}
+
+
+
+Get operation for (op1 op op2 op op3) = ((op1) op (op2 op\+\_\+op op3)) 
+
+
+
+Definition at line 1009 of file tree.\+cpp.
+
+\mbox{\Hypertarget{tree_8h_ad193e59772ecedbfe4ba3859990d6127}\label{tree_8h_ad193e59772ecedbfe4ba3859990d6127}} 
+\index{tree.h@{tree.h}!Parse\_All@{Parse\_All}}
+\index{Parse\_All@{Parse\_All}!tree.h@{tree.h}}
+\doxysubsubsection{\texorpdfstring{Parse\_All()}{Parse\_All()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_node}{Node}}$\ast$ Parse\+\_\+\+All (\begin{DoxyParamCaption}\item[{char $\ast$}]{str,  }\item[{int}]{str\+\_\+length }\end{DoxyParamCaption})}
+
+
+
+Parse whole expression. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em str} & String with expression \\
+\hline
+\mbox{\texttt{ in}}  & {\em str\+\_\+length} & Expression string length \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return root of the resulting tree 
+\end{DoxyReturn}
+
+
+Definition at line 221 of file rec\+\_\+desc.\+cpp.
+
 \mbox{\Hypertarget{tree_8h_ae599f095b9dc5ca190fd2271b3f87c15}\label{tree_8h_ae599f095b9dc5ca190fd2271b3f87c15}} 
 \index{tree.h@{tree.h}!parse\_file\_create\_tree@{parse\_file\_create\_tree}}
 \index{parse\_file\_create\_tree@{parse\_file\_create\_tree}!tree.h@{tree.h}}
@@ -94,7 +212,7 @@ Returns root of created tree or N\+U\+LL if unsuccess
 \end{DoxyReturn}
 
 
-Definition at line 340 of file tree.\+cpp.
+Definition at line 518 of file tree.\+cpp.
 
 \mbox{\Hypertarget{tree_8h_acff072d1d398da659c191343cad12cc9}\label{tree_8h_acff072d1d398da659c191343cad12cc9}} 
 \index{tree.h@{tree.h}!rec\_del@{rec\_del}}
@@ -113,5 +231,5 @@ Recursively clear tree.
 \end{DoxyParams}
 
 
-Definition at line 228 of file tree.\+cpp.
+Definition at line 340 of file tree.\+cpp.
 

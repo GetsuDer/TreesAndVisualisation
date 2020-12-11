@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+for test in Rec_Desc/*.in
+do
+    echo Running res test $test...
+    ./../rec_desc $test 0
+
+done
+
+mv *.pdf Rec_Desc/pdf/
+mv Rec_Desc/*.png Rec_Desc/png/
+mv Rec_Desc/*.dot Rec_Desc/dot/
+mv Rec_Desc/*.tex Rec_Desc/tex/
+rm *.log
+
+

@@ -1,0 +1,10 @@
+digraph G {
+3 [style = filled, label="+", shape = box, fillcolor="grey"];
+3->0;
+0 [style = filled, label="cos", shape = box, fillcolor="grey"];
+0->1;
+1 [style = filled, label="1.000000", fillcolor="yellow"];
+3->2;
+2 [style = filled, label="1.000000", fillcolor="yellow"];
+"result=1.540302" [shape=box];
+}

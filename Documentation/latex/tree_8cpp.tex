@@ -5,10 +5,11 @@
 {\ttfamily \#include $<$cassert$>$}\newline
 {\ttfamily \#include $<$sys/mman.\+h$>$}\newline
 {\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$algorithm$>$}\newline
 {\ttfamily \#include \char`\"{}tree.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}in\+\_\+and\+\_\+out.\+h\char`\"{}}\newline
-Include dependency graph for tree.\+cpp\+:
-\nopagebreak
+Include dependency graph for tree.\+cpp\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -18,13 +19,82 @@ Include dependency graph for tree.\+cpp\+:
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
+bool \mbox{\hyperlink{tree_8cpp_ac395795a053e1e3b437e62e8deb144f2}{is\+\_\+eq}} (double val1, double val2)
+\begin{DoxyCompactList}\small\item\em Check for equality of two values. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{tree_8cpp_acff072d1d398da659c191343cad12cc9}{rec\+\_\+del}} (\mbox{\hyperlink{class_node}{Node}} $\ast$root)
 \begin{DoxyCompactList}\small\item\em Recursively clear tree. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{tree_8cpp_ae599f095b9dc5ca190fd2271b3f87c15}{parse\+\_\+file\+\_\+create\+\_\+tree}} (char $\ast$filename)
-\begin{DoxyCompactList}\small\item\em Read expression from file and create tree. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Read expression from file and create tree. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{tree_8cpp_a52dc91829f3ebf594385d39c7ec5ac6c}{get\+\_\+neitral}} (int operation)
+\begin{DoxyCompactList}\small\item\em Get neitral element. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{tree_8cpp_a385a83982a8a3f1adbbbdf1a65d255da}{get\+\_\+opposite}} (int operation)
+\begin{DoxyCompactList}\small\item\em Get operation for (op1 op op2 op op3) = ((op1) op (op2 op\+\_\+op op3)) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+constexpr double \mbox{\hyperlink{tree_8cpp_a2346c0b2688c2a22f93206637f6a2f8b}{E\+PS}} = 1e-\/7
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Function Documentation}
+\mbox{\Hypertarget{tree_8cpp_a52dc91829f3ebf594385d39c7ec5ac6c}\label{tree_8cpp_a52dc91829f3ebf594385d39c7ec5ac6c}} 
+\index{tree.cpp@{tree.cpp}!get\_neitral@{get\_neitral}}
+\index{get\_neitral@{get\_neitral}!tree.cpp@{tree.cpp}}
+\doxysubsubsection{\texorpdfstring{get\_neitral()}{get\_neitral()}}
+{\footnotesize\ttfamily int get\+\_\+neitral (\begin{DoxyParamCaption}\item[{int}]{operation }\end{DoxyParamCaption})}
+
+
+
+Get neitral element. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em operation} & Operation \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns neitral element as int 
+\end{DoxyReturn}
+
+
+Definition at line 991 of file tree.\+cpp.
+
+\mbox{\Hypertarget{tree_8cpp_a385a83982a8a3f1adbbbdf1a65d255da}\label{tree_8cpp_a385a83982a8a3f1adbbbdf1a65d255da}} 
+\index{tree.cpp@{tree.cpp}!get\_opposite@{get\_opposite}}
+\index{get\_opposite@{get\_opposite}!tree.cpp@{tree.cpp}}
+\doxysubsubsection{\texorpdfstring{get\_opposite()}{get\_opposite()}}
+{\footnotesize\ttfamily int get\+\_\+opposite (\begin{DoxyParamCaption}\item[{int}]{operation }\end{DoxyParamCaption})}
+
+
+
+Get operation for (op1 op op2 op op3) = ((op1) op (op2 op\+\_\+op op3)) 
+
+
+
+Definition at line 1009 of file tree.\+cpp.
+
+\mbox{\Hypertarget{tree_8cpp_ac395795a053e1e3b437e62e8deb144f2}\label{tree_8cpp_ac395795a053e1e3b437e62e8deb144f2}} 
+\index{tree.cpp@{tree.cpp}!is\_eq@{is\_eq}}
+\index{is\_eq@{is\_eq}!tree.cpp@{tree.cpp}}
+\doxysubsubsection{\texorpdfstring{is\_eq()}{is\_eq()}}
+{\footnotesize\ttfamily bool is\+\_\+eq (\begin{DoxyParamCaption}\item[{double}]{val1,  }\item[{double}]{val2 }\end{DoxyParamCaption})}
+
+
+
+Check for equality of two values. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em val1,val2} & Values to check \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return result 
+\end{DoxyReturn}
+
+
+Definition at line 19 of file tree.\+cpp.
+
 \mbox{\Hypertarget{tree_8cpp_ae599f095b9dc5ca190fd2271b3f87c15}\label{tree_8cpp_ae599f095b9dc5ca190fd2271b3f87c15}} 
 \index{tree.cpp@{tree.cpp}!parse\_file\_create\_tree@{parse\_file\_create\_tree}}
 \index{parse\_file\_create\_tree@{parse\_file\_create\_tree}!tree.cpp@{tree.cpp}}
@@ -45,7 +115,7 @@ Returns root of created tree or N\+U\+LL if unsuccess
 \end{DoxyReturn}
 
 
-Definition at line 340 of file tree.\+cpp.
+Definition at line 518 of file tree.\+cpp.
 
 \mbox{\Hypertarget{tree_8cpp_acff072d1d398da659c191343cad12cc9}\label{tree_8cpp_acff072d1d398da659c191343cad12cc9}} 
 \index{tree.cpp@{tree.cpp}!rec\_del@{rec\_del}}
@@ -64,5 +134,18 @@ Recursively clear tree.
 \end{DoxyParams}
 
 
-Definition at line 228 of file tree.\+cpp.
+Definition at line 340 of file tree.\+cpp.
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{tree_8cpp_a2346c0b2688c2a22f93206637f6a2f8b}\label{tree_8cpp_a2346c0b2688c2a22f93206637f6a2f8b}} 
+\index{tree.cpp@{tree.cpp}!EPS@{EPS}}
+\index{EPS@{EPS}!tree.cpp@{tree.cpp}}
+\doxysubsubsection{\texorpdfstring{EPS}{EPS}}
+{\footnotesize\ttfamily constexpr double E\+PS = 1e-\/7\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 13 of file tree.\+cpp.
 

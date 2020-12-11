@@ -1,0 +1,12 @@
+digraph G {
+15 [style = filled, label="*", shape = box, fillcolor="grey"];
+15->16;
+16 [style = filled, label="3.000000", fillcolor="yellow"];
+15->17;
+17 [style = filled, label="^", shape = box, fillcolor="grey"];
+17->18;
+18 [style = filled, label="x", shape = box, fillcolor="green"];
+17->19;
+19 [style = filled, label="2.000000", fillcolor="yellow"];
+
+}

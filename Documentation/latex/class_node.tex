@@ -9,6 +9,8 @@
 \item 
 \mbox{\hyperlink{class_node_ae1b5533d3d3b4b8f3db0c5ae46b7877b}{Node}} (int \+\_\+operation)
 \begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_node}{Node}} constructor for operations. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node_aa4286a5fb481fa5c210f4c103e7d674e}{Node}} (int \+\_\+operation, char $\ast$name)
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_node}{Node}} constructor for vars (to make possible different vars) \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_node_a024d24b53e4fff070d6c38381bfa4cd8}{Node}} (double \+\_\+value)
 \begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_node}{Node}} constructor for constants. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_node_aa0840c3cb5c7159be6d992adecd2097c}{$\sim$\+Node}} ()
@@ -21,6 +23,28 @@ int \mbox{\hyperlink{class_node_a04226ce946e78244480c5663243b36c7}{add\+\_\+chil
 \begin{DoxyCompactList}\small\item\em Made link between two nodes by adding one node as child to another. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{class_node_a9705e4699fe55d3e642d87d572663127}{get\+\_\+children\+\_\+number}} ()
 \begin{DoxyCompactList}\small\item\em children\+\_\+number getter \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_node_a17f96910f506ed2c1306546a8ed1ee6a}{get\+\_\+operation}} ()
+\begin{DoxyCompactList}\small\item\em Operation getter. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_node_a0ecc6c4c82f802f31f75e2cd2c672060}{get\+\_\+name\+\_\+len}} ()
+\begin{DoxyCompactList}\small\item\em Getter for name len. \end{DoxyCompactList}\item 
+char $\ast$ \mbox{\hyperlink{class_node_ad50da273cae2a60eb58b75c825554979}{get\+\_\+name}} ()
+\begin{DoxyCompactList}\small\item\em Getter for var name. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_node_a396cc8bb42acbda2ca75a30a03d35001}{get\+\_\+value}} ()
+\begin{DoxyCompactList}\small\item\em Value getter. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{class_node_a3e8e9b94393fe955cb5ade8a5382302c}{cut\+\_\+child}} (int child\+\_\+ind)
+\begin{DoxyCompactList}\small\item\em Cut child. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_node_ae2bfcbddacca90a8891f9ac6503e6cb7}{is\+\_\+constant}} ()
+\begin{DoxyCompactList}\small\item\em Find, if the expression is constant (can be calculated). It means no V\+AR nodes. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{class_node_a8557bfd8ff3979e326611dd919f1987d}{copy}} ()
+\begin{DoxyCompactList}\small\item\em Copy tree. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{class_node_ab40dfec4e2131e0222d53a72421b4d19}{derivate}} (char $\ast$var\+\_\+name)
+\begin{DoxyCompactList}\small\item\em Create new tree with derivate of old tree. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_node_a619a9077025c8f8cb8dc86d5f2bdcece}{simplify}} ()
+\begin{DoxyCompactList}\small\item\em Try to simplify expression. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_node_afe731d3b0751b737af60bf3b4bb7bb36}{get\+\_\+val}} ()
+\begin{DoxyCompactList}\small\item\em Get expression value. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_node_a89fc96be20dc54286a29a2876ed04296}{tree\+\_\+eq}} (\mbox{\hyperlink{class_node}{Node}} $\ast$other)
+\begin{DoxyCompactList}\small\item\em Check if two trees are the same. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_node}{Node}} $\ast$$\ast$ \mbox{\hyperlink{class_node_afcb6228f4f113c5542e87e7a800ede78}{get\+\_\+childs}} ()
 \begin{DoxyCompactList}\small\item\em childs getter \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Static Public Attributes}
@@ -41,7 +65,7 @@ Definition at line 3 of file tree.\+h.
 \mbox{\Hypertarget{class_node_ae1b5533d3d3b4b8f3db0c5ae46b7877b}\label{class_node_ae1b5533d3d3b4b8f3db0c5ae46b7877b}} 
 \index{Node@{Node}!Node@{Node}}
 \index{Node@{Node}!Node@{Node}}
-\doxysubsubsection{\texorpdfstring{Node()}{Node()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+\doxysubsubsection{\texorpdfstring{Node()}{Node()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
 {\footnotesize\ttfamily Node\+::\+Node (\begin{DoxyParamCaption}\item[{int}]{\+\_\+operation }\end{DoxyParamCaption})}
 
 
@@ -55,12 +79,33 @@ Definition at line 3 of file tree.\+h.
 \end{DoxyParams}
 
 
-Definition at line 14 of file tree.\+cpp.
+Definition at line 24 of file tree.\+cpp.
+
+\mbox{\Hypertarget{class_node_aa4286a5fb481fa5c210f4c103e7d674e}\label{class_node_aa4286a5fb481fa5c210f4c103e7d674e}} 
+\index{Node@{Node}!Node@{Node}}
+\index{Node@{Node}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{Node()}{Node()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily Node\+::\+Node (\begin{DoxyParamCaption}\item[{int}]{\+\_\+operation,  }\item[{char $\ast$}]{\+\_\+name }\end{DoxyParamCaption})}
+
+
+
+\mbox{\hyperlink{class_node}{Node}} constructor for vars (to make possible different vars) 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \+\_\+operation} & Operation identificator \\
+\hline
+\mbox{\texttt{ in}}  & {\em \+\_\+name} & Oprator name \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 79 of file tree.\+cpp.
 
 \mbox{\Hypertarget{class_node_a024d24b53e4fff070d6c38381bfa4cd8}\label{class_node_a024d24b53e4fff070d6c38381bfa4cd8}} 
 \index{Node@{Node}!Node@{Node}}
 \index{Node@{Node}!Node@{Node}}
-\doxysubsubsection{\texorpdfstring{Node()}{Node()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+\doxysubsubsection{\texorpdfstring{Node()}{Node()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
 {\footnotesize\ttfamily Node\+::\+Node (\begin{DoxyParamCaption}\item[{double}]{\+\_\+value }\end{DoxyParamCaption})}
 
 
@@ -74,7 +119,7 @@ Definition at line 14 of file tree.\+cpp.
 \end{DoxyParams}
 
 
-Definition at line 24 of file tree.\+cpp.
+Definition at line 93 of file tree.\+cpp.
 
 \mbox{\Hypertarget{class_node_aa0840c3cb5c7159be6d992adecd2097c}\label{class_node_aa0840c3cb5c7159be6d992adecd2097c}} 
 \index{Node@{Node}!````~Node@{$\sim$Node}}
@@ -88,7 +133,7 @@ Definition at line 24 of file tree.\+cpp.
 
 
 
-Definition at line 35 of file tree.\+cpp.
+Definition at line 106 of file tree.\+cpp.
 
 
 
@@ -113,7 +158,63 @@ Returns 0 in success -\/1 else
 \end{DoxyReturn}
 
 
-Definition at line 203 of file tree.\+cpp.
+Definition at line 315 of file tree.\+cpp.
+
+\mbox{\Hypertarget{class_node_a8557bfd8ff3979e326611dd919f1987d}\label{class_node_a8557bfd8ff3979e326611dd919f1987d}} 
+\index{Node@{Node}!copy@{copy}}
+\index{copy@{copy}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{copy()}{copy()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_node}{Node}} $\ast$ Node\+::copy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Copy tree. 
+
+\begin{DoxyReturn}{Returns}
+Returns root of the copied tree 
+\end{DoxyReturn}
+
+
+Definition at line 539 of file tree.\+cpp.
+
+\mbox{\Hypertarget{class_node_a3e8e9b94393fe955cb5ade8a5382302c}\label{class_node_a3e8e9b94393fe955cb5ade8a5382302c}} 
+\index{Node@{Node}!cut\_child@{cut\_child}}
+\index{cut\_child@{cut\_child}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{cut\_child()}{cut\_child()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_node}{Node}} $\ast$ Node\+::cut\+\_\+child (\begin{DoxyParamCaption}\item[{int}]{child\+\_\+ind }\end{DoxyParamCaption})}
+
+
+
+Cut child. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em Child} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns cutted child 
+\end{DoxyReturn}
+
+
+Definition at line 753 of file tree.\+cpp.
+
+\mbox{\Hypertarget{class_node_ab40dfec4e2131e0222d53a72421b4d19}\label{class_node_ab40dfec4e2131e0222d53a72421b4d19}} 
+\index{Node@{Node}!derivate@{derivate}}
+\index{derivate@{derivate}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{derivate()}{derivate()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_node}{Node}} $\ast$ Node\+::derivate (\begin{DoxyParamCaption}\item[{char $\ast$}]{var\+\_\+name }\end{DoxyParamCaption})}
+
+
+
+Create new tree with derivate of old tree. 
+
+\begin{DoxyReturn}{Returns}
+Returns root of the new tree 
+\end{DoxyReturn}
+
+
+Definition at line 575 of file tree.\+cpp.
 
 \mbox{\Hypertarget{class_node_a364762a99a068e11dda8418f605ed7be}\label{class_node_a364762a99a068e11dda8418f605ed7be}} 
 \index{Node@{Node}!export\_dot@{export\_dot}}
@@ -135,7 +236,7 @@ Returns 0 in success, -\/1 else
 \end{DoxyReturn}
 
 
-Definition at line 138 of file tree.\+cpp.
+Definition at line 226 of file tree.\+cpp.
 
 \mbox{\Hypertarget{class_node_aaf15ecede43472bafa027b9406239161}\label{class_node_aaf15ecede43472bafa027b9406239161}} 
 \index{Node@{Node}!export\_tex@{export\_tex}}
@@ -157,7 +258,7 @@ Return 0 in success, -\/1 else
 \end{DoxyReturn}
 
 
-Definition at line 191 of file tree.\+cpp.
+Definition at line 300 of file tree.\+cpp.
 
 \mbox{\Hypertarget{class_node_a9705e4699fe55d3e642d87d572663127}\label{class_node_a9705e4699fe55d3e642d87d572663127}} 
 \index{Node@{Node}!get\_children\_number@{get\_children\_number}}
@@ -174,7 +275,7 @@ Returns number of node children
 \end{DoxyReturn}
 
 
-Definition at line 42 of file tree.\+cpp.
+Definition at line 118 of file tree.\+cpp.
 
 \mbox{\Hypertarget{class_node_afcb6228f4f113c5542e87e7a800ede78}\label{class_node_afcb6228f4f113c5542e87e7a800ede78}} 
 \index{Node@{Node}!get\_childs@{get\_childs}}
@@ -191,7 +292,136 @@ Returns pointer to pointers to childs
 \end{DoxyReturn}
 
 
-Definition at line 131 of file tree.\+cpp.
+Definition at line 219 of file tree.\+cpp.
+
+\mbox{\Hypertarget{class_node_ad50da273cae2a60eb58b75c825554979}\label{class_node_ad50da273cae2a60eb58b75c825554979}} 
+\index{Node@{Node}!get\_name@{get\_name}}
+\index{get\_name@{get\_name}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{get\_name()}{get\_name()}}
+{\footnotesize\ttfamily char $\ast$ Node\+::get\+\_\+name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Getter for var name. 
+
+
+
+Definition at line 1166 of file tree.\+cpp.
+
+\mbox{\Hypertarget{class_node_a0ecc6c4c82f802f31f75e2cd2c672060}\label{class_node_a0ecc6c4c82f802f31f75e2cd2c672060}} 
+\index{Node@{Node}!get\_name\_len@{get\_name\_len}}
+\index{get\_name\_len@{get\_name\_len}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{get\_name\_len()}{get\_name\_len()}}
+{\footnotesize\ttfamily int Node\+::get\+\_\+name\+\_\+len (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Getter for name len. 
+
+
+
+Definition at line 1172 of file tree.\+cpp.
+
+\mbox{\Hypertarget{class_node_a17f96910f506ed2c1306546a8ed1ee6a}\label{class_node_a17f96910f506ed2c1306546a8ed1ee6a}} 
+\index{Node@{Node}!get\_operation@{get\_operation}}
+\index{get\_operation@{get\_operation}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{get\_operation()}{get\_operation()}}
+{\footnotesize\ttfamily int Node\+::get\+\_\+operation (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Operation getter. 
+
+\begin{DoxyReturn}{Returns}
+Returns operation code 
+\end{DoxyReturn}
+
+
+Definition at line 125 of file tree.\+cpp.
+
+\mbox{\Hypertarget{class_node_afe731d3b0751b737af60bf3b4bb7bb36}\label{class_node_afe731d3b0751b737af60bf3b4bb7bb36}} 
+\index{Node@{Node}!get\_val@{get\_val}}
+\index{get\_val@{get\_val}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{get\_val()}{get\_val()}}
+{\footnotesize\ttfamily double Node\+::get\+\_\+val (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get expression value. 
+
+\begin{DoxyReturn}{Returns}
+Returns value (N\+AN, if not-\/\+Constant, but caller is responsible for it) 
+\end{DoxyReturn}
+
+
+Definition at line 723 of file tree.\+cpp.
+
+\mbox{\Hypertarget{class_node_a396cc8bb42acbda2ca75a30a03d35001}\label{class_node_a396cc8bb42acbda2ca75a30a03d35001}} 
+\index{Node@{Node}!get\_value@{get\_value}}
+\index{get\_value@{get\_value}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{get\_value()}{get\_value()}}
+{\footnotesize\ttfamily double Node\+::get\+\_\+value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Value getter. 
+
+
+
+Definition at line 112 of file tree.\+cpp.
+
+\mbox{\Hypertarget{class_node_ae2bfcbddacca90a8891f9ac6503e6cb7}\label{class_node_ae2bfcbddacca90a8891f9ac6503e6cb7}} 
+\index{Node@{Node}!is\_constant@{is\_constant}}
+\index{is\_constant@{is\_constant}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{is\_constant()}{is\_constant()}}
+{\footnotesize\ttfamily bool Node\+::is\+\_\+constant (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Find, if the expression is constant (can be calculated). It means no V\+AR nodes. 
+
+\begin{DoxyReturn}{Returns}
+Returns true, if no V\+AR nodes, false else 
+\end{DoxyReturn}
+
+
+Definition at line 560 of file tree.\+cpp.
+
+\mbox{\Hypertarget{class_node_a619a9077025c8f8cb8dc86d5f2bdcece}\label{class_node_a619a9077025c8f8cb8dc86d5f2bdcece}} 
+\index{Node@{Node}!simplify@{simplify}}
+\index{simplify@{simplify}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{simplify()}{simplify()}}
+{\footnotesize\ttfamily void Node\+::simplify (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Try to simplify expression. 
+
+
+
+Definition at line 1281 of file tree.\+cpp.
+
+\mbox{\Hypertarget{class_node_a89fc96be20dc54286a29a2876ed04296}\label{class_node_a89fc96be20dc54286a29a2876ed04296}} 
+\index{Node@{Node}!tree\_eq@{tree\_eq}}
+\index{tree\_eq@{tree\_eq}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{tree\_eq()}{tree\_eq()}}
+{\footnotesize\ttfamily bool Node\+::tree\+\_\+eq (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_node}{Node}} $\ast$}]{other }\end{DoxyParamCaption})}
+
+
+
+Check if two trees are the same. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em other} & Other tree \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true if the same, false else 
+\end{DoxyReturn}
+
+
+Definition at line 906 of file tree.\+cpp.
 
 
 
@@ -204,7 +434,7 @@ Definition at line 131 of file tree.\+cpp.
 
 
 
-Definition at line 16 of file tree.\+h.
+Definition at line 26 of file tree.\+h.
 
 
 

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['get_5fchildren_5fnumber_44',['get_children_number',['../class_node.html#a9705e4699fe55d3e642d87d572663127',1,'Node']]],
-  ['get_5fchilds_45',['get_childs',['../class_node.html#afcb6228f4f113c5542e87e7a800ede78',1,'Node']]]
+  ['derivate_93',['derivate',['../class_node.html#ab40dfec4e2131e0222d53a72421b4d19',1,'Node']]]
 ];
