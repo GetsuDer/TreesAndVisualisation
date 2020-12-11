@@ -24,7 +24,9 @@ skip_spaces(struct Env *env) {
 static int 
 GetNumber(struct Env *env) {
     skip_spaces(env);
-
+    if (env->error != OK) {
+        return 0;
+    }
     if (env->current_ind >= env->str_size) {
         env->error = NO_SYMBOL;
         return 0;
@@ -40,6 +42,9 @@ GetNumber(struct Env *env) {
 
 Node *
 GetDouble(struct Env *env) {
+    if (env->error != OK) {
+        return NULL;
+    }
     skip_spaces(env);
     if (env->current_ind >= env->str_size) {
         env->error = NO_SYMBOL;
@@ -52,35 +57,64 @@ GetDouble(struct Env *env) {
         int old_ind = env->current_ind;
         res += GetNumber(env) / pow(10, env->current_ind - old_ind);
     }
+    skip_spaces(env);
     return new Node(res);
 }
 
 static Node *
-GetSum(struct Env *env) {
+GetMul(struct Env *env) {
+    if (env->error != OK) {
+        return NULL;
+    }
     if (env->current_ind >= env->str_size) {
         env->error = NO_SYMBOL;
         return NULL;
     }
     Node *root = GetDouble(env);
+    Node *tmp1 = NULL, *tmp2 = NULL;
+
+    while (true) {
+        switch(env->str[env->current_ind]) {
+            case '*':
+                env->current_ind++;
+                tmp2 = GetDouble(env);
+                tmp1 = root;
+                root = new Node(MUL);
+                root->add_child(tmp1);
+                root->add_child(tmp2);
+                break;
+            case '/':
+                env->current_ind++;
+                tmp2 = GetDouble(env);
+                tmp1 = root;
+                root = new Node(DIV);
+                root->add_child(tmp1);
+                root->add_child(tmp2);
+                break;
+
+            default:
+                return root;
+        }
+    }    
+}
+
+static Node *
+GetSum(struct Env *env) {
+    if (env->error != OK) {
+        return NULL;
+    }
+    if (env->current_ind >= env->str_size) {
+        env->error = NO_SYMBOL;
+        return NULL;
+    }
+    Node *root = GetMul(env);
     Node *tmp = NULL, *tmp2 = NULL;
 
     while (true) {
-        skip_spaces(env);
         switch(env->str[env->current_ind]) {
             case '+':
                 env->current_ind++;
-                tmp2 = GetDouble(env);   
-                if (root->get_operation() == CONSTANT) {
-                    tmp = root;
-                    root = new Node(ADD);
-                    root->add_child(tmp);
-                    root->add_child(tmp2);
-                    break;
-                }
-                if (root->get_operation() == ADD) {
-                    root->add_child(tmp2);
-                    break;
-                }
+                tmp2 = GetMul(env);   
                 tmp = root;
                 root = new Node(ADD);
                 root->add_child(tmp);
@@ -88,19 +122,7 @@ GetSum(struct Env *env) {
                 break;
             case '-':
                 env->current_ind++;
-                tmp2 = GetDouble(env);
-                if (root->get_operation() == CONSTANT) {
-                    tmp = root;
-                    root = new Node(SUB);
-                    root->add_child(tmp);
-                    root->add_child(tmp2);
-                    tmp = NULL;
-                    break;
-                }
-                if (root->get_operation() == SUB) {
-                    root->add_child(tmp2);
-                    break;
-                }
+                tmp2 = GetMul(env);
                 tmp = root;
                 root = new Node(SUB);
                 root->add_child(tmp);
