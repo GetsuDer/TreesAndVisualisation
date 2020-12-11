@@ -14,7 +14,10 @@ Result:
 
 ### Second part. Recursive descent
     Expression written in normal format, for example, 1 + 3 * (4 + 5).
-    Arguments for sin, cos, ln must be in brackets (sin (12), for example)
+    Arguments for sin, cos, ln must be in brackets (sin (12), for example).
+    To get program, run 'make rec_desc'.
+    Then './rec_desc input_file show' will calculate expression (and if show == 1, 
+            show it as picture)
 
 ## Starting
     Run 'make tree; cd Testing', then you have executable file tree, 
