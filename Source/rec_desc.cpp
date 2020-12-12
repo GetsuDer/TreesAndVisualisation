@@ -306,8 +306,36 @@ GetSum(struct Env *env) {
 Node *
 GetExpression(struct Env *env) {
     CHECK_ENV(env);
+    
+    Node *root = GetSum(env);
+    
+    CHECK_ENV(env);
 
-    return GetSum(env);
+    Node *tmp2 = NULL;
+    skip_spaces(env);
+
+    while (true) {
+        tmp2 = root;
+        switch(env->str[env->current_ind]) {
+            case '>':
+                env->current_ind++;
+                root = new Node(MORE);
+                break;
+            case '<':
+                env->current_ind++;
+                root = new Node(LESS);
+                break;
+            case '~':
+                env->current_ind++;
+                root = new Node(EQ);
+                break;
+            default:
+                return root;
+        }
+        root->add_child(tmp2);
+        root->add_child(GetSum(env));
+    }
+
 }
 
 

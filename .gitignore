@@ -1,6 +1,10 @@
 *.o
 Objectdir
 *.swp
+*.pdf
+*.tex
+*.dot
+*.log
 tree
 rec_desc
 Testing/pdf/*

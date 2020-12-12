@@ -58,7 +58,10 @@ enum Node_Types {
     LN,
     SIN,
     COS,
-    ASSIGNMENT
+    ASSIGNMENT,
+    MORE,
+    LESS,
+    EQ
 };
 
 Node *parse_file_create_tree(char *filename);

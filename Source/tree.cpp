@@ -67,6 +67,15 @@ Node::Node(int _operation) {
         case ASSIGNMENT:
             strncpy(name, "=", name_len);
             break;
+        case MORE:
+            strncpy(name, ">", name_len);
+            break;
+        case LESS:
+            strncpy(name, "<", name_len);
+            break;
+        case EQ:
+            strncpy(name, "~", name_len);
+            break;
         default:
             name_len = 0;
             free(name);
