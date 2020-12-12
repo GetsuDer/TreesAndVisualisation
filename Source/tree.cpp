@@ -64,6 +64,9 @@ Node::Node(int _operation) {
         case VAR:
             strncpy(name, "x", name_len);
             break;
+        case ASSIGNMENT:
+            strncpy(name, "=", name_len);
+            break;
         default:
             name_len = 0;
             free(name);

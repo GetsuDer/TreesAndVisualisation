@@ -57,7 +57,8 @@ enum Node_Types {
     POWER,
     LN,
     SIN,
-    COS
+    COS,
+    ASSIGNMENT
 };
 
 Node *parse_file_create_tree(char *filename);
@@ -77,9 +78,11 @@ struct Env {
 enum Env_Errors {
     OK = 0,
     NO_SYMBOL,
-    WRONG_SYMBOL
+    WRONG_SYMBOL,
+    TOO_LONG_ID
 };
 
 Node *Parse_All(char *str, int str_length);
+constexpr int ID_NAME_SIZE = 15;
 
 #endif
