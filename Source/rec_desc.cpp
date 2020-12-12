@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <ctype.h>
 #include <cmath>
+#include <cstring>
 
 #include "tree.h"
 
@@ -312,10 +313,10 @@ GetExpression(struct Env *env) {
     CHECK_ENV(env);
 
     Node *tmp2 = NULL;
-    skip_spaces(env);
 
     while (true) {
         tmp2 = root;
+        skip_spaces(env);
         switch(env->str[env->current_ind]) {
             case '>':
                 env->current_ind++;
@@ -339,6 +340,133 @@ GetExpression(struct Env *env) {
 }
 
 
+Node *
+GetIf(struct Env *env) {
+    CHECK_ENV(env);
+    
+    skip_spaces(env);
+
+    REQUIRE('i', env);
+    env->current_ind++;
+    REQUIRE('f', env);
+    env->current_ind++;
+
+    CHECK_ENV(env);
+
+    Node *root = new Node(IF);
+    skip_spaces(env);
+    Node *if_statement = GetExpression(env);
+    if (env->error != OK) {
+        rec_del(root);
+        rec_del(if_statement);
+        return NULL;
+    }
+    root->add_child(if_statement);
+    skip_spaces(env);
+    REQUIRE('{', env);
+    if (env->error != OK) {
+        rec_del(root);
+        return NULL;
+    }
+    env->current_ind++;
+    Node *then_do = GetExpression(env);
+    skip_spaces(env);
+    REQUIRE('}', env);
+    if (env->error != OK) {
+        rec_del(root);
+        rec_del(then_do);
+        return NULL;
+    }
+    env->current_ind++;
+    root->add_child(then_do);
+    skip_spaces(env);
+    if (env->str_size - env->current_ind > (int)strlen("else") && !strncmp(env->str + env->current_ind, "else", strlen("else"))) {
+        env->current_ind += strlen("else");
+        skip_spaces(env);
+        REQUIRE('{', env);
+        if (env->error != OK) {
+            rec_del(root);
+            return NULL;
+        }
+        env->current_ind++;
+        Node *else_do = GetExpression(env);
+        root->add_child(else_do);
+        REQUIRE('}', env);
+        if (env->error) {
+            rec_del(root);
+            return NULL;
+        }
+        env->current_ind++;
+    }
+    return root;
+}
+
+
+Node *
+GetWhile(struct Env *env) {
+    CHECK_ENV(env);
+
+    skip_spaces(env);
+    if (env->str_size - env->current_ind >= (int) strlen("while") && !strncmp(env->str + env->current_ind, "while", strlen("while"))) {
+        env->current_ind += strlen("while");
+        skip_spaces(env);
+        Node *root = new Node(WHILE);
+        Node *while_cond = GetExpression(env);
+        if (env->error != OK) {
+            rec_del(while_cond);
+            rec_del(root);
+            return NULL;
+        }
+        root->add_child(while_cond);
+
+        REQUIRE('{', env);
+        if (env->error) {
+            rec_del(root);
+            return NULL;
+        }
+        env->current_ind++;
+        Node *while_do = GetExpression(env);
+        if (env->error != OK) {
+            rec_del(root);
+            rec_del(while_do);
+            return NULL;
+        }
+        root->add_child(while_do);
+        REQUIRE('}', env);
+        if (env->error) {
+            rec_del(root);
+            return NULL;
+        }
+        env->current_ind++;
+        return root;
+    } else {
+        env->error = WRONG_SYMBOL;
+        return NULL;
+    }
+}
+
+Node *
+GetStatement(struct Env *env) {
+    CHECK_ENV(env);
+
+    int old_ind = env->current_ind;
+    Node *root = GetIf(env);
+    if (env->error == OK) {
+        return root;
+    }
+    rec_del(root);
+    env->current_ind = old_ind;
+    env->error = OK;
+
+    root = GetWhile(env);
+    if (env->error == OK) {
+        return root;
+    }
+    rec_del(root);
+    env->current_ind = old_ind;
+    env->error = OK;
+    return GetExpression(env);      
+}
 
 //! \brief Parse whole expression
 //! \param [in] str String with expression
@@ -352,7 +480,7 @@ Parse_All(char *str, int str_length) {
     env.str_size = str_length;
     env.error = OK;
 
-    Node *root = GetExpression(&env);
+    Node *root = GetStatement(&env);
     skip_spaces(&env);
     REQUIRE('$', &env);
     if (env.error) {

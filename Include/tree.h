@@ -61,7 +61,9 @@ enum Node_Types {
     ASSIGNMENT,
     MORE,
     LESS,
-    EQ
+    EQ,
+    IF,
+    WHILE
 };
 
 Node *parse_file_create_tree(char *filename);

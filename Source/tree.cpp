@@ -76,6 +76,16 @@ Node::Node(int _operation) {
         case EQ:
             strncpy(name, "~", name_len);
             break;
+        case IF:
+            name_len = 2;
+            name = (char *)realloc(name, name_len * sizeof(char));
+            strncpy(name, "if", name_len);
+            break;
+        case WHILE:
+            name_len = 5;
+            name = (char *)realloc(name, name_len * sizeof(char));
+            strncpy(name, "while", name_len);
+            break;
         default:
             name_len = 0;
             free(name);
