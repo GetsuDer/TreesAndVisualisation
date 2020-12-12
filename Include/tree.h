@@ -63,7 +63,8 @@ enum Node_Types {
     LESS,
     EQ,
     IF,
-    WHILE
+    WHILE,
+    DO_IN_ORDER,
 };
 
 Node *parse_file_create_tree(char *filename);

@@ -18,6 +18,8 @@
 
 Node *GetSum(struct Env *env);
 Node *GetExpression(struct Env *env);
+Node *GetStatement(struct Env *env);
+Node *GetSequence(struct Env *env);
 
 //! \brief Skip space symbols for expression string
 //! \param [in] env String and linked vars
@@ -369,7 +371,7 @@ GetIf(struct Env *env) {
         return NULL;
     }
     env->current_ind++;
-    Node *then_do = GetExpression(env);
+    Node *then_do = GetSequence(env);
     skip_spaces(env);
     REQUIRE('}', env);
     if (env->error != OK) {
@@ -389,7 +391,7 @@ GetIf(struct Env *env) {
             return NULL;
         }
         env->current_ind++;
-        Node *else_do = GetExpression(env);
+        Node *else_do = GetSequence(env);
         root->add_child(else_do);
         REQUIRE('}', env);
         if (env->error) {
@@ -425,13 +427,14 @@ GetWhile(struct Env *env) {
             return NULL;
         }
         env->current_ind++;
-        Node *while_do = GetExpression(env);
+        Node *while_do = GetSequence(env);
         if (env->error != OK) {
             rec_del(root);
             rec_del(while_do);
             return NULL;
         }
         root->add_child(while_do);
+        skip_spaces(env);
         REQUIRE('}', env);
         if (env->error) {
             rec_del(root);
@@ -465,7 +468,41 @@ GetStatement(struct Env *env) {
     rec_del(root);
     env->current_ind = old_ind;
     env->error = OK;
-    return GetExpression(env);      
+    root = GetExpression(env);
+    skip_spaces(env);
+    REQUIRE(';', env);
+    env->current_ind++;
+    return root;      
+}
+
+
+Node *
+GetSequence(struct Env *env) {
+    CHECK_ENV(env);
+
+    Node *root = GetStatement(env);
+
+    if (env->error != OK) {
+        rec_del(root);
+        return NULL;
+    }
+    while (true) {
+        int old_ind = env->current_ind;
+        Node *tmp = GetStatement(env);
+        if (env->error != OK) {
+            env->current_ind = old_ind;
+            env->error = OK;
+            rec_del(tmp);
+            return root;
+        }
+        if (root->get_operation() != DO_IN_ORDER) {
+            Node *tmp1 = root;
+            root = new Node(DO_IN_ORDER);
+            root->add_child(tmp1);
+        }
+        root->add_child(tmp);
+    }
+    return root;
 }
 
 //! \brief Parse whole expression
@@ -480,7 +517,7 @@ Parse_All(char *str, int str_length) {
     env.str_size = str_length;
     env.error = OK;
 
-    Node *root = GetStatement(&env);
+    Node *root = GetSequence(&env);
     skip_spaces(&env);
     REQUIRE('$', &env);
     if (env.error) {
