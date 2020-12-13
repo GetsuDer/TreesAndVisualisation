@@ -65,6 +65,7 @@ enum Node_Types {
     EQ,
     IF,
     WHILE,
+    FOR,
     DO_IN_ORDER,
     FUNC_CALL,
     FUNC_DEF,

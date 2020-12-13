@@ -531,6 +531,56 @@ GetReturn(struct Env *env) {
 }
 
 Node *
+GetFor(struct Env *env) {
+    CHECK_ENV(env);
+    skip_spaces(env);
+    NEED_WORD("for", env);
+    if (env->error) {
+        return NULL;
+    }
+    env->current_ind += strlen("for");
+    Node *root = new Node(FOR);
+    Node *tmp = NULL;
+
+    skip_spaces(env);
+    REQUIRE('(', env);
+    env->current_ind++;
+    for (int i = 0; i < 3; i++) {
+        tmp = GetExpression(env);
+        if (env->error) {
+            rec_del(tmp);
+            rec_del(root);
+            return NULL;
+        }
+        root->add_child(tmp);
+        skip_spaces(env);
+        if (i != 2) {
+            REQUIRE(';', env);
+            env->current_ind++;
+        }
+    }
+
+    skip_spaces(env);
+    REQUIRE(')', env);
+    env->current_ind++;
+
+    skip_spaces(env);
+    REQUIRE('{', env);
+    env->current_ind++;
+    
+    tmp = GetSequence(env);
+    if (env->error) {
+        rec_del(tmp);
+        rec_del(root);
+        return NULL;
+    }
+    root->add_child(tmp);
+    skip_spaces(env);
+    REQUIRE('}', env);
+    env->current_ind++;
+    return root;
+}
+Node *
 GetStatement(struct Env *env) {
     CHECK_ENV(env);
 
@@ -555,6 +605,14 @@ GetStatement(struct Env *env) {
     skip_spaces(env);
     REQUIRE(';', env);
     env->current_ind++;
+    if (env->error == OK) {
+        return root;
+    }
+    rec_del(root);
+    env->current_ind = old_ind;
+    env->error = OK;
+
+    root = GetFor(env);
     if (env->error == OK) {
         return root;
     }
