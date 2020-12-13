@@ -89,6 +89,12 @@ Node::Node(int _operation) {
         case DO_IN_ORDER:
             strncpy(name, " ", name_len);
             break;
+        case FUNC_CALL:
+            strncpy(name, "?", name_len);
+            break;
+        case FUNC_DEF:
+            strncpy(name, "?", name_len);
+            break;
         default:
             name_len = 0;
             free(name);
@@ -98,6 +104,17 @@ Node::Node(int _operation) {
 }
 
 
+//! \brief Change node type
+//! \param [in] _operation new type
+//! \return Return true, if this change is permitted
+bool
+Node::change_operation(int _operation) {
+    if (operation == VAR && (_operation == FUNC_CALL || _operation == FUNC_DEF)) {
+        operation = _operation;
+        return true;
+    }
+   return false; 
+}
 //! \brief Node constructor for vars (to make possible different vars)
 //! \param [in] _operation Operation identificator
 //! \param [in] _name Oprator name
@@ -212,10 +229,19 @@ Node::visualize_tree_rec(int fd) {
     double res = 0;
     if (operation) {
         dprintf(fd, "\", shape = box, fillcolor=");
-        if (operation == VAR) {
-            dprintf(fd, "\"green\"");
-        } else {
-            dprintf(fd, "\"grey\"");
+        switch(operation) {
+            case VAR:
+                dprintf(fd, "\"green\"");
+                break;
+            case FUNC_CALL:
+                dprintf(fd, "\"blue\"");
+                break;
+            case FUNC_DEF:
+                dprintf(fd, "\"yellow\"");
+                break;
+            default:
+                dprintf(fd, "\"grey\"");
+                break;
         }
         dprintf(fd, "];\n");
     } else {

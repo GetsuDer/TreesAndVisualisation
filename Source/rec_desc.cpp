@@ -142,19 +142,51 @@ Assignment(struct Env *env) {
     return root;
 }
 
+Node *
+GetFuncCall(struct Env *env) {
+    CHECK_ENV(env);
+
+    Node *root = GetId(env);
+    if (env->error != OK) {
+        rec_del(root);
+        return NULL;
+    }
+
+    root->change_operation(FUNC_CALL);
+    skip_spaces(env);
+    REQUIRE('(', env);
+    env->current_ind++;
+
+    Node *tmp = NULL;
+    while (true) {
+        int old_ind = env->current_ind;
+        tmp = GetExpression(env);
+        if (env->error != OK) {
+            env->current_ind = old_ind;
+            env->error = OK;
+            break;
+        }
+        root->add_child(tmp);
+        skip_spaces(env);
+        if (env->str[env->current_ind] != ',') {
+            break;
+        }
+        env->current_ind++;
+    }
+
+    skip_spaces(env);
+    REQUIRE(')', env);
+    env->current_ind++;
+    return root;
+}
 
 //! \brief Get expression (expr) | double | func(expr)
 //! \param [in] env String and linked vars
 //! \return Returns root of the resulting tree
 Node *
 GetPart(struct Env *env) {
-    if (env->error != OK) {
-        return NULL;
-    }
-    if (env->current_ind >= env->str_size) {
-        env->error = NO_SYMBOL;
-        return NULL;
-    }
+    CHECK_ENV(env);
+    
     Node *root = NULL;
     skip_spaces(env);
     if (env->str[env->current_ind] == '(') {
@@ -181,6 +213,13 @@ GetPart(struct Env *env) {
     env->error = OK;
     env->current_ind = old_ind;
     rec_del(root);
+
+    root = GetFuncCall(env);
+    if (env->error == OK) {
+        return root;
+    }
+    env->error = OK;
+    env->current_ind = old_ind;
     root = GetId(env);
     return root;
 }

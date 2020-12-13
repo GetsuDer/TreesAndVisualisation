@@ -36,6 +36,7 @@ public:
     int get_name_len();
     char *get_name();
     double get_value();
+    bool change_operation(int new_operation);
     Node *cut_child(int child_ind);
     bool is_constant();
     Node *copy();
@@ -65,6 +66,8 @@ enum Node_Types {
     IF,
     WHILE,
     DO_IN_ORDER,
+    FUNC_CALL,
+    FUNC_DEF
 };
 
 Node *parse_file_create_tree(char *filename);
@@ -90,5 +93,5 @@ enum Env_Errors {
 
 Node *Parse_All(char *str, int str_length);
 constexpr int ID_NAME_SIZE = 15;
-
+constexpr int FUNC_NAME_SIZE = 30;
 #endif
