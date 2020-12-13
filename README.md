@@ -1,8 +1,7 @@
-# Trees + Visualisation
-Implementation of unbalanced N-ary trees and ability to visualize them by using Graphviz
+# PL + Recursive_Descent + Trees + Visualisation
+Implementation of parsing programming languge with using 
+unbalanced N-ary trees and visualizing it by using Graphviz
 Result:
-![alt text](https://github.com/GetsuDer/TreesAndVisualisation/blob/main/formula.jpg)
-![alt text](https://github.com/GetsuDer/TreesAndVisualisation/blob/main/graph.png)
 ![alt_text](https://github.com/GetsuDer/TreesAndVisualisation/blob/main/fib.png)
 
 ## Description
