@@ -87,7 +87,9 @@ Node::Node(int _operation) {
             strncpy(name, "while", name_len);
             break;
         case DO_IN_ORDER:
-            strncpy(name, " ", name_len);
+            name_len = 2;
+            name = (char *)realloc(name, name_len * sizeof(char));
+            strncpy(name, "do", name_len);
             break;
         case FUNC_CALL:
             strncpy(name, "?", name_len);

@@ -16,6 +16,9 @@
      if ((env)->current_ind >= (env)->str_size) (env)->error = NO_SYMBOL;\
      if ((env)->error != OK) return NULL;
 
+
+#define NEED_WORD(a, env) if ((env)->str_size - (env)->current_ind < (int)strlen(a) || strncmp((env)->str + (env)->current_ind, a, strlen(a))) (env)->error = WRONG_SYMBOL;
+
 Node *GetSum(struct Env *env);
 Node *GetExpression(struct Env *env);
 Node *GetStatement(struct Env *env);
@@ -391,10 +394,8 @@ GetIf(struct Env *env) {
     
     skip_spaces(env);
 
-    REQUIRE('i', env);
-    env->current_ind++;
-    REQUIRE('f', env);
-    env->current_ind++;
+    NEED_WORD("if", env);
+    env->current_ind += strlen("if");
 
     CHECK_ENV(env);
 
@@ -425,7 +426,9 @@ GetIf(struct Env *env) {
     env->current_ind++;
     root->add_child(then_do);
     skip_spaces(env);
-    if (env->str_size - env->current_ind > (int)strlen("else") && !strncmp(env->str + env->current_ind, "else", strlen("else"))) {
+
+    NEED_WORD("else", env);
+    if (env->error == OK) {
         env->current_ind += strlen("else");
         skip_spaces(env);
         REQUIRE('{', env);
@@ -436,6 +439,7 @@ GetIf(struct Env *env) {
         env->current_ind++;
         Node *else_do = GetSequence(env);
         root->add_child(else_do);
+        skip_spaces(env);
         REQUIRE('}', env);
         if (env->error) {
             rec_del(root);
@@ -452,7 +456,8 @@ GetWhile(struct Env *env) {
     CHECK_ENV(env);
 
     skip_spaces(env);
-    if (env->str_size - env->current_ind >= (int) strlen("while") && !strncmp(env->str + env->current_ind, "while", strlen("while"))) {
+    NEED_WORD("while", env);
+    if (env->error == OK) {
         env->current_ind += strlen("while");
         skip_spaces(env);
         Node *root = new Node(WHILE);
@@ -463,7 +468,7 @@ GetWhile(struct Env *env) {
             return NULL;
         }
         root->add_child(while_cond);
-
+        skip_spaces(env);
         REQUIRE('{', env);
         if (env->error) {
             rec_del(root);
@@ -523,12 +528,8 @@ Node *
 GetSequence(struct Env *env) {
     CHECK_ENV(env);
 
-    Node *root = GetStatement(env);
+    Node *root = new Node(DO_IN_ORDER);
 
-    if (env->error != OK) {
-        rec_del(root);
-        return NULL;
-    }
     while (true) {
         int old_ind = env->current_ind;
         Node *tmp = GetStatement(env);
@@ -538,15 +539,84 @@ GetSequence(struct Env *env) {
             rec_del(tmp);
             return root;
         }
-        if (root->get_operation() != DO_IN_ORDER) {
-            Node *tmp1 = root;
-            root = new Node(DO_IN_ORDER);
-            root->add_child(tmp1);
-        }
         root->add_child(tmp);
     }
     return root;
 }
+
+Node *
+GetFuncDef(struct Env *env) {
+    CHECK_ENV(env);
+
+    skip_spaces(env);
+    NEED_WORD("function", env);
+    CHECK_ENV(env);
+
+    env->current_ind += strlen("function");
+
+    Node *root = GetId(env);
+    if (env->error) {
+        rec_del(root);
+        return NULL;
+    }
+
+    root->change_operation(FUNC_DEF);
+    skip_spaces(env);
+    REQUIRE('(', env);
+    env->current_ind++;
+
+    if (env->error) {
+        rec_del(root);
+        return NULL;
+    }
+
+    Node *tmp = NULL;
+    
+    while (true) {
+        int old_ind = env->current_ind;
+        tmp = GetId(env);
+        if (env->error) {
+            env->current_ind = old_ind;
+            env->error = OK;
+            break;
+        }
+        root->add_child(tmp);
+        skip_spaces(env);
+        if (env->str[env->current_ind] != ',') {
+            break;
+        }
+        env->current_ind++;
+    }
+    
+    skip_spaces(env);
+    REQUIRE(')', env);
+    env->current_ind++;
+
+    if (env->error) {
+        rec_del(root);
+        return NULL;
+    }
+
+    skip_spaces(env);
+    REQUIRE('{', env);
+    env->current_ind++;
+
+    tmp = GetSequence(env);
+    if (env->error) {
+        rec_del(tmp);
+        rec_del(root);
+        return NULL;
+    }
+
+    root->add_child(tmp);
+
+    skip_spaces(env);
+    REQUIRE('}', env);
+    env->current_ind++;
+    return root;
+}
+
+
 
 //! \brief Parse whole expression
 //! \param [in] str String with expression
@@ -560,7 +630,17 @@ Parse_All(char *str, int str_length) {
     env.str_size = str_length;
     env.error = OK;
 
-    Node *root = GetSequence(&env);
+    Node *root = new Node(DO_IN_ORDER);
+    while (true) {
+        int old_ind = env.current_ind;
+        Node *tmp = GetFuncDef(&env);
+        if (env.error != OK) {
+            env.current_ind = old_ind;
+            env.error = OK;
+            break;
+        }
+        root->add_child(tmp);
+    }
     skip_spaces(&env);
     REQUIRE('$', &env);
     if (env.error) {
