@@ -31,6 +31,8 @@ char $\ast$ \mbox{\hyperlink{class_node_ad50da273cae2a60eb58b75c825554979}{get\+
 \begin{DoxyCompactList}\small\item\em Getter for var name. \end{DoxyCompactList}\item 
 double \mbox{\hyperlink{class_node_a396cc8bb42acbda2ca75a30a03d35001}{get\+\_\+value}} ()
 \begin{DoxyCompactList}\small\item\em Value getter. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_node_ac1bf7674e480dee74f3e00afadae87ea}{change\+\_\+operation}} (int new\+\_\+operation)
+\begin{DoxyCompactList}\small\item\em Change node type. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{class_node_a3e8e9b94393fe955cb5ade8a5382302c}{cut\+\_\+child}} (int child\+\_\+ind)
 \begin{DoxyCompactList}\small\item\em Cut child. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{class_node_ae2bfcbddacca90a8891f9ac6503e6cb7}{is\+\_\+constant}} ()
@@ -100,7 +102,7 @@ Definition at line 24 of file tree.\+cpp.
 \end{DoxyParams}
 
 
-Definition at line 79 of file tree.\+cpp.
+Definition at line 133 of file tree.\+cpp.
 
 \mbox{\Hypertarget{class_node_a024d24b53e4fff070d6c38381bfa4cd8}\label{class_node_a024d24b53e4fff070d6c38381bfa4cd8}} 
 \index{Node@{Node}!Node@{Node}}
@@ -119,7 +121,7 @@ Definition at line 79 of file tree.\+cpp.
 \end{DoxyParams}
 
 
-Definition at line 93 of file tree.\+cpp.
+Definition at line 147 of file tree.\+cpp.
 
 \mbox{\Hypertarget{class_node_aa0840c3cb5c7159be6d992adecd2097c}\label{class_node_aa0840c3cb5c7159be6d992adecd2097c}} 
 \index{Node@{Node}!````~Node@{$\sim$Node}}
@@ -133,7 +135,7 @@ Definition at line 93 of file tree.\+cpp.
 
 
 
-Definition at line 106 of file tree.\+cpp.
+Definition at line 160 of file tree.\+cpp.
 
 
 
@@ -158,7 +160,29 @@ Returns 0 in success -\/1 else
 \end{DoxyReturn}
 
 
-Definition at line 315 of file tree.\+cpp.
+Definition at line 381 of file tree.\+cpp.
+
+\mbox{\Hypertarget{class_node_ac1bf7674e480dee74f3e00afadae87ea}\label{class_node_ac1bf7674e480dee74f3e00afadae87ea}} 
+\index{Node@{Node}!change\_operation@{change\_operation}}
+\index{change\_operation@{change\_operation}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{change\_operation()}{change\_operation()}}
+{\footnotesize\ttfamily bool Node\+::change\+\_\+operation (\begin{DoxyParamCaption}\item[{int}]{\+\_\+operation }\end{DoxyParamCaption})}
+
+
+
+Change node type. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \+\_\+operation} & new type \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return true, if this change is permitted 
+\end{DoxyReturn}
+
+
+Definition at line 123 of file tree.\+cpp.
 
 \mbox{\Hypertarget{class_node_a8557bfd8ff3979e326611dd919f1987d}\label{class_node_a8557bfd8ff3979e326611dd919f1987d}} 
 \index{Node@{Node}!copy@{copy}}
@@ -175,7 +199,7 @@ Returns root of the copied tree
 \end{DoxyReturn}
 
 
-Definition at line 539 of file tree.\+cpp.
+Definition at line 605 of file tree.\+cpp.
 
 \mbox{\Hypertarget{class_node_a3e8e9b94393fe955cb5ade8a5382302c}\label{class_node_a3e8e9b94393fe955cb5ade8a5382302c}} 
 \index{Node@{Node}!cut\_child@{cut\_child}}
@@ -197,7 +221,7 @@ Returns cutted child
 \end{DoxyReturn}
 
 
-Definition at line 753 of file tree.\+cpp.
+Definition at line 819 of file tree.\+cpp.
 
 \mbox{\Hypertarget{class_node_ab40dfec4e2131e0222d53a72421b4d19}\label{class_node_ab40dfec4e2131e0222d53a72421b4d19}} 
 \index{Node@{Node}!derivate@{derivate}}
@@ -214,7 +238,7 @@ Returns root of the new tree
 \end{DoxyReturn}
 
 
-Definition at line 575 of file tree.\+cpp.
+Definition at line 641 of file tree.\+cpp.
 
 \mbox{\Hypertarget{class_node_a364762a99a068e11dda8418f605ed7be}\label{class_node_a364762a99a068e11dda8418f605ed7be}} 
 \index{Node@{Node}!export\_dot@{export\_dot}}
@@ -236,7 +260,7 @@ Returns 0 in success, -\/1 else
 \end{DoxyReturn}
 
 
-Definition at line 226 of file tree.\+cpp.
+Definition at line 292 of file tree.\+cpp.
 
 \mbox{\Hypertarget{class_node_aaf15ecede43472bafa027b9406239161}\label{class_node_aaf15ecede43472bafa027b9406239161}} 
 \index{Node@{Node}!export\_tex@{export\_tex}}
@@ -258,7 +282,7 @@ Return 0 in success, -\/1 else
 \end{DoxyReturn}
 
 
-Definition at line 300 of file tree.\+cpp.
+Definition at line 366 of file tree.\+cpp.
 
 \mbox{\Hypertarget{class_node_a9705e4699fe55d3e642d87d572663127}\label{class_node_a9705e4699fe55d3e642d87d572663127}} 
 \index{Node@{Node}!get\_children\_number@{get\_children\_number}}
@@ -275,7 +299,7 @@ Returns number of node children
 \end{DoxyReturn}
 
 
-Definition at line 118 of file tree.\+cpp.
+Definition at line 172 of file tree.\+cpp.
 
 \mbox{\Hypertarget{class_node_afcb6228f4f113c5542e87e7a800ede78}\label{class_node_afcb6228f4f113c5542e87e7a800ede78}} 
 \index{Node@{Node}!get\_childs@{get\_childs}}
@@ -292,7 +316,7 @@ Returns pointer to pointers to childs
 \end{DoxyReturn}
 
 
-Definition at line 219 of file tree.\+cpp.
+Definition at line 285 of file tree.\+cpp.
 
 \mbox{\Hypertarget{class_node_ad50da273cae2a60eb58b75c825554979}\label{class_node_ad50da273cae2a60eb58b75c825554979}} 
 \index{Node@{Node}!get\_name@{get\_name}}
@@ -306,7 +330,7 @@ Getter for var name.
 
 
 
-Definition at line 1166 of file tree.\+cpp.
+Definition at line 1232 of file tree.\+cpp.
 
 \mbox{\Hypertarget{class_node_a0ecc6c4c82f802f31f75e2cd2c672060}\label{class_node_a0ecc6c4c82f802f31f75e2cd2c672060}} 
 \index{Node@{Node}!get\_name\_len@{get\_name\_len}}
@@ -320,7 +344,7 @@ Getter for name len.
 
 
 
-Definition at line 1172 of file tree.\+cpp.
+Definition at line 1238 of file tree.\+cpp.
 
 \mbox{\Hypertarget{class_node_a17f96910f506ed2c1306546a8ed1ee6a}\label{class_node_a17f96910f506ed2c1306546a8ed1ee6a}} 
 \index{Node@{Node}!get\_operation@{get\_operation}}
@@ -337,7 +361,7 @@ Returns operation code
 \end{DoxyReturn}
 
 
-Definition at line 125 of file tree.\+cpp.
+Definition at line 179 of file tree.\+cpp.
 
 \mbox{\Hypertarget{class_node_afe731d3b0751b737af60bf3b4bb7bb36}\label{class_node_afe731d3b0751b737af60bf3b4bb7bb36}} 
 \index{Node@{Node}!get\_val@{get\_val}}
@@ -354,7 +378,7 @@ Returns value (N\+AN, if not-\/\+Constant, but caller is responsible for it)
 \end{DoxyReturn}
 
 
-Definition at line 723 of file tree.\+cpp.
+Definition at line 789 of file tree.\+cpp.
 
 \mbox{\Hypertarget{class_node_a396cc8bb42acbda2ca75a30a03d35001}\label{class_node_a396cc8bb42acbda2ca75a30a03d35001}} 
 \index{Node@{Node}!get\_value@{get\_value}}
@@ -368,7 +392,7 @@ Value getter.
 
 
 
-Definition at line 112 of file tree.\+cpp.
+Definition at line 166 of file tree.\+cpp.
 
 \mbox{\Hypertarget{class_node_ae2bfcbddacca90a8891f9ac6503e6cb7}\label{class_node_ae2bfcbddacca90a8891f9ac6503e6cb7}} 
 \index{Node@{Node}!is\_constant@{is\_constant}}
@@ -385,7 +409,7 @@ Returns true, if no V\+AR nodes, false else
 \end{DoxyReturn}
 
 
-Definition at line 560 of file tree.\+cpp.
+Definition at line 626 of file tree.\+cpp.
 
 \mbox{\Hypertarget{class_node_a619a9077025c8f8cb8dc86d5f2bdcece}\label{class_node_a619a9077025c8f8cb8dc86d5f2bdcece}} 
 \index{Node@{Node}!simplify@{simplify}}
@@ -399,7 +423,7 @@ Try to simplify expression.
 
 
 
-Definition at line 1281 of file tree.\+cpp.
+Definition at line 1347 of file tree.\+cpp.
 
 \mbox{\Hypertarget{class_node_a89fc96be20dc54286a29a2876ed04296}\label{class_node_a89fc96be20dc54286a29a2876ed04296}} 
 \index{Node@{Node}!tree\_eq@{tree\_eq}}
@@ -421,7 +445,7 @@ Returns true if the same, false else
 \end{DoxyReturn}
 
 
-Definition at line 906 of file tree.\+cpp.
+Definition at line 972 of file tree.\+cpp.
 
 
 

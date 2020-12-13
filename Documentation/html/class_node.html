@@ -110,6 +110,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a396cc8bb42acbda2ca75a30a03d35001"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a396cc8bb42acbda2ca75a30a03d35001">get_value</a> ()</td></tr>
 <tr class="memdesc:a396cc8bb42acbda2ca75a30a03d35001"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value getter.  <a href="class_node.html#a396cc8bb42acbda2ca75a30a03d35001">More...</a><br /></td></tr>
 <tr class="separator:a396cc8bb42acbda2ca75a30a03d35001"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1bf7674e480dee74f3e00afadae87ea"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#ac1bf7674e480dee74f3e00afadae87ea">change_operation</a> (int new_operation)</td></tr>
+<tr class="memdesc:ac1bf7674e480dee74f3e00afadae87ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change node type.  <a href="class_node.html#ac1bf7674e480dee74f3e00afadae87ea">More...</a><br /></td></tr>
+<tr class="separator:ac1bf7674e480dee74f3e00afadae87ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e8e9b94393fe955cb5ade8a5382302c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a3e8e9b94393fe955cb5ade8a5382302c">cut_child</a> (int child_ind)</td></tr>
 <tr class="memdesc:a3e8e9b94393fe955cb5ade8a5382302c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cut child.  <a href="class_node.html#a3e8e9b94393fe955cb5ade8a5382302c">More...</a><br /></td></tr>
 <tr class="separator:a3e8e9b94393fe955cb5ade8a5382302c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -207,7 +210,7 @@ Static Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00079">79</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00133">133</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>
@@ -235,7 +238,7 @@ Static Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00093">93</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00147">147</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>
@@ -256,7 +259,7 @@ Static Public Attributes</h2></td></tr>
 
 <p><a class="el" href="class_node.html">Node</a> destructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00106">106</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00160">160</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>
@@ -286,7 +289,36 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns 0 in success -1 else </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00315">315</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00381">381</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ac1bf7674e480dee74f3e00afadae87ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1bf7674e480dee74f3e00afadae87ea">&#9670;&nbsp;</a></span>change_operation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Node::change_operation </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>_operation</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Change node type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">_operation</td><td>new type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Return true, if this change is permitted </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00123">123</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>
@@ -308,7 +340,7 @@ Static Public Attributes</h2></td></tr>
 <p>Copy tree. </p>
 <dl class="section return"><dt>Returns</dt><dd>Returns root of the copied tree </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00539">539</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00605">605</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>
@@ -337,7 +369,7 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns cutted child </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00753">753</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00819">819</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>
@@ -360,7 +392,7 @@ Static Public Attributes</h2></td></tr>
 <p>Create new tree with derivate of old tree. </p>
 <dl class="section return"><dt>Returns</dt><dd>Returns root of the new tree </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00575">575</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00641">641</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>
@@ -399,7 +431,7 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns 0 in success, -1 else </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00226">226</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00292">292</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>
@@ -428,7 +460,7 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Return 0 in success, -1 else </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00300">300</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00366">366</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>
@@ -450,7 +482,7 @@ Static Public Attributes</h2></td></tr>
 <p>children_number getter </p>
 <dl class="section return"><dt>Returns</dt><dd>Returns number of node children </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00118">118</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00172">172</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>
@@ -472,7 +504,7 @@ Static Public Attributes</h2></td></tr>
 <p>childs getter </p>
 <dl class="section return"><dt>Returns</dt><dd>Returns pointer to pointers to childs </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00219">219</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00285">285</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>
@@ -493,7 +525,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>Getter for var name. </p>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l01166">1166</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l01232">1232</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>
@@ -514,7 +546,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>Getter for name len. </p>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l01172">1172</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l01238">1238</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>
@@ -536,7 +568,7 @@ Static Public Attributes</h2></td></tr>
 <p>Operation getter. </p>
 <dl class="section return"><dt>Returns</dt><dd>Returns operation code </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00125">125</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00179">179</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>
@@ -558,7 +590,7 @@ Static Public Attributes</h2></td></tr>
 <p>Get expression value. </p>
 <dl class="section return"><dt>Returns</dt><dd>Returns value (NAN, if not-Constant, but caller is responsible for it) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00723">723</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00789">789</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>
@@ -579,7 +611,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>Value getter. </p>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00112">112</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00166">166</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>
@@ -601,7 +633,7 @@ Static Public Attributes</h2></td></tr>
 <p>Find, if the expression is constant (can be calculated). It means no VAR nodes. </p>
 <dl class="section return"><dt>Returns</dt><dd>Returns true, if no VAR nodes, false else </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00560">560</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00626">626</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>
@@ -622,7 +654,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>Try to simplify expression. </p>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l01281">1281</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l01347">1347</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>
@@ -651,7 +683,7 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns true if the same, false else </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00906">906</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00972">972</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>

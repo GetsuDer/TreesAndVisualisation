@@ -89,7 +89,7 @@ Node::Node(int _operation) {
         case FOR:
             name_len = 3;
             name = (char *)realloc(name, name_len * sizeof(char));
-            strncpy(name, "while", name_len);
+            strncpy(name, "for", name_len);
             break;
         case DO_IN_ORDER:
             name_len = 2;

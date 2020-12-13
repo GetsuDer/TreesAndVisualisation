@@ -68,7 +68,8 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">tree.h File Reference</div>  </div>
 </div><!--header-->
@@ -110,13 +111,28 @@ Enumerations</h2></td></tr>
 <a class="el" href="tree_8h.html#abc7258f0da73a4d5b16a1786f203acaca7c696b1784e3a62b696699016dda8227">LN</a>, 
 <br />
 &#160;&#160;<a class="el" href="tree_8h.html#abc7258f0da73a4d5b16a1786f203acaca55720cf0d1ebf3d6f0eac12f2dffbfa2">SIN</a>, 
-<a class="el" href="tree_8h.html#abc7258f0da73a4d5b16a1786f203acaca493e49dc3b2f8cf43d8ae13fcdde6639">COS</a>
+<a class="el" href="tree_8h.html#abc7258f0da73a4d5b16a1786f203acaca493e49dc3b2f8cf43d8ae13fcdde6639">COS</a>, 
+<a class="el" href="tree_8h.html#abc7258f0da73a4d5b16a1786f203acaca2967ccae03791ac3d69b2b731e479ec2">ASSIGNMENT</a>, 
+<a class="el" href="tree_8h.html#abc7258f0da73a4d5b16a1786f203acacaf165e191d0fd1c7cc04270fb883dbc02">MORE</a>, 
+<br />
+&#160;&#160;<a class="el" href="tree_8h.html#abc7258f0da73a4d5b16a1786f203acaca95c736070f99b99eb80d1eac1f4ca60f">LESS</a>, 
+<a class="el" href="tree_8h.html#abc7258f0da73a4d5b16a1786f203acaca9efdc855f3c1477957fb50affec07f8f">EQ</a>, 
+<a class="el" href="tree_8h.html#abc7258f0da73a4d5b16a1786f203acaca252802eda493fb6b4a279c4452acb547">IF</a>, 
+<a class="el" href="tree_8h.html#abc7258f0da73a4d5b16a1786f203acaca3278fd035226215822c903790a1eee73">WHILE</a>, 
+<br />
+&#160;&#160;<a class="el" href="tree_8h.html#abc7258f0da73a4d5b16a1786f203acacaa809654855caa62449850d9122fd77a8">FOR</a>, 
+<a class="el" href="tree_8h.html#abc7258f0da73a4d5b16a1786f203acacaf4d2302b777dd3b34373f8c1b41b75fb">DO_IN_ORDER</a>, 
+<a class="el" href="tree_8h.html#abc7258f0da73a4d5b16a1786f203acaca77c12347d9819c1bce075f5c4aa3b4f4">FUNC_CALL</a>, 
+<a class="el" href="tree_8h.html#abc7258f0da73a4d5b16a1786f203acaca6ce6d571f213f5a3b0c2286f6445c38d">FUNC_DEF</a>, 
+<br />
+&#160;&#160;<a class="el" href="tree_8h.html#abc7258f0da73a4d5b16a1786f203acaca520e09ffec033636dba711f3441cc600">RETURN</a>
 <br />
  }</td></tr>
 <tr class="separator:abc7258f0da73a4d5b16a1786f203acac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada31fa1be5aadf4697ce6329d768c08e"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tree_8h.html#ada31fa1be5aadf4697ce6329d768c08e">Env_Errors</a> { <a class="el" href="tree_8h.html#ada31fa1be5aadf4697ce6329d768c08ea2bc49ec37d6a5715dd23e85f1ff5bb59">OK</a> = 0, 
 <a class="el" href="tree_8h.html#ada31fa1be5aadf4697ce6329d768c08eab4f175d3a62bc7be04b2175a2af8b806">NO_SYMBOL</a>, 
-<a class="el" href="tree_8h.html#ada31fa1be5aadf4697ce6329d768c08ea4f4fac225490024c5b9762f8e24e30a5">WRONG_SYMBOL</a>
+<a class="el" href="tree_8h.html#ada31fa1be5aadf4697ce6329d768c08ea4f4fac225490024c5b9762f8e24e30a5">WRONG_SYMBOL</a>, 
+<a class="el" href="tree_8h.html#ada31fa1be5aadf4697ce6329d768c08eafc119c6b370f32b378a0809d11f7905c">TOO_LONG_ID</a>
  }</td></tr>
 <tr class="separator:ada31fa1be5aadf4697ce6329d768c08e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -135,8 +151,15 @@ Functions</h2></td></tr>
 <tr class="memdesc:a385a83982a8a3f1adbbbdf1a65d255da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get operation for (op1 op op2 op op3) = ((op1) op (op2 op_op op3))  <a href="tree_8h.html#a385a83982a8a3f1adbbbdf1a65d255da">More...</a><br /></td></tr>
 <tr class="separator:a385a83982a8a3f1adbbbdf1a65d255da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad193e59772ecedbfe4ba3859990d6127"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tree_8h.html#ad193e59772ecedbfe4ba3859990d6127">Parse_All</a> (char *str, int str_length)</td></tr>
-<tr class="memdesc:ad193e59772ecedbfe4ba3859990d6127"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse whole expression.  <a href="tree_8h.html#ad193e59772ecedbfe4ba3859990d6127">More...</a><br /></td></tr>
+<tr class="memdesc:ad193e59772ecedbfe4ba3859990d6127"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse whole program.  <a href="tree_8h.html#ad193e59772ecedbfe4ba3859990d6127">More...</a><br /></td></tr>
 <tr class="separator:ad193e59772ecedbfe4ba3859990d6127"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:aafc4e1635a35d0daa3c97da4e44cb190"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tree_8h.html#aafc4e1635a35d0daa3c97da4e44cb190">ID_NAME_SIZE</a> = 15</td></tr>
+<tr class="separator:aafc4e1635a35d0daa3c97da4e44cb190"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b805d67efcceca312585c77d32a7b3d"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tree_8h.html#a6b805d67efcceca312585c77d32a7b3d">FUNC_NAME_SIZE</a> = <a class="el" href="tree_8h.html#aafc4e1635a35d0daa3c97da4e44cb190">ID_NAME_SIZE</a></td></tr>
+<tr class="separator:a6b805d67efcceca312585c77d32a7b3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="ada31fa1be5aadf4697ce6329d768c08e"></a>
@@ -154,9 +177,10 @@ Functions</h2></td></tr>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ada31fa1be5aadf4697ce6329d768c08ea2bc49ec37d6a5715dd23e85f1ff5bb59"></a>OK&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ada31fa1be5aadf4697ce6329d768c08eab4f175d3a62bc7be04b2175a2af8b806"></a>NO_SYMBOL&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ada31fa1be5aadf4697ce6329d768c08ea4f4fac225490024c5b9762f8e24e30a5"></a>WRONG_SYMBOL&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ada31fa1be5aadf4697ce6329d768c08eafc119c6b370f32b378a0809d11f7905c"></a>TOO_LONG_ID&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="tree_8h_source.html#l00077">77</a> of file <a class="el" href="tree_8h_source.html">tree.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8h_source.html#l00090">90</a> of file <a class="el" href="tree_8h_source.html">tree.h</a>.</p>
 
 </div>
 </div>
@@ -182,9 +206,20 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="abc7258f0da73a4d5b16a1786f203acaca7c696b1784e3a62b696699016dda8227"></a>LN&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="abc7258f0da73a4d5b16a1786f203acaca55720cf0d1ebf3d6f0eac12f2dffbfa2"></a>SIN&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="abc7258f0da73a4d5b16a1786f203acaca493e49dc3b2f8cf43d8ae13fcdde6639"></a>COS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abc7258f0da73a4d5b16a1786f203acaca2967ccae03791ac3d69b2b731e479ec2"></a>ASSIGNMENT&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abc7258f0da73a4d5b16a1786f203acacaf165e191d0fd1c7cc04270fb883dbc02"></a>MORE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abc7258f0da73a4d5b16a1786f203acaca95c736070f99b99eb80d1eac1f4ca60f"></a>LESS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abc7258f0da73a4d5b16a1786f203acaca9efdc855f3c1477957fb50affec07f8f"></a>EQ&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abc7258f0da73a4d5b16a1786f203acaca252802eda493fb6b4a279c4452acb547"></a>IF&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abc7258f0da73a4d5b16a1786f203acaca3278fd035226215822c903790a1eee73"></a>WHILE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abc7258f0da73a4d5b16a1786f203acacaa809654855caa62449850d9122fd77a8"></a>FOR&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abc7258f0da73a4d5b16a1786f203acacaf4d2302b777dd3b34373f8c1b41b75fb"></a>DO_IN_ORDER&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abc7258f0da73a4d5b16a1786f203acaca77c12347d9819c1bce075f5c4aa3b4f4"></a>FUNC_CALL&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abc7258f0da73a4d5b16a1786f203acaca6ce6d571f213f5a3b0c2286f6445c38d"></a>FUNC_DEF&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abc7258f0da73a4d5b16a1786f203acaca520e09ffec033636dba711f3441cc600"></a>RETURN&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="tree_8h_source.html#l00050">50</a> of file <a class="el" href="tree_8h_source.html">tree.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8h_source.html#l00051">51</a> of file <a class="el" href="tree_8h_source.html">tree.h</a>.</p>
 
 </div>
 </div>
@@ -214,7 +249,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns neitral element as int </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00991">991</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l01057">1057</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>
@@ -236,7 +271,7 @@ Functions</h2></td></tr>
 
 <p>Get operation for (op1 op op2 op op3) = ((op1) op (op2 op_op op3)) </p>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l01009">1009</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l01075">1075</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>
@@ -266,17 +301,17 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Parse whole expression. </p>
+<p>Parse whole program. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">str</td><td>String with expression </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">str_length</td><td>Expression string length </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">str</td><td>String with program </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">str_length</td><td>Program length </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Return root of the resulting tree </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00258">258</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00920">920</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
 
 </div>
 </div>
@@ -305,7 +340,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns root of created tree or NULL if unsuccess </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00518">518</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00584">584</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
 
 </div>
 </div>
@@ -333,7 +368,56 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00340">340</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8cpp_source.html#l00406">406</a> of file <a class="el" href="tree_8cpp_source.html">tree.cpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a6b805d67efcceca312585c77d32a7b3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b805d67efcceca312585c77d32a7b3d">&#9670;&nbsp;</a></span>FUNC_NAME_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int FUNC_NAME_SIZE = <a class="el" href="tree_8h.html#aafc4e1635a35d0daa3c97da4e44cb190">ID_NAME_SIZE</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tree_8h_source.html#l00099">99</a> of file <a class="el" href="tree_8h_source.html">tree.h</a>.</p>
+
+</div>
+</div>
+<a id="aafc4e1635a35d0daa3c97da4e44cb190"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafc4e1635a35d0daa3c97da4e44cb190">&#9670;&nbsp;</a></span>ID_NAME_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int ID_NAME_SIZE = 15</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tree_8h_source.html#l00098">98</a> of file <a class="el" href="tree_8h_source.html">tree.h</a>.</p>
 
 </div>
 </div>

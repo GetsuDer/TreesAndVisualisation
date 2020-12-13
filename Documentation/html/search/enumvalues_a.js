@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['wrong_5fsymbol_149',['WRONG_SYMBOL',['../tree_8h.html#ada31fa1be5aadf4697ce6329d768c08ea4f4fac225490024c5b9762f8e24e30a5',1,'tree.h']]]
+  ['power_197',['POWER',['../tree_8h.html#abc7258f0da73a4d5b16a1786f203acaca316771101d4b4b1dea7d7e2a82ef1658',1,'tree.h']]]
 ];

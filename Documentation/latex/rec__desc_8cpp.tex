@@ -3,12 +3,14 @@
 {\ttfamily \#include $<$cstdio$>$}\newline
 {\ttfamily \#include $<$ctype.\+h$>$}\newline
 {\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$cstring$>$}\newline
 {\ttfamily \#include \char`\"{}tree.\+h\char`\"{}}\newline
-Include dependency graph for rec\+\_\+desc.\+cpp\+:\nopagebreak
+Include dependency graph for rec\+\_\+desc.\+cpp\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=326pt]{rec__desc_8cpp__incl}
+\includegraphics[width=350pt]{rec__desc_8cpp__incl}
 \end{center}
 \end{figure}
 \doxysubsection*{Macros}
@@ -17,27 +19,79 @@ Include dependency graph for rec\+\_\+desc.\+cpp\+:\nopagebreak
 \#define \mbox{\hyperlink{rec__desc_8cpp_a26d05ed950fc4ea39910caa39e307b76}{R\+E\+Q\+U\+I\+RE}}(a,  env)
 \item 
 \#define \mbox{\hyperlink{rec__desc_8cpp_aa7acf68389aef073431d1b7b0b636d49}{N\+E\+XT}}(a,  env)~((env)-\/$>$current\+\_\+ind $<$ (env)-\/$>$str\+\_\+size \&\& (env)-\/$>$str\mbox{[}(env)-\/$>$current\+\_\+ind\mbox{]} == a)
+\item 
+\#define \mbox{\hyperlink{rec__desc_8cpp_a6768b2f1be46a493cdacd1d92e35021a}{C\+H\+E\+C\+K\+\_\+\+E\+NV}}(env)
+\item 
+\#define \mbox{\hyperlink{rec__desc_8cpp_ab4b45c23620c99eaac1696ab4c8db1c8}{N\+E\+E\+D\+\_\+\+W\+O\+RD}}(a,  env)~if ((env)-\/$>$str\+\_\+size -\/ (env)-\/$>$current\+\_\+ind $<$ (int)strlen(a) $\vert$$\vert$ strncmp((env)-\/$>$str + (env)-\/$>$current\+\_\+ind, a, strlen(a))) (env)-\/$>$error = \mbox{\hyperlink{tree_8h_ada31fa1be5aadf4697ce6329d768c08ea4f4fac225490024c5b9762f8e24e30a5}{W\+R\+O\+N\+G\+\_\+\+S\+Y\+M\+B\+OL}};
 \end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{rec__desc_8cpp_ae22bd8cf695cefedb8d3828f7eae2506}{Get\+Sum}} (struct \mbox{\hyperlink{struct_env}{Env}} $\ast$env)
 \begin{DoxyCompactList}\small\item\em Read \textquotesingle{}expr \mbox{[}\textquotesingle{}+\textquotesingle{}, \textquotesingle{}-\/\textquotesingle{}\mbox{]} expr$\ast$\textquotesingle{}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{rec__desc_8cpp_a97aeeb657bb32a1db670e9d4698f0a0d}{Get\+Expression}} (struct \mbox{\hyperlink{struct_env}{Env}} $\ast$env)
+\begin{DoxyCompactList}\small\item\em Get expression $\vert$ expr $>$ expr $\vert$ expr $<$ expr $\vert$ expr $\sim$ expr etc. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{rec__desc_8cpp_a5e938cb59e5f3929d1d9ee341cc1c9b8}{Get\+Statement}} (struct \mbox{\hyperlink{struct_env}{Env}} $\ast$env)
+\begin{DoxyCompactList}\small\item\em Get if, while, for, return or expression. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{rec__desc_8cpp_a7ec8e3869783855e9c491d8ecdea2fa4}{Get\+Sequence}} (struct \mbox{\hyperlink{struct_env}{Env}} $\ast$env)
+\begin{DoxyCompactList}\small\item\em Get sequence of statements (operators etc) \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{rec__desc_8cpp_a2f02037d921cc94090af18dfbcc7080d}{Get\+Number}} (struct \mbox{\hyperlink{struct_env}{Env}} $\ast$env)
 \begin{DoxyCompactList}\small\item\em Read unsigned integer. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{rec__desc_8cpp_a0d0272ab138ebdb7c9f3545eae28ee3b}{Get\+Double}} (struct \mbox{\hyperlink{struct_env}{Env}} $\ast$env)
 \begin{DoxyCompactList}\small\item\em Read double. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{rec__desc_8cpp_a32bc531b5db98dfe9760d2cd57171429}{Get\+Id}} (struct \mbox{\hyperlink{struct_env}{Env}} $\ast$env)
+\begin{DoxyCompactList}\small\item\em Get identificator \mbox{[}a-\/z\+A-\/Z\mbox{]}\mbox{[}a-\/z\+A-\/\+Z0-\/9\mbox{]}$\ast$. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{rec__desc_8cpp_a2f5ac91b5fb53dbd90a1e502f84972d6}{Assignment}} (struct \mbox{\hyperlink{struct_env}{Env}} $\ast$env)
+\begin{DoxyCompactList}\small\item\em Get assigment identificator = calculated\+\_\+expression. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{rec__desc_8cpp_a4d3e391b8e4a780d1e4fa5a9a812fbce}{Get\+Func\+Call}} (struct \mbox{\hyperlink{struct_env}{Env}} $\ast$env)
+\begin{DoxyCompactList}\small\item\em Get func\+\_\+name(params) \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{rec__desc_8cpp_a52d25310f6e1b7d8b879cd9ab32b71e9}{Get\+Part}} (struct \mbox{\hyperlink{struct_env}{Env}} $\ast$env)
 \begin{DoxyCompactList}\small\item\em Get expression (expr) $\vert$ double $\vert$ func(expr) \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{rec__desc_8cpp_a77f43b106f2c6122cbe17413901e719f}{Get\+Power}} (struct \mbox{\hyperlink{struct_env}{Env}} $\ast$env)
 \begin{DoxyCompactList}\small\item\em Parse expr ($^\wedge$ expr)$\ast$. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{rec__desc_8cpp_ad77dbc1df4980aabe91bed72c929b9db}{Get\+Mul}} (struct \mbox{\hyperlink{struct_env}{Env}} $\ast$env)
 \begin{DoxyCompactList}\small\item\em Read \textquotesingle{}expr \mbox{[}\textquotesingle{}$\ast$\textquotesingle{}, \textquotesingle{}/\textquotesingle{}\mbox{]} expr$\ast$\textquotesingle{}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{rec__desc_8cpp_addb5ede15e9b98855f30b1788d9bd430}{Get\+If}} (struct \mbox{\hyperlink{struct_env}{Env}} $\ast$env)
+\begin{DoxyCompactList}\small\item\em Get if (condition) \{ ... \} (else \{ ... \}) \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{rec__desc_8cpp_a250922d72adae328ddad94dc79c585c3}{Get\+While}} (struct \mbox{\hyperlink{struct_env}{Env}} $\ast$env)
+\begin{DoxyCompactList}\small\item\em Get while (cond) \{ ... \}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{rec__desc_8cpp_ae7a317db1a6530226b7ce0b781fda16b}{Get\+Return}} (struct \mbox{\hyperlink{struct_env}{Env}} $\ast$env)
+\begin{DoxyCompactList}\small\item\em Get return ( ... ) \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{rec__desc_8cpp_a14a9e1900edb33fe445042b33a912e1b}{Get\+For}} (struct \mbox{\hyperlink{struct_env}{Env}} $\ast$env)
+\begin{DoxyCompactList}\small\item\em Get for ( before; while; after ) \{ ... \}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{rec__desc_8cpp_ae5b3ee1ec6a6bc4e7c8eb43dc4f65cef}{Get\+Func\+Def}} (struct \mbox{\hyperlink{struct_env}{Env}} $\ast$env)
+\begin{DoxyCompactList}\small\item\em Get function definition\+: function func\+\_\+name(param1, ... ) \{ ... \}. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{rec__desc_8cpp_ad193e59772ecedbfe4ba3859990d6127}{Parse\+\_\+\+All}} (char $\ast$str, int str\+\_\+length)
-\begin{DoxyCompactList}\small\item\em Parse whole expression. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Parse whole program. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{rec__desc_8cpp_a6768b2f1be46a493cdacd1d92e35021a}\label{rec__desc_8cpp_a6768b2f1be46a493cdacd1d92e35021a}} 
+\index{rec\_desc.cpp@{rec\_desc.cpp}!CHECK\_ENV@{CHECK\_ENV}}
+\index{CHECK\_ENV@{CHECK\_ENV}!rec\_desc.cpp@{rec\_desc.cpp}}
+\doxysubsubsection{\texorpdfstring{CHECK\_ENV}{CHECK\_ENV}}
+{\footnotesize\ttfamily \#define C\+H\+E\+C\+K\+\_\+\+E\+NV(\begin{DoxyParamCaption}\item[{}]{env }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{     \textcolor{keywordflow}{if} (((env)-\/>\mbox{\hyperlink{struct_env_aafe1bcb1bf136886c5e8df759a8898f6}{error}} == \mbox{\hyperlink{tree_8h_ada31fa1be5aadf4697ce6329d768c08ea2bc49ec37d6a5715dd23e85f1ff5bb59}{OK}}) \&\& (env)-\/>\mbox{\hyperlink{struct_env_a15771058c04fa635607344ff62c6c9a1}{current\_ind}} >= (env)-\/>\mbox{\hyperlink{struct_env_acbaa3b2e1651cb05dee2b60d337b0a0c}{str\_size}}) (env)-\/>\mbox{\hyperlink{struct_env_aafe1bcb1bf136886c5e8df759a8898f6}{error}} = \mbox{\hyperlink{tree_8h_ada31fa1be5aadf4697ce6329d768c08eab4f175d3a62bc7be04b2175a2af8b806}{NO\_SYMBOL}};\(\backslash\)}
+\DoxyCodeLine{     if ((env)-\/>\mbox{\hyperlink{struct_env_aafe1bcb1bf136886c5e8df759a8898f6}{error}} != \mbox{\hyperlink{tree_8h_ada31fa1be5aadf4697ce6329d768c08ea2bc49ec37d6a5715dd23e85f1ff5bb59}{OK}}) \textcolor{keywordflow}{return} NULL;}
+
+\end{DoxyCode}
+
+
+Definition at line 15 of file rec\+\_\+desc.\+cpp.
+
+\mbox{\Hypertarget{rec__desc_8cpp_ab4b45c23620c99eaac1696ab4c8db1c8}\label{rec__desc_8cpp_ab4b45c23620c99eaac1696ab4c8db1c8}} 
+\index{rec\_desc.cpp@{rec\_desc.cpp}!NEED\_WORD@{NEED\_WORD}}
+\index{NEED\_WORD@{NEED\_WORD}!rec\_desc.cpp@{rec\_desc.cpp}}
+\doxysubsubsection{\texorpdfstring{NEED\_WORD}{NEED\_WORD}}
+{\footnotesize\ttfamily \#define N\+E\+E\+D\+\_\+\+W\+O\+RD(\begin{DoxyParamCaption}\item[{}]{a,  }\item[{}]{env }\end{DoxyParamCaption})~if ((env)-\/$>$str\+\_\+size -\/ (env)-\/$>$current\+\_\+ind $<$ (int)strlen(a) $\vert$$\vert$ strncmp((env)-\/$>$str + (env)-\/$>$current\+\_\+ind, a, strlen(a))) (env)-\/$>$error = \mbox{\hyperlink{tree_8h_ada31fa1be5aadf4697ce6329d768c08ea4f4fac225490024c5b9762f8e24e30a5}{W\+R\+O\+N\+G\+\_\+\+S\+Y\+M\+B\+OL}};}
+
+
+
+Definition at line 20 of file rec\+\_\+desc.\+cpp.
+
 \mbox{\Hypertarget{rec__desc_8cpp_aa7acf68389aef073431d1b7b0b636d49}\label{rec__desc_8cpp_aa7acf68389aef073431d1b7b0b636d49}} 
 \index{rec\_desc.cpp@{rec\_desc.cpp}!NEXT@{NEXT}}
 \index{NEXT@{NEXT}!rec\_desc.cpp@{rec\_desc.cpp}}
@@ -46,7 +100,7 @@ int \mbox{\hyperlink{rec__desc_8cpp_a2f02037d921cc94090af18dfbcc7080d}{Get\+Numb
 
 
 
-Definition at line 12 of file rec\+\_\+desc.\+cpp.
+Definition at line 13 of file rec\+\_\+desc.\+cpp.
 
 \mbox{\Hypertarget{rec__desc_8cpp_a26d05ed950fc4ea39910caa39e307b76}\label{rec__desc_8cpp_a26d05ed950fc4ea39910caa39e307b76}} 
 \index{rec\_desc.cpp@{rec\_desc.cpp}!REQUIRE@{REQUIRE}}
@@ -63,11 +117,32 @@ Definition at line 12 of file rec\+\_\+desc.\+cpp.
 \end{DoxyCode}
 
 
-Definition at line 7 of file rec\+\_\+desc.\+cpp.
+Definition at line 8 of file rec\+\_\+desc.\+cpp.
 
 
 
 \doxysubsection{Function Documentation}
+\mbox{\Hypertarget{rec__desc_8cpp_a2f5ac91b5fb53dbd90a1e502f84972d6}\label{rec__desc_8cpp_a2f5ac91b5fb53dbd90a1e502f84972d6}} 
+\index{rec\_desc.cpp@{rec\_desc.cpp}!Assignment@{Assignment}}
+\index{Assignment@{Assignment}!rec\_desc.cpp@{rec\_desc.cpp}}
+\doxysubsubsection{\texorpdfstring{Assignment()}{Assignment()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_node}{Node}}$\ast$ Assignment (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct_env}{Env}} $\ast$}]{env }\end{DoxyParamCaption})}
+
+
+
+Get assigment identificator = calculated\+\_\+expression. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em env} & String and linked vars \\
+\hline
+\mbox{\texttt{ in}}  & {\em env} & String and linked vars \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 129 of file rec\+\_\+desc.\+cpp.
+
 \mbox{\Hypertarget{rec__desc_8cpp_a0d0272ab138ebdb7c9f3545eae28ee3b}\label{rec__desc_8cpp_a0d0272ab138ebdb7c9f3545eae28ee3b}} 
 \index{rec\_desc.cpp@{rec\_desc.cpp}!GetDouble@{GetDouble}}
 \index{GetDouble@{GetDouble}!rec\_desc.cpp@{rec\_desc.cpp}}
@@ -88,7 +163,139 @@ Returns tree node with read double
 \end{DoxyReturn}
 
 
-Definition at line 52 of file rec\+\_\+desc.\+cpp.
+Definition at line 68 of file rec\+\_\+desc.\+cpp.
+
+\mbox{\Hypertarget{rec__desc_8cpp_a97aeeb657bb32a1db670e9d4698f0a0d}\label{rec__desc_8cpp_a97aeeb657bb32a1db670e9d4698f0a0d}} 
+\index{rec\_desc.cpp@{rec\_desc.cpp}!GetExpression@{GetExpression}}
+\index{GetExpression@{GetExpression}!rec\_desc.cpp@{rec\_desc.cpp}}
+\doxysubsubsection{\texorpdfstring{GetExpression()}{GetExpression()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_node}{Node}} $\ast$ Get\+Expression (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct_env}{Env}} $\ast$}]{env }\end{DoxyParamCaption})}
+
+
+
+Get expression $\vert$ expr $>$ expr $\vert$ expr $<$ expr $\vert$ expr $\sim$ expr etc. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em env} & String and linked vars \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return root of the resulting tree 
+\end{DoxyReturn}
+
+
+Definition at line 373 of file rec\+\_\+desc.\+cpp.
+
+\mbox{\Hypertarget{rec__desc_8cpp_a14a9e1900edb33fe445042b33a912e1b}\label{rec__desc_8cpp_a14a9e1900edb33fe445042b33a912e1b}} 
+\index{rec\_desc.cpp@{rec\_desc.cpp}!GetFor@{GetFor}}
+\index{GetFor@{GetFor}!rec\_desc.cpp@{rec\_desc.cpp}}
+\doxysubsubsection{\texorpdfstring{GetFor()}{GetFor()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_node}{Node}}$\ast$ Get\+For (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct_env}{Env}} $\ast$}]{env }\end{DoxyParamCaption})}
+
+
+
+Get for ( before; while; after ) \{ ... \}. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em env} & String and linked vars \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return root of the resulting tree 
+\end{DoxyReturn}
+
+
+Definition at line 623 of file rec\+\_\+desc.\+cpp.
+
+\mbox{\Hypertarget{rec__desc_8cpp_a4d3e391b8e4a780d1e4fa5a9a812fbce}\label{rec__desc_8cpp_a4d3e391b8e4a780d1e4fa5a9a812fbce}} 
+\index{rec\_desc.cpp@{rec\_desc.cpp}!GetFuncCall@{GetFuncCall}}
+\index{GetFuncCall@{GetFuncCall}!rec\_desc.cpp@{rec\_desc.cpp}}
+\doxysubsubsection{\texorpdfstring{GetFuncCall()}{GetFuncCall()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_node}{Node}}$\ast$ Get\+Func\+Call (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct_env}{Env}} $\ast$}]{env }\end{DoxyParamCaption})}
+
+
+
+Get func\+\_\+name(params) 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em env} & String and linked varse \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return root of the resulting tree 
+\end{DoxyReturn}
+
+
+Definition at line 168 of file rec\+\_\+desc.\+cpp.
+
+\mbox{\Hypertarget{rec__desc_8cpp_ae5b3ee1ec6a6bc4e7c8eb43dc4f65cef}\label{rec__desc_8cpp_ae5b3ee1ec6a6bc4e7c8eb43dc4f65cef}} 
+\index{rec\_desc.cpp@{rec\_desc.cpp}!GetFuncDef@{GetFuncDef}}
+\index{GetFuncDef@{GetFuncDef}!rec\_desc.cpp@{rec\_desc.cpp}}
+\doxysubsubsection{\texorpdfstring{GetFuncDef()}{GetFuncDef()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_node}{Node}}$\ast$ Get\+Func\+Def (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct_env}{Env}} $\ast$}]{env }\end{DoxyParamCaption})}
+
+
+
+Get function definition\+: function func\+\_\+name(param1, ... ) \{ ... \}. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em env} & String and linked vars \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return root of the resulting tree 
+\end{DoxyReturn}
+
+
+Definition at line 783 of file rec\+\_\+desc.\+cpp.
+
+\mbox{\Hypertarget{rec__desc_8cpp_a32bc531b5db98dfe9760d2cd57171429}\label{rec__desc_8cpp_a32bc531b5db98dfe9760d2cd57171429}} 
+\index{rec\_desc.cpp@{rec\_desc.cpp}!GetId@{GetId}}
+\index{GetId@{GetId}!rec\_desc.cpp@{rec\_desc.cpp}}
+\doxysubsubsection{\texorpdfstring{GetId()}{GetId()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_node}{Node}}$\ast$ Get\+Id (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct_env}{Env}} $\ast$}]{env }\end{DoxyParamCaption})}
+
+
+
+Get identificator \mbox{[}a-\/z\+A-\/Z\mbox{]}\mbox{[}a-\/z\+A-\/\+Z0-\/9\mbox{]}$\ast$. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em env} & String and linked vars \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return resulting tree node 
+\end{DoxyReturn}
+
+
+Definition at line 95 of file rec\+\_\+desc.\+cpp.
+
+\mbox{\Hypertarget{rec__desc_8cpp_addb5ede15e9b98855f30b1788d9bd430}\label{rec__desc_8cpp_addb5ede15e9b98855f30b1788d9bd430}} 
+\index{rec\_desc.cpp@{rec\_desc.cpp}!GetIf@{GetIf}}
+\index{GetIf@{GetIf}!rec\_desc.cpp@{rec\_desc.cpp}}
+\doxysubsubsection{\texorpdfstring{GetIf()}{GetIf()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_node}{Node}}$\ast$ Get\+If (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct_env}{Env}} $\ast$}]{env }\end{DoxyParamCaption})}
+
+
+
+Get if (condition) \{ ... \} (else \{ ... \}) 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em env} & String and linked vars \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return root of the resulting tree 
+\end{DoxyReturn}
+
+
+Definition at line 416 of file rec\+\_\+desc.\+cpp.
 
 \mbox{\Hypertarget{rec__desc_8cpp_ad77dbc1df4980aabe91bed72c929b9db}\label{rec__desc_8cpp_ad77dbc1df4980aabe91bed72c929b9db}} 
 \index{rec\_desc.cpp@{rec\_desc.cpp}!GetMul@{GetMul}}
@@ -110,7 +317,7 @@ Return root of the resulting tree
 \end{DoxyReturn}
 
 
-Definition at line 172 of file rec\+\_\+desc.\+cpp.
+Definition at line 302 of file rec\+\_\+desc.\+cpp.
 
 \mbox{\Hypertarget{rec__desc_8cpp_a2f02037d921cc94090af18dfbcc7080d}\label{rec__desc_8cpp_a2f02037d921cc94090af18dfbcc7080d}} 
 \index{rec\_desc.cpp@{rec\_desc.cpp}!GetNumber@{GetNumber}}
@@ -133,7 +340,7 @@ Return read integer ~\newline
 \end{DoxyReturn}
 
 
-Definition at line 31 of file rec\+\_\+desc.\+cpp.
+Definition at line 42 of file rec\+\_\+desc.\+cpp.
 
 \mbox{\Hypertarget{rec__desc_8cpp_a52d25310f6e1b7d8b879cd9ab32b71e9}\label{rec__desc_8cpp_a52d25310f6e1b7d8b879cd9ab32b71e9}} 
 \index{rec\_desc.cpp@{rec\_desc.cpp}!GetPart@{GetPart}}
@@ -155,7 +362,7 @@ Returns root of the resulting tree
 \end{DoxyReturn}
 
 
-Definition at line 77 of file rec\+\_\+desc.\+cpp.
+Definition at line 219 of file rec\+\_\+desc.\+cpp.
 
 \mbox{\Hypertarget{rec__desc_8cpp_a77f43b106f2c6122cbe17413901e719f}\label{rec__desc_8cpp_a77f43b106f2c6122cbe17413901e719f}} 
 \index{rec\_desc.cpp@{rec\_desc.cpp}!GetPower@{GetPower}}
@@ -178,7 +385,73 @@ Return root of the resulting tree ~\newline
 \end{DoxyReturn}
 
 
-Definition at line 137 of file rec\+\_\+desc.\+cpp.
+Definition at line 269 of file rec\+\_\+desc.\+cpp.
+
+\mbox{\Hypertarget{rec__desc_8cpp_ae7a317db1a6530226b7ce0b781fda16b}\label{rec__desc_8cpp_ae7a317db1a6530226b7ce0b781fda16b}} 
+\index{rec\_desc.cpp@{rec\_desc.cpp}!GetReturn@{GetReturn}}
+\index{GetReturn@{GetReturn}!rec\_desc.cpp@{rec\_desc.cpp}}
+\doxysubsubsection{\texorpdfstring{GetReturn()}{GetReturn()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_node}{Node}}$\ast$ Get\+Return (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct_env}{Env}} $\ast$}]{env }\end{DoxyParamCaption})}
+
+
+
+Get return ( ... ) 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em env} & String and linked vars \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return root of the resulting tree 
+\end{DoxyReturn}
+
+
+Definition at line 579 of file rec\+\_\+desc.\+cpp.
+
+\mbox{\Hypertarget{rec__desc_8cpp_a7ec8e3869783855e9c491d8ecdea2fa4}\label{rec__desc_8cpp_a7ec8e3869783855e9c491d8ecdea2fa4}} 
+\index{rec\_desc.cpp@{rec\_desc.cpp}!GetSequence@{GetSequence}}
+\index{GetSequence@{GetSequence}!rec\_desc.cpp@{rec\_desc.cpp}}
+\doxysubsubsection{\texorpdfstring{GetSequence()}{GetSequence()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_node}{Node}} $\ast$ Get\+Sequence (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct_env}{Env}} $\ast$}]{env }\end{DoxyParamCaption})}
+
+
+
+Get sequence of statements (operators etc) 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em env} & String and linked vars \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return root of the resulting tree 
+\end{DoxyReturn}
+
+
+Definition at line 760 of file rec\+\_\+desc.\+cpp.
+
+\mbox{\Hypertarget{rec__desc_8cpp_a5e938cb59e5f3929d1d9ee341cc1c9b8}\label{rec__desc_8cpp_a5e938cb59e5f3929d1d9ee341cc1c9b8}} 
+\index{rec\_desc.cpp@{rec\_desc.cpp}!GetStatement@{GetStatement}}
+\index{GetStatement@{GetStatement}!rec\_desc.cpp@{rec\_desc.cpp}}
+\doxysubsubsection{\texorpdfstring{GetStatement()}{GetStatement()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_node}{Node}} $\ast$ Get\+Statement (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct_env}{Env}} $\ast$}]{env }\end{DoxyParamCaption})}
+
+
+
+Get if, while, for, return or expression. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em env} & String and linked vars \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return root of the resulting tree 
+\end{DoxyReturn}
+
+
+Definition at line 705 of file rec\+\_\+desc.\+cpp.
 
 \mbox{\Hypertarget{rec__desc_8cpp_ae22bd8cf695cefedb8d3828f7eae2506}\label{rec__desc_8cpp_ae22bd8cf695cefedb8d3828f7eae2506}} 
 \index{rec\_desc.cpp@{rec\_desc.cpp}!GetSum@{GetSum}}
@@ -200,7 +473,29 @@ Return resulting tree
 \end{DoxyReturn}
 
 
-Definition at line 216 of file rec\+\_\+desc.\+cpp.
+Definition at line 337 of file rec\+\_\+desc.\+cpp.
+
+\mbox{\Hypertarget{rec__desc_8cpp_a250922d72adae328ddad94dc79c585c3}\label{rec__desc_8cpp_a250922d72adae328ddad94dc79c585c3}} 
+\index{rec\_desc.cpp@{rec\_desc.cpp}!GetWhile@{GetWhile}}
+\index{GetWhile@{GetWhile}!rec\_desc.cpp@{rec\_desc.cpp}}
+\doxysubsubsection{\texorpdfstring{GetWhile()}{GetWhile()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_node}{Node}}$\ast$ Get\+While (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct_env}{Env}} $\ast$}]{env }\end{DoxyParamCaption})}
+
+
+
+Get while (cond) \{ ... \}. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em env} & String and linked vars \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return root of the resulting tree 
+\end{DoxyReturn}
+
+
+Definition at line 524 of file rec\+\_\+desc.\+cpp.
 
 \mbox{\Hypertarget{rec__desc_8cpp_ad193e59772ecedbfe4ba3859990d6127}\label{rec__desc_8cpp_ad193e59772ecedbfe4ba3859990d6127}} 
 \index{rec\_desc.cpp@{rec\_desc.cpp}!Parse\_All@{Parse\_All}}
@@ -210,13 +505,13 @@ Definition at line 216 of file rec\+\_\+desc.\+cpp.
 
 
 
-Parse whole expression. 
+Parse whole program. 
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em str} & String with expression \\
+\mbox{\texttt{ in}}  & {\em str} & String with program \\
 \hline
-\mbox{\texttt{ in}}  & {\em str\+\_\+length} & Expression string length \\
+\mbox{\texttt{ in}}  & {\em str\+\_\+length} & Program length \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -224,5 +519,5 @@ Return root of the resulting tree
 \end{DoxyReturn}
 
 
-Definition at line 258 of file rec\+\_\+desc.\+cpp.
+Definition at line 920 of file rec\+\_\+desc.\+cpp.
 

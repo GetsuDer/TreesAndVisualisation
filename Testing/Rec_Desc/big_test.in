@@ -17,7 +17,7 @@ function min(a, b, c) {
 function main() {
     n = read();
     for (i = 0; i < n; i = i + 1) {
-        if (min(i, n, 1) ~ i) {
+        if (min(i, n, -1) ~ i) {
             return (1);
         }
     }

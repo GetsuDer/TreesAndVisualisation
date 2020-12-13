@@ -83,6 +83,7 @@ struct Env {
     int current_ind;
     int str_size;
     int error;
+    char expected_symbol;
 };
 
 
@@ -90,10 +91,10 @@ enum Env_Errors {
     OK = 0,
     NO_SYMBOL,
     WRONG_SYMBOL,
-    TOO_LONG_ID
+    TOO_LONG_ID,
 };
 
 Node *Parse_All(char *str, int str_length);
 constexpr int ID_NAME_SIZE = 15;
-constexpr int FUNC_NAME_SIZE = 30;
+constexpr int FUNC_NAME_SIZE = ID_NAME_SIZE;
 #endif

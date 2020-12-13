@@ -13,7 +13,7 @@
 #define NEXT(a, env) ((env)->current_ind < (env)->str_size && (env)->str[(env)->current_ind] == a)
 
 #define CHECK_ENV(env) \
-     if ((env)->current_ind >= (env)->str_size) (env)->error = NO_SYMBOL;\
+     if (((env)->error == OK) && (env)->current_ind >= (env)->str_size) (env)->error = NO_SYMBOL;\
      if ((env)->error != OK) return NULL;
 
 
@@ -40,7 +40,6 @@ skip_spaces(struct Env *env) {
 //! \return Return read integer 
 int 
 GetNumber(struct Env *env) {
-    skip_spaces(env);
     if (env->error != OK) {
         return 0;
     }
@@ -48,9 +47,11 @@ GetNumber(struct Env *env) {
         env->error = NO_SYMBOL;
         return 0;
     }
+    skip_spaces(env);
     int val = 0;
     if (!isdigit(env->str[env->current_ind])) {
         env->error = WRONG_SYMBOL;
+        env->expected_symbol = 'd';
         return 0;
     }
     while (isdigit(env->str[env->current_ind])) {
@@ -66,15 +67,25 @@ GetNumber(struct Env *env) {
 Node *
 GetDouble(struct Env *env) {
     CHECK_ENV(env);
-
+    
+    skip_spaces(env);
+    int sign = 1;
+    if (env->str[env->current_ind] == '-') {
+        sign = -1;
+        env->current_ind++;
+    }
     double res = GetNumber(env);    
+    
+    CHECK_ENV(env);
+
     if (NEXT('.', env)) {
         env->current_ind++;
         int old_ind = env->current_ind;
         res += GetNumber(env) / pow(10, env->current_ind - old_ind);
     }
-    skip_spaces(env);
-    return new Node(res);
+
+    CHECK_ENV(env);
+    return new Node(res * sign);
 }
 
 //! \brief Get identificator [a-zA-Z][a-zA-Z0-9]*
@@ -87,6 +98,7 @@ GetId(struct Env *env) {
     skip_spaces(env);
     if (!isalpha(env->str[env->current_ind])) {
         env->error = WRONG_SYMBOL;
+        env->expected_symbol = 'c';
         return NULL;
     }
 
@@ -103,7 +115,7 @@ GetId(struct Env *env) {
             return NULL;
         }
     }
-    skip_spaces(env);
+
     Node *root = new Node(VAR, id);
     free(id);
     return root;
@@ -117,13 +129,17 @@ Node *
 Assignment(struct Env *env) {
     CHECK_ENV(env);
     
-    skip_spaces(env);
     Node *id = GetId(env);
+    
+    if (env->error) {
+        rec_del(id);
+        return NULL;
+    }
 
     skip_spaces(env);
     REQUIRE('=', env);
     if (env->error != OK) {
-        free(id);
+        rec_del(id);
         return NULL;
     }
 
@@ -132,8 +148,8 @@ Assignment(struct Env *env) {
     Node *value = GetExpression(env);
     
     if (env->error != OK) {
-        free(value);
-        free(id);
+        rec_del(value);
+        rec_del(id);
         return NULL;
     }
 
@@ -141,10 +157,13 @@ Assignment(struct Env *env) {
     root->add_child(id);
     root->add_child(value);
     
-    skip_spaces(env);
     return root;
 }
 
+
+//! \brief Get func_name(params)
+//! \param [in] env String and linked varse
+//! \return Return root of the resulting tree
 Node *
 GetFuncCall(struct Env *env) {
     CHECK_ENV(env);
@@ -160,6 +179,7 @@ GetFuncCall(struct Env *env) {
     REQUIRE('(', env);
     if (env->error != OK) {
         rec_del(root);
+        env->expected_symbol = '(';
         return NULL;
     }
     env->current_ind++;
@@ -183,6 +203,11 @@ GetFuncCall(struct Env *env) {
 
     skip_spaces(env);
     REQUIRE(')', env);
+    if (env->error != OK) {
+        rec_del(root);
+        env->expected_symbol = ')';
+        return NULL;
+    }
     env->current_ind++;
     return root;
 }
@@ -201,10 +226,15 @@ GetPart(struct Env *env) {
         root = GetExpression(env);
         skip_spaces(env);
         REQUIRE(')', env);
+        if (env->error != OK) {
+            env->expected_symbol = ')';
+            rec_del(root);
+            return NULL;
+        }
         env->current_ind++;
-        skip_spaces(env);
         return root;
     }
+
     int old_ind = env->current_ind;
     root = Assignment(env);
     if (env->error == OK) {
@@ -237,27 +267,25 @@ GetPart(struct Env *env) {
 //! \return Return root of the resulting tree 
 Node *
 GetPower(struct Env *env) {
-    if (env->error != OK) {
-        return NULL;
-    }
-    if (env->current_ind >= env->str_size) {
-        env->error = NO_SYMBOL;
-        return NULL;
-    }
-    skip_spaces(env);
+    CHECK_ENV(env);
+    
     Node *root = GetPart(env);
     Node *tmp1 = NULL;
-    skip_spaces(env);
     while (true) {
+        skip_spaces(env);
         switch(env->str[env->current_ind]) {
             case '^':
                 tmp1 = root;
                 env->current_ind++;
-                skip_spaces(env);
                 root = new Node(POWER);
                 root->add_child(tmp1);
-                root->add_child(GetPart(env));
-                return root;
+                tmp1 = GetPart(env);
+                if (env->error != OK) {
+                    rec_del(root);
+                    return NULL;
+                }
+                root->add_child(tmp1);
+                break;
             default:
                 return root;        
         }
@@ -272,41 +300,32 @@ GetPower(struct Env *env) {
 //! \return Return root of the resulting tree
 Node *
 GetMul(struct Env *env) {
-    if (env->error != OK) {
-        return NULL;
-    }
-    if (env->current_ind >= env->str_size) {
-        env->error = NO_SYMBOL;
-        return NULL;
-    }
-    skip_spaces(env);
+    CHECK_ENV(env);
+    
     Node *root = GetPower(env);
     Node *tmp1 = NULL, *tmp2 = NULL;
-    skip_spaces(env);
     while (true) {
+        skip_spaces(env);
+        tmp1 = root;
         switch(env->str[env->current_ind]) {
             case '*':
-                env->current_ind++;
-                tmp2 = GetPower(env);
-                tmp1 = root;
                 root = new Node(MUL);
-                root->add_child(tmp1);
-                root->add_child(tmp2);
-                skip_spaces(env);
                 break;
             case '/':
-                env->current_ind++;
-                tmp2 = GetPower(env);
-                tmp1 = root;
                 root = new Node(DIV);
-                root->add_child(tmp1);
-                root->add_child(tmp2);
-                skip_spaces(env);
                 break;
-
             default:
                 return root;
         }
+        env->current_ind++;
+        tmp2 = GetPower(env);
+        if (env->error != OK) {
+            rec_del(tmp2);
+            rec_del(root);
+            return NULL;
+        }
+        root->add_child(tmp1);
+        root->add_child(tmp2);
     }    
 }
 
@@ -316,49 +335,50 @@ GetMul(struct Env *env) {
 //! \return Return resulting tree
 Node *
 GetSum(struct Env *env) {
-    if (env->error != OK) {
-        return NULL;
-    }
-    if (env->current_ind >= env->str_size) {
-        env->error = NO_SYMBOL;
-        return NULL;
-    }
+    CHECK_ENV(env);
+    
     Node *root = GetMul(env);
     Node *tmp = NULL, *tmp2 = NULL;
     skip_spaces(env);
     while (true) {
+        skip_spaces(env);
+        tmp = root;
         switch(env->str[env->current_ind]) {
             case '+':
-                env->current_ind++;
-                tmp2 = GetMul(env);   
-                tmp = root;
                 root = new Node(ADD);
-                root->add_child(tmp);
-                root->add_child(tmp2);
-                skip_spaces(env);
                 break;
             case '-':
-                env->current_ind++;
-                tmp2 = GetMul(env);
-                tmp = root;
                 root = new Node(SUB);
-                root->add_child(tmp);
-                root->add_child(tmp2);
-                skip_spaces(env);
                 break;
             default:
                 return root;
         }
+        env->current_ind++;
+        tmp2 = GetMul(env);
+        if (env->error != OK) {
+            rec_del(tmp2);
+            rec_del(root);
+            return NULL;
+        }
+        root->add_child(tmp);
+        root->add_child(tmp2);
     }
 }
 
+
+//! \brief Get expression | expr > expr | expr < expr | expr ~ expr etc
+//! \param [in] env String and linked vars
+//! \return Return root of the resulting tree
 Node *
 GetExpression(struct Env *env) {
     CHECK_ENV(env);
     
     Node *root = GetSum(env);
-    
-    CHECK_ENV(env);
+   
+    if (env->error != OK) {
+       rec_del(root);
+       return NULL; 
+    }
 
     Node *tmp2 = NULL;
 
@@ -367,66 +387,102 @@ GetExpression(struct Env *env) {
         skip_spaces(env);
         switch(env->str[env->current_ind]) {
             case '>':
-                env->current_ind++;
                 root = new Node(MORE);
                 break;
             case '<':
-                env->current_ind++;
                 root = new Node(LESS);
                 break;
             case '~':
-                env->current_ind++;
                 root = new Node(EQ);
                 break;
             default:
                 return root;
         }
+        env->current_ind++;
         root->add_child(tmp2);
-        root->add_child(GetSum(env));
+        tmp2 = GetSum(env);
+        if (env->error != OK) {
+            rec_del(root);
+            return NULL;
+        }
+        root->add_child(tmp2);
     }
-
 }
 
-
+//! \brief Get if (condition) { ... } (else { ... })
+//! \param [in] env String and linked vars
+//! \return Return root of the resulting tree
 Node *
 GetIf(struct Env *env) {
     CHECK_ENV(env);
     
     skip_spaces(env);
-
     NEED_WORD("if", env);
+    if (env->error != OK) {
+        env->expected_symbol = 'i';
+        return NULL;
+    }
+
     env->current_ind += strlen("if");
 
-    CHECK_ENV(env);
-
     Node *root = new Node(IF);
+   
     skip_spaces(env);
+    REQUIRE('(', env);
+    if (env->error != OK) {
+        env->expected_symbol = '(';
+        rec_del(root);
+        return NULL;
+    }
+    env->current_ind++;
+
     Node *if_statement = GetExpression(env);
+    
     if (env->error != OK) {
         rec_del(root);
         rec_del(if_statement);
         return NULL;
     }
+
+    skip_spaces(env);
+    REQUIRE(')', env);
+    if (env->error != OK) {
+        env->expected_symbol = ')';
+        rec_del(root);
+        rec_del(if_statement);
+        return NULL;
+    }
+    env->current_ind++;
+
     root->add_child(if_statement);
     skip_spaces(env);
     REQUIRE('{', env);
     if (env->error != OK) {
         rec_del(root);
+        env->expected_symbol = '{';
         return NULL;
     }
+
     env->current_ind++;
     Node *then_do = GetSequence(env);
+    if (env->error != OK) {
+        rec_del(then_do);
+        rec_del(root);
+        return NULL;
+    }
+
     skip_spaces(env);
     REQUIRE('}', env);
     if (env->error != OK) {
         rec_del(root);
         rec_del(then_do);
+        env->expected_symbol = '}';
         return NULL;
     }
     env->current_ind++;
     root->add_child(then_do);
+    
     skip_spaces(env);
-
     NEED_WORD("else", env);
     if (env->error == OK) {
         env->current_ind += strlen("else");
@@ -434,15 +490,24 @@ GetIf(struct Env *env) {
         REQUIRE('{', env);
         if (env->error != OK) {
             rec_del(root);
+            env->expected_symbol = '{';
             return NULL;
         }
         env->current_ind++;
+
         Node *else_do = GetSequence(env);
+        if (env->error != OK) {
+            rec_del(else_do);
+            rec_del(root);
+            return NULL;
+        }
+        
         root->add_child(else_do);
         skip_spaces(env);
         REQUIRE('}', env);
         if (env->error) {
             rec_del(root);
+            env->expected_symbol = '}';
             return NULL;
         }
         env->current_ind++;
@@ -452,7 +517,9 @@ GetIf(struct Env *env) {
     return root;
 }
 
-
+//! \brief Get while (cond) { ... }
+//! \param [in] env String and linked vars
+//! \return Return root of the resulting tree
 Node *
 GetWhile(struct Env *env) {
     CHECK_ENV(env);
@@ -461,8 +528,8 @@ GetWhile(struct Env *env) {
     NEED_WORD("while", env);
     if (env->error == OK) {
         env->current_ind += strlen("while");
-        skip_spaces(env);
         Node *root = new Node(WHILE);
+        
         Node *while_cond = GetExpression(env);
         if (env->error != OK) {
             rec_del(while_cond);
@@ -470,12 +537,15 @@ GetWhile(struct Env *env) {
             return NULL;
         }
         root->add_child(while_cond);
+
         skip_spaces(env);
         REQUIRE('{', env);
         if (env->error) {
             rec_del(root);
+            env->expected_symbol = '{';
             return NULL;
         }
+
         env->current_ind++;
         Node *while_do = GetSequence(env);
         if (env->error != OK) {
@@ -483,21 +553,28 @@ GetWhile(struct Env *env) {
             rec_del(while_do);
             return NULL;
         }
+
         root->add_child(while_do);
         skip_spaces(env);
         REQUIRE('}', env);
         if (env->error) {
             rec_del(root);
+            env->expected_symbol = '}';
             return NULL;
         }
         env->current_ind++;
         return root;
     } else {
         env->error = WRONG_SYMBOL;
+        env->expected_symbol = 'w';
         return NULL;
     }
 }
 
+
+//! \brief Get return ( ... )
+//! \param [in] env String and linked vars
+//! \return Return root of the resulting tree
 Node *
 GetReturn(struct Env *env) {
     CHECK_ENV(env);
@@ -505,18 +582,22 @@ GetReturn(struct Env *env) {
     skip_spaces(env);
     NEED_WORD("return", env);
     if (env->error) {
+        env->expected_symbol = 'r';
         return NULL;
     }
     env->current_ind += strlen("return");
     Node *root = new Node(RETURN);
+
     skip_spaces(env);
     REQUIRE('(', env);
-    env->current_ind++;
+    
     if (env->error) {
+        env->expected_symbol = '(';
         rec_del(root);
         return NULL;
     }
     
+    env->current_ind++;
     Node *tmp = GetExpression(env);
     if (env->error) {
         rec_del(tmp);
@@ -526,16 +607,26 @@ GetReturn(struct Env *env) {
     root->add_child(tmp);
     skip_spaces(env);
     REQUIRE(')', env);
+    if (env->error != OK) {
+        rec_del(root);
+        env->expected_symbol = ')';
+        return NULL;
+    }
     env->current_ind++;
     return root;
 }
 
+//! \brief Get for ( before; while; after ) { ... } 
+//! \param [in] env String and linked vars
+//! \return Return root of the resulting tree
 Node *
 GetFor(struct Env *env) {
     CHECK_ENV(env);
+
     skip_spaces(env);
     NEED_WORD("for", env);
     if (env->error) {
+        env->expected_symbol = 'f';
         return NULL;
     }
     env->current_ind += strlen("for");
@@ -544,6 +635,12 @@ GetFor(struct Env *env) {
 
     skip_spaces(env);
     REQUIRE('(', env);
+    if (env->error != OK) {
+        rec_del(root);
+        env->expected_symbol = '(';
+        return NULL;
+    }
+
     env->current_ind++;
     for (int i = 0; i < 3; i++) {
         tmp = GetExpression(env);
@@ -556,16 +653,31 @@ GetFor(struct Env *env) {
         skip_spaces(env);
         if (i != 2) {
             REQUIRE(';', env);
+            if (env->error != OK) {
+                rec_del(root);
+                env->expected_symbol = ';';
+                return NULL;
+            }
             env->current_ind++;
         }
     }
 
     skip_spaces(env);
     REQUIRE(')', env);
+    if (env->error != OK) {
+        rec_del(root);
+        env->expected_symbol = ')';
+        return NULL;
+    }
     env->current_ind++;
 
     skip_spaces(env);
     REQUIRE('{', env);
+    if (env->error != OK) {
+        rec_del(root);
+        env->expected_symbol = '{';
+        return NULL;
+    }
     env->current_ind++;
     
     tmp = GetSequence(env);
@@ -577,9 +689,18 @@ GetFor(struct Env *env) {
     root->add_child(tmp);
     skip_spaces(env);
     REQUIRE('}', env);
+    if (env->error != OK) {
+        env->expected_symbol = '}';
+        rec_del(root);
+        return NULL;
+    }
     env->current_ind++;
     return root;
 }
+
+//! \brief Get if, while, for, return or expression
+//! \param [in] env String and linked vars
+//! \return Return root of the resulting tree
 Node *
 GetStatement(struct Env *env) {
     CHECK_ENV(env);
@@ -623,11 +744,18 @@ GetStatement(struct Env *env) {
     root = GetExpression(env);
     skip_spaces(env);
     REQUIRE(';', env);
+    if (env->error != OK) {
+        env->expected_symbol = 's';
+        rec_del(root);
+        return NULL;
+    }
     env->current_ind++;
     return root;      
 }
 
-
+//! \brief Get sequence of statements (operators etc)
+//! \param [in] env String and linked vars
+//! \return Return root of the resulting tree
 Node *
 GetSequence(struct Env *env) {
     CHECK_ENV(env);
@@ -648,13 +776,19 @@ GetSequence(struct Env *env) {
     return root;
 }
 
+//! \brief Get function definition: function func_name(param1, ... ) { ... }
+//! \param [in] env String and linked vars
+//! \return Return root of the resulting tree
 Node *
 GetFuncDef(struct Env *env) {
     CHECK_ENV(env);
 
     skip_spaces(env);
     NEED_WORD("function", env);
-    CHECK_ENV(env);
+    if (env->error != OK) {
+        env->expected_symbol = 'F';
+        return NULL;
+    }
 
     env->current_ind += strlen("function");
 
@@ -667,12 +801,12 @@ GetFuncDef(struct Env *env) {
     root->change_operation(FUNC_DEF);
     skip_spaces(env);
     REQUIRE('(', env);
-    env->current_ind++;
-
-    if (env->error) {
+    if (env->error != OK) {
         rec_del(root);
+        env->expected_symbol = '(';
         return NULL;
     }
+    env->current_ind++;
 
     Node *tmp = NULL;
     
@@ -694,15 +828,21 @@ GetFuncDef(struct Env *env) {
     
     skip_spaces(env);
     REQUIRE(')', env);
-    env->current_ind++;
-
-    if (env->error) {
+    if (env->error != OK) {
         rec_del(root);
+        env->expected_symbol = ')';
         return NULL;
     }
+    env->current_ind++;
 
     skip_spaces(env);
     REQUIRE('{', env);
+    if (env->error != OK) {
+        rec_del(root);
+        env->expected_symbol = '{';
+        return NULL;
+    }
+
     env->current_ind++;
 
     tmp = GetSequence(env);
@@ -716,15 +856,65 @@ GetFuncDef(struct Env *env) {
 
     skip_spaces(env);
     REQUIRE('}', env);
+    if (env->error != OK) {
+        rec_del(root);
+        env->expected_symbol = '}';
+        return NULL;
+    }
     env->current_ind++;
     return root;
 }
 
+static void
+long_error(char c) {
+    switch (c) {
+        case 'w':
+            fprintf(stderr, "while");
+            return;
+        case 'f':
+            fprintf(stderr, "for");
+            return;
+        case 'i':
+            fprintf(stderr, "if");
+            return;
+        case 'F':
+            fprintf(stderr, "function");
+            return;
+        default:
+            fprintf(stderr, "%c", c);
+            return;
+    }
+}
 
 
-//! \brief Parse whole expression
-//! \param [in] str String with expression
-//! \param [in] str_length Expression string length
+//! \brief Print error and error context
+//! \param [in] String and linked vars
+static void
+show_error(struct Env *env) {
+    switch (env->error) {
+        case OK:
+            return;
+        case NO_SYMBOL:
+            fprintf(stderr, "Expected: ");
+            long_error(env->expected_symbol);
+            fprintf(stderr, ", but got EOF\n"); 
+            return;
+        case WRONG_SYMBOL:
+            fprintf(stderr, "Expected: ");
+            long_error(env->expected_symbol);
+            fprintf(stderr, ", got %c: %s\n", env->str[env->current_ind], env->str + env->current_ind);
+            return;
+        case TOO_LONG_ID:
+            fprintf(stderr, "Too long identificator of var or function: %s\n", env->str + env->current_ind);
+    }
+    return;
+}   
+
+
+
+//! \brief Parse whole program
+//! \param [in] str String with program
+//! \param [in] str_length Program length
 //! \return Return root of the resulting tree
 Node *
 Parse_All(char *str, int str_length) {
@@ -733,6 +923,7 @@ Parse_All(char *str, int str_length) {
     env.current_ind = 0;
     env.str_size = str_length;
     env.error = OK;
+    env.expected_symbol = 0;
 
     Node *root = new Node(DO_IN_ORDER);
     while (true) {
@@ -748,7 +939,8 @@ Parse_All(char *str, int str_length) {
     skip_spaces(&env);
     REQUIRE('$', &env);
     if (env.error) {
-        fprintf(stderr, "Error during recursive descent\n");
+        fprintf(stderr, "Error during recursive descent:\n");
+        show_error(&env);
         root = NULL;
     }
     return root;

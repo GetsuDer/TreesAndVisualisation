@@ -75,17 +75,19 @@ $(function() {
 <div class="textblock"><code>#include &lt;cstdio&gt;</code><br />
 <code>#include &lt;ctype.h&gt;</code><br />
 <code>#include &lt;cmath&gt;</code><br />
+<code>#include &lt;cstring&gt;</code><br />
 <code>#include &quot;<a class="el" href="tree_8h_source.html">tree.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for rec_desc.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="rec__desc_8cpp__incl.png" border="0" usemap="#_source_2rec__desc_8cpp" alt=""/></div>
 <map name="_source_2rec__desc_8cpp" id="_source_2rec__desc_8cpp">
-<area shape="rect" title=" " alt="" coords="95,5,249,32"/>
+<area shape="rect" title=" " alt="" coords="140,5,295,32"/>
 <area shape="rect" title=" " alt="" coords="5,80,67,107"/>
 <area shape="rect" title=" " alt="" coords="91,80,162,107"/>
 <area shape="rect" title=" " alt="" coords="186,80,249,107"/>
-<area shape="rect" href="tree_8h.html" title=" " alt="" coords="273,80,333,107"/>
+<area shape="rect" title=" " alt="" coords="273,80,340,107"/>
+<area shape="rect" href="tree_8h.html" title=" " alt="" coords="365,80,425,107"/>
 </map>
 </div>
 </div>
@@ -97,18 +99,40 @@ Macros</h2></td></tr>
 <tr class="separator:a26d05ed950fc4ea39910caa39e307b76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7acf68389aef073431d1b7b0b636d49"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rec__desc_8cpp.html#aa7acf68389aef073431d1b7b0b636d49">NEXT</a>(a,  env)&#160;&#160;&#160;((env)-&gt;current_ind &lt; (env)-&gt;str_size &amp;&amp; (env)-&gt;str[(env)-&gt;current_ind] == a)</td></tr>
 <tr class="separator:aa7acf68389aef073431d1b7b0b636d49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6768b2f1be46a493cdacd1d92e35021a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rec__desc_8cpp.html#a6768b2f1be46a493cdacd1d92e35021a">CHECK_ENV</a>(env)</td></tr>
+<tr class="separator:a6768b2f1be46a493cdacd1d92e35021a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4b45c23620c99eaac1696ab4c8db1c8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rec__desc_8cpp.html#ab4b45c23620c99eaac1696ab4c8db1c8">NEED_WORD</a>(a,  env)&#160;&#160;&#160;if ((env)-&gt;str_size - (env)-&gt;current_ind &lt; (int)strlen(a) || strncmp((env)-&gt;str + (env)-&gt;current_ind, a, strlen(a))) (env)-&gt;error = <a class="el" href="tree_8h.html#ada31fa1be5aadf4697ce6329d768c08ea4f4fac225490024c5b9762f8e24e30a5">WRONG_SYMBOL</a>;</td></tr>
+<tr class="separator:ab4b45c23620c99eaac1696ab4c8db1c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ae22bd8cf695cefedb8d3828f7eae2506"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rec__desc_8cpp.html#ae22bd8cf695cefedb8d3828f7eae2506">GetSum</a> (struct <a class="el" href="struct_env.html">Env</a> *env)</td></tr>
 <tr class="memdesc:ae22bd8cf695cefedb8d3828f7eae2506"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read 'expr ['+', '-'] expr*'.  <a href="rec__desc_8cpp.html#ae22bd8cf695cefedb8d3828f7eae2506">More...</a><br /></td></tr>
 <tr class="separator:ae22bd8cf695cefedb8d3828f7eae2506"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97aeeb657bb32a1db670e9d4698f0a0d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rec__desc_8cpp.html#a97aeeb657bb32a1db670e9d4698f0a0d">GetExpression</a> (struct <a class="el" href="struct_env.html">Env</a> *env)</td></tr>
+<tr class="memdesc:a97aeeb657bb32a1db670e9d4698f0a0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get expression | expr &gt; expr | expr &lt; expr | expr ~ expr etc.  <a href="rec__desc_8cpp.html#a97aeeb657bb32a1db670e9d4698f0a0d">More...</a><br /></td></tr>
+<tr class="separator:a97aeeb657bb32a1db670e9d4698f0a0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e938cb59e5f3929d1d9ee341cc1c9b8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rec__desc_8cpp.html#a5e938cb59e5f3929d1d9ee341cc1c9b8">GetStatement</a> (struct <a class="el" href="struct_env.html">Env</a> *env)</td></tr>
+<tr class="memdesc:a5e938cb59e5f3929d1d9ee341cc1c9b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get if, while, for, return or expression.  <a href="rec__desc_8cpp.html#a5e938cb59e5f3929d1d9ee341cc1c9b8">More...</a><br /></td></tr>
+<tr class="separator:a5e938cb59e5f3929d1d9ee341cc1c9b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ec8e3869783855e9c491d8ecdea2fa4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rec__desc_8cpp.html#a7ec8e3869783855e9c491d8ecdea2fa4">GetSequence</a> (struct <a class="el" href="struct_env.html">Env</a> *env)</td></tr>
+<tr class="memdesc:a7ec8e3869783855e9c491d8ecdea2fa4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get sequence of statements (operators etc)  <a href="rec__desc_8cpp.html#a7ec8e3869783855e9c491d8ecdea2fa4">More...</a><br /></td></tr>
+<tr class="separator:a7ec8e3869783855e9c491d8ecdea2fa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f02037d921cc94090af18dfbcc7080d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rec__desc_8cpp.html#a2f02037d921cc94090af18dfbcc7080d">GetNumber</a> (struct <a class="el" href="struct_env.html">Env</a> *env)</td></tr>
 <tr class="memdesc:a2f02037d921cc94090af18dfbcc7080d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read unsigned integer.  <a href="rec__desc_8cpp.html#a2f02037d921cc94090af18dfbcc7080d">More...</a><br /></td></tr>
 <tr class="separator:a2f02037d921cc94090af18dfbcc7080d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d0272ab138ebdb7c9f3545eae28ee3b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rec__desc_8cpp.html#a0d0272ab138ebdb7c9f3545eae28ee3b">GetDouble</a> (struct <a class="el" href="struct_env.html">Env</a> *env)</td></tr>
 <tr class="memdesc:a0d0272ab138ebdb7c9f3545eae28ee3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read double.  <a href="rec__desc_8cpp.html#a0d0272ab138ebdb7c9f3545eae28ee3b">More...</a><br /></td></tr>
 <tr class="separator:a0d0272ab138ebdb7c9f3545eae28ee3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32bc531b5db98dfe9760d2cd57171429"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rec__desc_8cpp.html#a32bc531b5db98dfe9760d2cd57171429">GetId</a> (struct <a class="el" href="struct_env.html">Env</a> *env)</td></tr>
+<tr class="memdesc:a32bc531b5db98dfe9760d2cd57171429"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get identificator [a-zA-Z][a-zA-Z0-9]*.  <a href="rec__desc_8cpp.html#a32bc531b5db98dfe9760d2cd57171429">More...</a><br /></td></tr>
+<tr class="separator:a32bc531b5db98dfe9760d2cd57171429"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f5ac91b5fb53dbd90a1e502f84972d6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rec__desc_8cpp.html#a2f5ac91b5fb53dbd90a1e502f84972d6">Assignment</a> (struct <a class="el" href="struct_env.html">Env</a> *env)</td></tr>
+<tr class="memdesc:a2f5ac91b5fb53dbd90a1e502f84972d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get assigment identificator = calculated_expression.  <a href="rec__desc_8cpp.html#a2f5ac91b5fb53dbd90a1e502f84972d6">More...</a><br /></td></tr>
+<tr class="separator:a2f5ac91b5fb53dbd90a1e502f84972d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d3e391b8e4a780d1e4fa5a9a812fbce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rec__desc_8cpp.html#a4d3e391b8e4a780d1e4fa5a9a812fbce">GetFuncCall</a> (struct <a class="el" href="struct_env.html">Env</a> *env)</td></tr>
+<tr class="memdesc:a4d3e391b8e4a780d1e4fa5a9a812fbce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get func_name(params)  <a href="rec__desc_8cpp.html#a4d3e391b8e4a780d1e4fa5a9a812fbce">More...</a><br /></td></tr>
+<tr class="separator:a4d3e391b8e4a780d1e4fa5a9a812fbce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52d25310f6e1b7d8b879cd9ab32b71e9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rec__desc_8cpp.html#a52d25310f6e1b7d8b879cd9ab32b71e9">GetPart</a> (struct <a class="el" href="struct_env.html">Env</a> *env)</td></tr>
 <tr class="memdesc:a52d25310f6e1b7d8b879cd9ab32b71e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get expression (expr) | double | func(expr)  <a href="rec__desc_8cpp.html#a52d25310f6e1b7d8b879cd9ab32b71e9">More...</a><br /></td></tr>
 <tr class="separator:a52d25310f6e1b7d8b879cd9ab32b71e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -118,11 +142,78 @@ Functions</h2></td></tr>
 <tr class="memitem:ad77dbc1df4980aabe91bed72c929b9db"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rec__desc_8cpp.html#ad77dbc1df4980aabe91bed72c929b9db">GetMul</a> (struct <a class="el" href="struct_env.html">Env</a> *env)</td></tr>
 <tr class="memdesc:ad77dbc1df4980aabe91bed72c929b9db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read 'expr ['*', '/'] expr*'.  <a href="rec__desc_8cpp.html#ad77dbc1df4980aabe91bed72c929b9db">More...</a><br /></td></tr>
 <tr class="separator:ad77dbc1df4980aabe91bed72c929b9db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addb5ede15e9b98855f30b1788d9bd430"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rec__desc_8cpp.html#addb5ede15e9b98855f30b1788d9bd430">GetIf</a> (struct <a class="el" href="struct_env.html">Env</a> *env)</td></tr>
+<tr class="memdesc:addb5ede15e9b98855f30b1788d9bd430"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get if (condition) { ... } (else { ... })  <a href="rec__desc_8cpp.html#addb5ede15e9b98855f30b1788d9bd430">More...</a><br /></td></tr>
+<tr class="separator:addb5ede15e9b98855f30b1788d9bd430"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a250922d72adae328ddad94dc79c585c3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rec__desc_8cpp.html#a250922d72adae328ddad94dc79c585c3">GetWhile</a> (struct <a class="el" href="struct_env.html">Env</a> *env)</td></tr>
+<tr class="memdesc:a250922d72adae328ddad94dc79c585c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get while (cond) { ... }.  <a href="rec__desc_8cpp.html#a250922d72adae328ddad94dc79c585c3">More...</a><br /></td></tr>
+<tr class="separator:a250922d72adae328ddad94dc79c585c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7a317db1a6530226b7ce0b781fda16b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rec__desc_8cpp.html#ae7a317db1a6530226b7ce0b781fda16b">GetReturn</a> (struct <a class="el" href="struct_env.html">Env</a> *env)</td></tr>
+<tr class="memdesc:ae7a317db1a6530226b7ce0b781fda16b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get return ( ... )  <a href="rec__desc_8cpp.html#ae7a317db1a6530226b7ce0b781fda16b">More...</a><br /></td></tr>
+<tr class="separator:ae7a317db1a6530226b7ce0b781fda16b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14a9e1900edb33fe445042b33a912e1b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rec__desc_8cpp.html#a14a9e1900edb33fe445042b33a912e1b">GetFor</a> (struct <a class="el" href="struct_env.html">Env</a> *env)</td></tr>
+<tr class="memdesc:a14a9e1900edb33fe445042b33a912e1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get for ( before; while; after ) { ... }.  <a href="rec__desc_8cpp.html#a14a9e1900edb33fe445042b33a912e1b">More...</a><br /></td></tr>
+<tr class="separator:a14a9e1900edb33fe445042b33a912e1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5b3ee1ec6a6bc4e7c8eb43dc4f65cef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rec__desc_8cpp.html#ae5b3ee1ec6a6bc4e7c8eb43dc4f65cef">GetFuncDef</a> (struct <a class="el" href="struct_env.html">Env</a> *env)</td></tr>
+<tr class="memdesc:ae5b3ee1ec6a6bc4e7c8eb43dc4f65cef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get function definition: function func_name(param1, ... ) { ... }.  <a href="rec__desc_8cpp.html#ae5b3ee1ec6a6bc4e7c8eb43dc4f65cef">More...</a><br /></td></tr>
+<tr class="separator:ae5b3ee1ec6a6bc4e7c8eb43dc4f65cef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad193e59772ecedbfe4ba3859990d6127"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rec__desc_8cpp.html#ad193e59772ecedbfe4ba3859990d6127">Parse_All</a> (char *str, int str_length)</td></tr>
-<tr class="memdesc:ad193e59772ecedbfe4ba3859990d6127"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse whole expression.  <a href="rec__desc_8cpp.html#ad193e59772ecedbfe4ba3859990d6127">More...</a><br /></td></tr>
+<tr class="memdesc:ad193e59772ecedbfe4ba3859990d6127"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse whole program.  <a href="rec__desc_8cpp.html#ad193e59772ecedbfe4ba3859990d6127">More...</a><br /></td></tr>
 <tr class="separator:ad193e59772ecedbfe4ba3859990d6127"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a6768b2f1be46a493cdacd1d92e35021a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6768b2f1be46a493cdacd1d92e35021a">&#9670;&nbsp;</a></span>CHECK_ENV</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CHECK_ENV</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">env</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">     <span class="keywordflow">if</span> (((env)-&gt;<a class="code" href="struct_env.html#aafe1bcb1bf136886c5e8df759a8898f6">error</a> == <a class="code" href="tree_8h.html#ada31fa1be5aadf4697ce6329d768c08ea2bc49ec37d6a5715dd23e85f1ff5bb59">OK</a>) &amp;&amp; (env)-&gt;<a class="code" href="struct_env.html#a15771058c04fa635607344ff62c6c9a1">current_ind</a> &gt;= (env)-&gt;<a class="code" href="struct_env.html#acbaa3b2e1651cb05dee2b60d337b0a0c">str_size</a>) (env)-&gt;<a class="code" href="struct_env.html#aafe1bcb1bf136886c5e8df759a8898f6">error</a> = <a class="code" href="tree_8h.html#ada31fa1be5aadf4697ce6329d768c08eab4f175d3a62bc7be04b2175a2af8b806">NO_SYMBOL</a>;\</div>
+<div class="line">     if ((env)-&gt;<a class="code" href="struct_env.html#aafe1bcb1bf136886c5e8df759a8898f6">error</a> != <a class="code" href="tree_8h.html#ada31fa1be5aadf4697ce6329d768c08ea2bc49ec37d6a5715dd23e85f1ff5bb59">OK</a>) <span class="keywordflow">return</span> NULL;</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00015">15</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ab4b45c23620c99eaac1696ab4c8db1c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4b45c23620c99eaac1696ab4c8db1c8">&#9670;&nbsp;</a></span>NEED_WORD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NEED_WORD</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">a, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">env&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;if ((env)-&gt;str_size - (env)-&gt;current_ind &lt; (int)strlen(a) || strncmp((env)-&gt;str + (env)-&gt;current_ind, a, strlen(a))) (env)-&gt;error = <a class="el" href="tree_8h.html#ada31fa1be5aadf4697ce6329d768c08ea4f4fac225490024c5b9762f8e24e30a5">WRONG_SYMBOL</a>;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00020">20</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
+
+</div>
+</div>
 <a id="aa7acf68389aef073431d1b7b0b636d49"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa7acf68389aef073431d1b7b0b636d49">&#9670;&nbsp;</a></span>NEXT</h2>
 
@@ -149,7 +240,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00012">12</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00013">13</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
 
 </div>
 </div>
@@ -182,11 +273,40 @@ Functions</h2></td></tr>
 <div class="line">      if ((env)-&gt;<a class="code" href="struct_env.html#a8026e1ba38ccd711b07acb11b4d68272">str</a>[(env)-&gt;<a class="code" href="struct_env.html#a15771058c04fa635607344ff62c6c9a1">current_ind</a>] != a) (env)-&gt;<a class="code" href="struct_env.html#aafe1bcb1bf136886c5e8df759a8898f6">error</a> = <a class="code" href="tree_8h.html#ada31fa1be5aadf4697ce6329d768c08ea4f4fac225490024c5b9762f8e24e30a5">WRONG_SYMBOL</a>;\</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00007">7</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00008">8</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a2f5ac91b5fb53dbd90a1e502f84972d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f5ac91b5fb53dbd90a1e502f84972d6">&#9670;&nbsp;</a></span>Assignment()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_node.html">Node</a>* Assignment </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="struct_env.html">Env</a> *&#160;</td>
+          <td class="paramname"><em>env</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get assigment identificator = calculated_expression. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">env</td><td>String and linked vars </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">env</td><td>String and linked vars </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00129">129</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
+
+</div>
+</div>
 <a id="a0d0272ab138ebdb7c9f3545eae28ee3b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0d0272ab138ebdb7c9f3545eae28ee3b">&#9670;&nbsp;</a></span>GetDouble()</h2>
 
@@ -212,7 +332,181 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns tree node with read double </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00052">52</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00068">68</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a97aeeb657bb32a1db670e9d4698f0a0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97aeeb657bb32a1db670e9d4698f0a0d">&#9670;&nbsp;</a></span>GetExpression()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_node.html">Node</a> * GetExpression </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="struct_env.html">Env</a> *&#160;</td>
+          <td class="paramname"><em>env</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get expression | expr &gt; expr | expr &lt; expr | expr ~ expr etc. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">env</td><td>String and linked vars </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Return root of the resulting tree </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00373">373</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a14a9e1900edb33fe445042b33a912e1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14a9e1900edb33fe445042b33a912e1b">&#9670;&nbsp;</a></span>GetFor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_node.html">Node</a>* GetFor </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="struct_env.html">Env</a> *&#160;</td>
+          <td class="paramname"><em>env</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get for ( before; while; after ) { ... }. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">env</td><td>String and linked vars </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Return root of the resulting tree </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00623">623</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a4d3e391b8e4a780d1e4fa5a9a812fbce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d3e391b8e4a780d1e4fa5a9a812fbce">&#9670;&nbsp;</a></span>GetFuncCall()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_node.html">Node</a>* GetFuncCall </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="struct_env.html">Env</a> *&#160;</td>
+          <td class="paramname"><em>env</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get func_name(params) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">env</td><td>String and linked varse </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Return root of the resulting tree </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00168">168</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ae5b3ee1ec6a6bc4e7c8eb43dc4f65cef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5b3ee1ec6a6bc4e7c8eb43dc4f65cef">&#9670;&nbsp;</a></span>GetFuncDef()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_node.html">Node</a>* GetFuncDef </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="struct_env.html">Env</a> *&#160;</td>
+          <td class="paramname"><em>env</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get function definition: function func_name(param1, ... ) { ... }. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">env</td><td>String and linked vars </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Return root of the resulting tree </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00783">783</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a32bc531b5db98dfe9760d2cd57171429"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32bc531b5db98dfe9760d2cd57171429">&#9670;&nbsp;</a></span>GetId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_node.html">Node</a>* GetId </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="struct_env.html">Env</a> *&#160;</td>
+          <td class="paramname"><em>env</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get identificator [a-zA-Z][a-zA-Z0-9]*. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">env</td><td>String and linked vars </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Return resulting tree node </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00095">95</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
+
+</div>
+</div>
+<a id="addb5ede15e9b98855f30b1788d9bd430"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#addb5ede15e9b98855f30b1788d9bd430">&#9670;&nbsp;</a></span>GetIf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_node.html">Node</a>* GetIf </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="struct_env.html">Env</a> *&#160;</td>
+          <td class="paramname"><em>env</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get if (condition) { ... } (else { ... }) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">env</td><td>String and linked vars </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Return root of the resulting tree </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00416">416</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
 
 </div>
 </div>
@@ -241,7 +535,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Return root of the resulting tree </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00172">172</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00302">302</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
 
 </div>
 </div>
@@ -271,7 +565,7 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Return read integer <br  />
  </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00031">31</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00042">42</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
 
 </div>
 </div>
@@ -300,7 +594,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns root of the resulting tree </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00077">77</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00219">219</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
 
 </div>
 </div>
@@ -330,7 +624,94 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Return root of the resulting tree <br  />
  </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00137">137</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00269">269</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ae7a317db1a6530226b7ce0b781fda16b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7a317db1a6530226b7ce0b781fda16b">&#9670;&nbsp;</a></span>GetReturn()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_node.html">Node</a>* GetReturn </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="struct_env.html">Env</a> *&#160;</td>
+          <td class="paramname"><em>env</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get return ( ... ) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">env</td><td>String and linked vars </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Return root of the resulting tree </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00579">579</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a7ec8e3869783855e9c491d8ecdea2fa4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ec8e3869783855e9c491d8ecdea2fa4">&#9670;&nbsp;</a></span>GetSequence()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_node.html">Node</a> * GetSequence </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="struct_env.html">Env</a> *&#160;</td>
+          <td class="paramname"><em>env</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get sequence of statements (operators etc) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">env</td><td>String and linked vars </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Return root of the resulting tree </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00760">760</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a5e938cb59e5f3929d1d9ee341cc1c9b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e938cb59e5f3929d1d9ee341cc1c9b8">&#9670;&nbsp;</a></span>GetStatement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_node.html">Node</a> * GetStatement </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="struct_env.html">Env</a> *&#160;</td>
+          <td class="paramname"><em>env</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get if, while, for, return or expression. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">env</td><td>String and linked vars </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Return root of the resulting tree </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00705">705</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
 
 </div>
 </div>
@@ -359,7 +740,36 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Return resulting tree </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00216">216</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00337">337</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a250922d72adae328ddad94dc79c585c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a250922d72adae328ddad94dc79c585c3">&#9670;&nbsp;</a></span>GetWhile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_node.html">Node</a>* GetWhile </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="struct_env.html">Env</a> *&#160;</td>
+          <td class="paramname"><em>env</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get while (cond) { ... }. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">env</td><td>String and linked vars </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Return root of the resulting tree </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00524">524</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
 
 </div>
 </div>
@@ -389,27 +799,28 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Parse whole expression. </p>
+<p>Parse whole program. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">str</td><td>String with expression </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">str_length</td><td>Expression string length </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">str</td><td>String with program </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">str_length</td><td>Program length </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Return root of the resulting tree </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00258">258</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rec__desc_8cpp_source.html#l00920">920</a> of file <a class="el" href="rec__desc_8cpp_source.html">rec_desc.cpp</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
-<div class="ttc" id="atree_8h_html_ada31fa1be5aadf4697ce6329d768c08eab4f175d3a62bc7be04b2175a2af8b806"><div class="ttname"><a href="tree_8h.html#ada31fa1be5aadf4697ce6329d768c08eab4f175d3a62bc7be04b2175a2af8b806">NO_SYMBOL</a></div><div class="ttdeci">@ NO_SYMBOL</div><div class="ttdef"><b>Definition:</b> <a href="tree_8h_source.html#l00079">tree.h:79</a></div></div>
-<div class="ttc" id="astruct_env_html_a8026e1ba38ccd711b07acb11b4d68272"><div class="ttname"><a href="struct_env.html#a8026e1ba38ccd711b07acb11b4d68272">Env::str</a></div><div class="ttdeci">const char * str</div><div class="ttdef"><b>Definition:</b> <a href="tree_8h_source.html#l00070">tree.h:70</a></div></div>
-<div class="ttc" id="astruct_env_html_acbaa3b2e1651cb05dee2b60d337b0a0c"><div class="ttname"><a href="struct_env.html#acbaa3b2e1651cb05dee2b60d337b0a0c">Env::str_size</a></div><div class="ttdeci">int str_size</div><div class="ttdef"><b>Definition:</b> <a href="tree_8h_source.html#l00072">tree.h:72</a></div></div>
-<div class="ttc" id="atree_8h_html_ada31fa1be5aadf4697ce6329d768c08ea4f4fac225490024c5b9762f8e24e30a5"><div class="ttname"><a href="tree_8h.html#ada31fa1be5aadf4697ce6329d768c08ea4f4fac225490024c5b9762f8e24e30a5">WRONG_SYMBOL</a></div><div class="ttdeci">@ WRONG_SYMBOL</div><div class="ttdef"><b>Definition:</b> <a href="tree_8h_source.html#l00080">tree.h:80</a></div></div>
-<div class="ttc" id="astruct_env_html_aafe1bcb1bf136886c5e8df759a8898f6"><div class="ttname"><a href="struct_env.html#aafe1bcb1bf136886c5e8df759a8898f6">Env::error</a></div><div class="ttdeci">int error</div><div class="ttdef"><b>Definition:</b> <a href="tree_8h_source.html#l00073">tree.h:73</a></div></div>
-<div class="ttc" id="astruct_env_html_a15771058c04fa635607344ff62c6c9a1"><div class="ttname"><a href="struct_env.html#a15771058c04fa635607344ff62c6c9a1">Env::current_ind</a></div><div class="ttdeci">int current_ind</div><div class="ttdef"><b>Definition:</b> <a href="tree_8h_source.html#l00071">tree.h:71</a></div></div>
+<div class="ttc" id="atree_8h_html_ada31fa1be5aadf4697ce6329d768c08eab4f175d3a62bc7be04b2175a2af8b806"><div class="ttname"><a href="tree_8h.html#ada31fa1be5aadf4697ce6329d768c08eab4f175d3a62bc7be04b2175a2af8b806">NO_SYMBOL</a></div><div class="ttdeci">@ NO_SYMBOL</div><div class="ttdef"><b>Definition:</b> <a href="tree_8h_source.html#l00092">tree.h:92</a></div></div>
+<div class="ttc" id="astruct_env_html_a8026e1ba38ccd711b07acb11b4d68272"><div class="ttname"><a href="struct_env.html#a8026e1ba38ccd711b07acb11b4d68272">Env::str</a></div><div class="ttdeci">const char * str</div><div class="ttdef"><b>Definition:</b> <a href="tree_8h_source.html#l00082">tree.h:82</a></div></div>
+<div class="ttc" id="astruct_env_html_acbaa3b2e1651cb05dee2b60d337b0a0c"><div class="ttname"><a href="struct_env.html#acbaa3b2e1651cb05dee2b60d337b0a0c">Env::str_size</a></div><div class="ttdeci">int str_size</div><div class="ttdef"><b>Definition:</b> <a href="tree_8h_source.html#l00084">tree.h:84</a></div></div>
+<div class="ttc" id="atree_8h_html_ada31fa1be5aadf4697ce6329d768c08ea2bc49ec37d6a5715dd23e85f1ff5bb59"><div class="ttname"><a href="tree_8h.html#ada31fa1be5aadf4697ce6329d768c08ea2bc49ec37d6a5715dd23e85f1ff5bb59">OK</a></div><div class="ttdeci">@ OK</div><div class="ttdef"><b>Definition:</b> <a href="tree_8h_source.html#l00091">tree.h:91</a></div></div>
+<div class="ttc" id="atree_8h_html_ada31fa1be5aadf4697ce6329d768c08ea4f4fac225490024c5b9762f8e24e30a5"><div class="ttname"><a href="tree_8h.html#ada31fa1be5aadf4697ce6329d768c08ea4f4fac225490024c5b9762f8e24e30a5">WRONG_SYMBOL</a></div><div class="ttdeci">@ WRONG_SYMBOL</div><div class="ttdef"><b>Definition:</b> <a href="tree_8h_source.html#l00093">tree.h:93</a></div></div>
+<div class="ttc" id="astruct_env_html_aafe1bcb1bf136886c5e8df759a8898f6"><div class="ttname"><a href="struct_env.html#aafe1bcb1bf136886c5e8df759a8898f6">Env::error</a></div><div class="ttdeci">int error</div><div class="ttdef"><b>Definition:</b> <a href="tree_8h_source.html#l00085">tree.h:85</a></div></div>
+<div class="ttc" id="astruct_env_html_a15771058c04fa635607344ff62c6c9a1"><div class="ttname"><a href="struct_env.html#a15771058c04fa635607344ff62c6c9a1">Env::current_ind</a></div><div class="ttdeci">int current_ind</div><div class="ttdef"><b>Definition:</b> <a href="tree_8h_source.html#l00083">tree.h:83</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

@@ -1,0 +1,6 @@
+function main() {
+    iff (x > 0) {
+        print(y);
+    }
+}
+

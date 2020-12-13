@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TreeVis: Trees + Visualisation</title>
+<title>TreeVis: PL + Recursive_Descent + Trees + Visualisation</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,37 +62,65 @@ $(function() {
 </div><!-- top -->
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Trees + Visualisation </div>  </div>
+<div class="title">PL + Recursive_Descent + Trees + Visualisation </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Implementation of unbalanced N-ary trees and ability to visualize them by using Graphviz Result: <img src="https://github.com/GetsuDer/TreesAndVisualisation/blob/main/formula.jpg" alt="alt text" class="inline"/> <img src="https://github.com/GetsuDer/TreesAndVisualisation/blob/main/graph.png" alt="alt text" class="inline"/> </p>
+<div class="textblock"><p>Implementation of parsing programming languge with using unbalanced N-ary trees and visualizing it by using Graphviz Result: <img src="https://github.com/GetsuDer/TreesAndVisualisation/blob/main/fib.png" alt="alt_text" class="inline"/></p>
 <h1><a class="anchor" id="autotoc_md1"></a>
 Description</h1>
 <h2><a class="anchor" id="autotoc_md2"></a>
 First part. Full_Parenthesis</h2>
 <p>Expression written in format ((constant1) op (constant2)) (each node is enclosed in brackets) is transformed into tree, and tree is exported in format, readable by dot. Then picture of resulting graph is being created and pdf with source formula. Now are available: source expression, simplified expression, derivate for 'x' (derivations for all variables can be taken, of course)</p>
 <h2><a class="anchor" id="autotoc_md3"></a>
-Second part. Recursive descent</h2>
-<p>Expression written in normal format, for example, 1 + 3 * (4 + 5). Arguments for sin, cos, ln must be in brackets (sin (12), for example)</p>
-<h1><a class="anchor" id="autotoc_md4"></a>
+Second part. Programming language parsing</h2>
+<h3><a class="anchor" id="autotoc_md4"></a>
+Program Structure</h3>
+<p>Program must be a set of functions, Function is declared as 'function fun_name(param1_name, param2_name,...) { function_body; }' Params number may be zero. (function f() { ... }).</p>
+<p>The next operators are allowed: </p>
+<h4><a class="anchor" id="autotoc_md5"></a>
+If</h4>
+<p>if (condition) { ...} else { ... } or if (condition) { ... } </p>
+<h4><a class="anchor" id="autotoc_md6"></a>
+While</h4>
+<p>while (condition) { ... } </p>
+<h4><a class="anchor" id="autotoc_md7"></a>
+Return</h4>
+<p>return ( ... ); </p>
+<h4><a class="anchor" id="autotoc_md8"></a>
+For</h4>
+<p>for (do_before; check_each_iteration; do_after_iteration) { ... }</p>
+<h4><a class="anchor" id="autotoc_md9"></a>
+Function call</h4>
+<p>func_name(first_param, second_param, ...);</p>
+<h4><a class="anchor" id="autotoc_md10"></a>
+NB!</h4>
+<p>return expression MUST be in brackets; Non-if, while or for statement in any place must be ended by ';';</p>
+<h3><a class="anchor" id="autotoc_md11"></a>
+How to see a parsed program?</h3>
+<p>To get the result program, run 'make rec_desc'. Then './rec_desc input_file show' will calculate expression (and if show == 1, show it as picture) </p>
+<h3><a class="anchor" id="autotoc_md12"></a>
+Program example</h3>
+<p>' function fib(n) { if (n &lt; 2) { return (1); } return (n * fib(n - 1)); }</p>
+<p>function <a class="el" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main()</a> { n = 5; res = f(n); print(res); return (0); } ' </p>
+<h1><a class="anchor" id="autotoc_md13"></a>
 Starting</h1>
 <p>Run 'make tree; cd Testing', then you have executable file tree, which requires three input parameter: input file, open_png_flag (0 or 1), open_pdf_flag (0 or 1) Example: "./../tree exp6.in 1 1" will open firstly .png, then .pdf The result of the program are four files: .dot, .tex, .pdf and .png;</p>
-<h1><a class="anchor" id="autotoc_md5"></a>
+<h1><a class="anchor" id="autotoc_md14"></a>
 Debug</h1>
 <p>To turn debug on run make command with 'DEBUG=YES' It turns on -g option</p>
-<h1><a class="anchor" id="autotoc_md6"></a>
+<h1><a class="anchor" id="autotoc_md15"></a>
 Testing</h1>
 <p>Test result can be seen into Testing/Full_Pars/png and Testing/Rec_Desc/png etc.</p>
-<h2><a class="anchor" id="autotoc_md7"></a>
+<h2><a class="anchor" id="autotoc_md16"></a>
 Full Parenthesis</h2>
 <p>Tests are placed into 'Testing/Full_Pars'. Run 'make test'. Or from directory Testing run './../tree Full_Pars/testname.in show_png show_pdf' Run './../tree Full_Pars/testname.in 0 0" to get .png and .pdf files. 1 instead 0 opens corresponding files. </p>
-<h2><a class="anchor" id="autotoc_md8"></a>
+<h2><a class="anchor" id="autotoc_md17"></a>
 Recursive Descent</h2>
 <p>Tests are places into 'Testing/Rec_Desc'. Run 'make test_rec'. Or from directory Testing run './../rec_desc Rec_Desc/testname.in show' (show = 1, if you want to see the result immediately)</p>
-<h1><a class="anchor" id="autotoc_md9"></a>
+<h1><a class="anchor" id="autotoc_md18"></a>
 Dependences</h1>
 <p>Linux, g++, make, eog, dot, gio, pdftex</p>
-<h1><a class="anchor" id="autotoc_md10"></a>
+<h1><a class="anchor" id="autotoc_md19"></a>
 Documentation</h1>
 <p>To see the whole documentation, download source code and run 'doxywizard Documentation/Config' (may be you should also update in dozywizard 'directory in which run doxywizard') </p>
 </div></div><!-- contents -->

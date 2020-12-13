@@ -1,0 +1,3 @@
+function main() {
+    n = 31u;
+}

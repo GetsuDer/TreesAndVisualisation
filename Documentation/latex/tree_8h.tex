@@ -29,12 +29,27 @@ enum \mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acac}{Node\+\_\+\+Typ
 \mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acaca7c696b1784e3a62b696699016dda8227}{LN}}, 
 \newline
 \mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acaca55720cf0d1ebf3d6f0eac12f2dffbfa2}{S\+IN}}, 
-\mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acaca493e49dc3b2f8cf43d8ae13fcdde6639}{C\+OS}}
+\mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acaca493e49dc3b2f8cf43d8ae13fcdde6639}{C\+OS}}, 
+\mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acaca2967ccae03791ac3d69b2b731e479ec2}{A\+S\+S\+I\+G\+N\+M\+E\+NT}}, 
+\mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acacaf165e191d0fd1c7cc04270fb883dbc02}{M\+O\+RE}}, 
+\newline
+\mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acaca95c736070f99b99eb80d1eac1f4ca60f}{L\+E\+SS}}, 
+\mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acaca9efdc855f3c1477957fb50affec07f8f}{EQ}}, 
+\mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acaca252802eda493fb6b4a279c4452acb547}{IF}}, 
+\mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acaca3278fd035226215822c903790a1eee73}{W\+H\+I\+LE}}, 
+\newline
+\mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acacaa809654855caa62449850d9122fd77a8}{F\+OR}}, 
+\mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acacaf4d2302b777dd3b34373f8c1b41b75fb}{D\+O\+\_\+\+I\+N\+\_\+\+O\+R\+D\+ER}}, 
+\mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acaca77c12347d9819c1bce075f5c4aa3b4f4}{F\+U\+N\+C\+\_\+\+C\+A\+LL}}, 
+\mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acaca6ce6d571f213f5a3b0c2286f6445c38d}{F\+U\+N\+C\+\_\+\+D\+EF}}, 
+\newline
+\mbox{\hyperlink{tree_8h_abc7258f0da73a4d5b16a1786f203acaca520e09ffec033636dba711f3441cc600}{R\+E\+T\+U\+RN}}
  \}
 \item 
 enum \mbox{\hyperlink{tree_8h_ada31fa1be5aadf4697ce6329d768c08e}{Env\+\_\+\+Errors}} \{ \mbox{\hyperlink{tree_8h_ada31fa1be5aadf4697ce6329d768c08ea2bc49ec37d6a5715dd23e85f1ff5bb59}{OK}} = 0, 
 \mbox{\hyperlink{tree_8h_ada31fa1be5aadf4697ce6329d768c08eab4f175d3a62bc7be04b2175a2af8b806}{N\+O\+\_\+\+S\+Y\+M\+B\+OL}}, 
-\mbox{\hyperlink{tree_8h_ada31fa1be5aadf4697ce6329d768c08ea4f4fac225490024c5b9762f8e24e30a5}{W\+R\+O\+N\+G\+\_\+\+S\+Y\+M\+B\+OL}}
+\mbox{\hyperlink{tree_8h_ada31fa1be5aadf4697ce6329d768c08ea4f4fac225490024c5b9762f8e24e30a5}{W\+R\+O\+N\+G\+\_\+\+S\+Y\+M\+B\+OL}}, 
+\mbox{\hyperlink{tree_8h_ada31fa1be5aadf4697ce6329d768c08eafc119c6b370f32b378a0809d11f7905c}{T\+O\+O\+\_\+\+L\+O\+N\+G\+\_\+\+ID}}
  \}
 \end{DoxyCompactItemize}
 \doxysubsection*{Functions}
@@ -49,7 +64,14 @@ int \mbox{\hyperlink{tree_8h_a52dc91829f3ebf594385d39c7ec5ac6c}{get\+\_\+neitral
 int \mbox{\hyperlink{tree_8h_a385a83982a8a3f1adbbbdf1a65d255da}{get\+\_\+opposite}} (int operation)
 \begin{DoxyCompactList}\small\item\em Get operation for (op1 op op2 op op3) = ((op1) op (op2 op\+\_\+op op3)) \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_node}{Node}} $\ast$ \mbox{\hyperlink{tree_8h_ad193e59772ecedbfe4ba3859990d6127}{Parse\+\_\+\+All}} (char $\ast$str, int str\+\_\+length)
-\begin{DoxyCompactList}\small\item\em Parse whole expression. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Parse whole program. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+constexpr int \mbox{\hyperlink{tree_8h_aafc4e1635a35d0daa3c97da4e44cb190}{I\+D\+\_\+\+N\+A\+M\+E\+\_\+\+S\+I\+ZE}} = 15
+\item 
+constexpr int \mbox{\hyperlink{tree_8h_a6b805d67efcceca312585c77d32a7b3d}{F\+U\+N\+C\+\_\+\+N\+A\+M\+E\+\_\+\+S\+I\+ZE}} = \mbox{\hyperlink{tree_8h_aafc4e1635a35d0daa3c97da4e44cb190}{I\+D\+\_\+\+N\+A\+M\+E\+\_\+\+S\+I\+ZE}}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Enumeration Type Documentation}
@@ -72,10 +94,14 @@ N\+O\+\_\+\+S\+Y\+M\+B\+OL&\\
 W\+R\+O\+N\+G\+\_\+\+S\+Y\+M\+B\+OL&\\
 \hline
 
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TOO\_LONG\_ID@{TOO\_LONG\_ID}!tree.h@{tree.h}}\index{tree.h@{tree.h}!TOO\_LONG\_ID@{TOO\_LONG\_ID}}}\mbox{\Hypertarget{tree_8h_ada31fa1be5aadf4697ce6329d768c08eafc119c6b370f32b378a0809d11f7905c}\label{tree_8h_ada31fa1be5aadf4697ce6329d768c08eafc119c6b370f32b378a0809d11f7905c}} 
+T\+O\+O\+\_\+\+L\+O\+N\+G\+\_\+\+ID&\\
+\hline
+
 \end{DoxyEnumFields}
 
 
-Definition at line 77 of file tree.\+h.
+Definition at line 90 of file tree.\+h.
 
 \mbox{\Hypertarget{tree_8h_abc7258f0da73a4d5b16a1786f203acac}\label{tree_8h_abc7258f0da73a4d5b16a1786f203acac}} 
 \index{tree.h@{tree.h}!Node\_Types@{Node\_Types}}
@@ -124,10 +150,54 @@ S\+IN&\\
 C\+OS&\\
 \hline
 
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ASSIGNMENT@{ASSIGNMENT}!tree.h@{tree.h}}\index{tree.h@{tree.h}!ASSIGNMENT@{ASSIGNMENT}}}\mbox{\Hypertarget{tree_8h_abc7258f0da73a4d5b16a1786f203acaca2967ccae03791ac3d69b2b731e479ec2}\label{tree_8h_abc7258f0da73a4d5b16a1786f203acaca2967ccae03791ac3d69b2b731e479ec2}} 
+A\+S\+S\+I\+G\+N\+M\+E\+NT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{MORE@{MORE}!tree.h@{tree.h}}\index{tree.h@{tree.h}!MORE@{MORE}}}\mbox{\Hypertarget{tree_8h_abc7258f0da73a4d5b16a1786f203acacaf165e191d0fd1c7cc04270fb883dbc02}\label{tree_8h_abc7258f0da73a4d5b16a1786f203acacaf165e191d0fd1c7cc04270fb883dbc02}} 
+M\+O\+RE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LESS@{LESS}!tree.h@{tree.h}}\index{tree.h@{tree.h}!LESS@{LESS}}}\mbox{\Hypertarget{tree_8h_abc7258f0da73a4d5b16a1786f203acaca95c736070f99b99eb80d1eac1f4ca60f}\label{tree_8h_abc7258f0da73a4d5b16a1786f203acaca95c736070f99b99eb80d1eac1f4ca60f}} 
+L\+E\+SS&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{EQ@{EQ}!tree.h@{tree.h}}\index{tree.h@{tree.h}!EQ@{EQ}}}\mbox{\Hypertarget{tree_8h_abc7258f0da73a4d5b16a1786f203acaca9efdc855f3c1477957fb50affec07f8f}\label{tree_8h_abc7258f0da73a4d5b16a1786f203acaca9efdc855f3c1477957fb50affec07f8f}} 
+EQ&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{IF@{IF}!tree.h@{tree.h}}\index{tree.h@{tree.h}!IF@{IF}}}\mbox{\Hypertarget{tree_8h_abc7258f0da73a4d5b16a1786f203acaca252802eda493fb6b4a279c4452acb547}\label{tree_8h_abc7258f0da73a4d5b16a1786f203acaca252802eda493fb6b4a279c4452acb547}} 
+IF&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{WHILE@{WHILE}!tree.h@{tree.h}}\index{tree.h@{tree.h}!WHILE@{WHILE}}}\mbox{\Hypertarget{tree_8h_abc7258f0da73a4d5b16a1786f203acaca3278fd035226215822c903790a1eee73}\label{tree_8h_abc7258f0da73a4d5b16a1786f203acaca3278fd035226215822c903790a1eee73}} 
+W\+H\+I\+LE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{FOR@{FOR}!tree.h@{tree.h}}\index{tree.h@{tree.h}!FOR@{FOR}}}\mbox{\Hypertarget{tree_8h_abc7258f0da73a4d5b16a1786f203acacaa809654855caa62449850d9122fd77a8}\label{tree_8h_abc7258f0da73a4d5b16a1786f203acacaa809654855caa62449850d9122fd77a8}} 
+F\+OR&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{DO\_IN\_ORDER@{DO\_IN\_ORDER}!tree.h@{tree.h}}\index{tree.h@{tree.h}!DO\_IN\_ORDER@{DO\_IN\_ORDER}}}\mbox{\Hypertarget{tree_8h_abc7258f0da73a4d5b16a1786f203acacaf4d2302b777dd3b34373f8c1b41b75fb}\label{tree_8h_abc7258f0da73a4d5b16a1786f203acacaf4d2302b777dd3b34373f8c1b41b75fb}} 
+D\+O\+\_\+\+I\+N\+\_\+\+O\+R\+D\+ER&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{FUNC\_CALL@{FUNC\_CALL}!tree.h@{tree.h}}\index{tree.h@{tree.h}!FUNC\_CALL@{FUNC\_CALL}}}\mbox{\Hypertarget{tree_8h_abc7258f0da73a4d5b16a1786f203acaca77c12347d9819c1bce075f5c4aa3b4f4}\label{tree_8h_abc7258f0da73a4d5b16a1786f203acaca77c12347d9819c1bce075f5c4aa3b4f4}} 
+F\+U\+N\+C\+\_\+\+C\+A\+LL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{FUNC\_DEF@{FUNC\_DEF}!tree.h@{tree.h}}\index{tree.h@{tree.h}!FUNC\_DEF@{FUNC\_DEF}}}\mbox{\Hypertarget{tree_8h_abc7258f0da73a4d5b16a1786f203acaca6ce6d571f213f5a3b0c2286f6445c38d}\label{tree_8h_abc7258f0da73a4d5b16a1786f203acaca6ce6d571f213f5a3b0c2286f6445c38d}} 
+F\+U\+N\+C\+\_\+\+D\+EF&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{RETURN@{RETURN}!tree.h@{tree.h}}\index{tree.h@{tree.h}!RETURN@{RETURN}}}\mbox{\Hypertarget{tree_8h_abc7258f0da73a4d5b16a1786f203acaca520e09ffec033636dba711f3441cc600}\label{tree_8h_abc7258f0da73a4d5b16a1786f203acaca520e09ffec033636dba711f3441cc600}} 
+R\+E\+T\+U\+RN&\\
+\hline
+
 \end{DoxyEnumFields}
 
 
-Definition at line 50 of file tree.\+h.
+Definition at line 51 of file tree.\+h.
 
 
 
@@ -152,7 +222,7 @@ Returns neitral element as int
 \end{DoxyReturn}
 
 
-Definition at line 991 of file tree.\+cpp.
+Definition at line 1057 of file tree.\+cpp.
 
 \mbox{\Hypertarget{tree_8h_a385a83982a8a3f1adbbbdf1a65d255da}\label{tree_8h_a385a83982a8a3f1adbbbdf1a65d255da}} 
 \index{tree.h@{tree.h}!get\_opposite@{get\_opposite}}
@@ -166,7 +236,7 @@ Get operation for (op1 op op2 op op3) = ((op1) op (op2 op\+\_\+op op3))
 
 
 
-Definition at line 1009 of file tree.\+cpp.
+Definition at line 1075 of file tree.\+cpp.
 
 \mbox{\Hypertarget{tree_8h_ad193e59772ecedbfe4ba3859990d6127}\label{tree_8h_ad193e59772ecedbfe4ba3859990d6127}} 
 \index{tree.h@{tree.h}!Parse\_All@{Parse\_All}}
@@ -176,13 +246,13 @@ Definition at line 1009 of file tree.\+cpp.
 
 
 
-Parse whole expression. 
+Parse whole program. 
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em str} & String with expression \\
+\mbox{\texttt{ in}}  & {\em str} & String with program \\
 \hline
-\mbox{\texttt{ in}}  & {\em str\+\_\+length} & Expression string length \\
+\mbox{\texttt{ in}}  & {\em str\+\_\+length} & Program length \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -190,7 +260,7 @@ Return root of the resulting tree
 \end{DoxyReturn}
 
 
-Definition at line 258 of file rec\+\_\+desc.\+cpp.
+Definition at line 920 of file rec\+\_\+desc.\+cpp.
 
 \mbox{\Hypertarget{tree_8h_ae599f095b9dc5ca190fd2271b3f87c15}\label{tree_8h_ae599f095b9dc5ca190fd2271b3f87c15}} 
 \index{tree.h@{tree.h}!parse\_file\_create\_tree@{parse\_file\_create\_tree}}
@@ -212,7 +282,7 @@ Returns root of created tree or N\+U\+LL if unsuccess
 \end{DoxyReturn}
 
 
-Definition at line 518 of file tree.\+cpp.
+Definition at line 584 of file tree.\+cpp.
 
 \mbox{\Hypertarget{tree_8h_acff072d1d398da659c191343cad12cc9}\label{tree_8h_acff072d1d398da659c191343cad12cc9}} 
 \index{tree.h@{tree.h}!rec\_del@{rec\_del}}
@@ -231,5 +301,28 @@ Recursively clear tree.
 \end{DoxyParams}
 
 
-Definition at line 340 of file tree.\+cpp.
+Definition at line 406 of file tree.\+cpp.
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{tree_8h_a6b805d67efcceca312585c77d32a7b3d}\label{tree_8h_a6b805d67efcceca312585c77d32a7b3d}} 
+\index{tree.h@{tree.h}!FUNC\_NAME\_SIZE@{FUNC\_NAME\_SIZE}}
+\index{FUNC\_NAME\_SIZE@{FUNC\_NAME\_SIZE}!tree.h@{tree.h}}
+\doxysubsubsection{\texorpdfstring{FUNC\_NAME\_SIZE}{FUNC\_NAME\_SIZE}}
+{\footnotesize\ttfamily constexpr int F\+U\+N\+C\+\_\+\+N\+A\+M\+E\+\_\+\+S\+I\+ZE = \mbox{\hyperlink{tree_8h_aafc4e1635a35d0daa3c97da4e44cb190}{I\+D\+\_\+\+N\+A\+M\+E\+\_\+\+S\+I\+ZE}}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 99 of file tree.\+h.
+
+\mbox{\Hypertarget{tree_8h_aafc4e1635a35d0daa3c97da4e44cb190}\label{tree_8h_aafc4e1635a35d0daa3c97da4e44cb190}} 
+\index{tree.h@{tree.h}!ID\_NAME\_SIZE@{ID\_NAME\_SIZE}}
+\index{ID\_NAME\_SIZE@{ID\_NAME\_SIZE}!tree.h@{tree.h}}
+\doxysubsubsection{\texorpdfstring{ID\_NAME\_SIZE}{ID\_NAME\_SIZE}}
+{\footnotesize\ttfamily constexpr int I\+D\+\_\+\+N\+A\+M\+E\+\_\+\+S\+I\+ZE = 15\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 98 of file tree.\+h.
 
