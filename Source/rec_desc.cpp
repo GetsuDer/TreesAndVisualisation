@@ -155,6 +155,10 @@ GetFuncCall(struct Env *env) {
     root->change_operation(FUNC_CALL);
     skip_spaces(env);
     REQUIRE('(', env);
+    if (env->error != OK) {
+        rec_del(root);
+        return NULL;
+    }
     env->current_ind++;
 
     Node *tmp = NULL;

@@ -237,7 +237,7 @@ Node::visualize_tree_rec(int fd) {
                 dprintf(fd, "\"blue\"");
                 break;
             case FUNC_DEF:
-                dprintf(fd, "\"yellow\"");
+                dprintf(fd, "\"pink\"");
                 break;
             default:
                 dprintf(fd, "\"grey\"");
