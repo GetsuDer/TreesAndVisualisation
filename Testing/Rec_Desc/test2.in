@@ -1,0 +1,12 @@
+function main(n) {
+    f(n);
+    x = 0;
+}
+
+function f(n) {
+    if (n ~ 0) {
+        n = 1;
+    } else {
+        n = f(n - 1);
+    }
+}

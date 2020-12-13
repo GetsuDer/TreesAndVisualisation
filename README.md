@@ -12,13 +12,53 @@ Result:
     Now are available: source expression, simplified expression, 
     derivate for 'x' (derivations for all variables can be taken, of course)
 
-### Second part. Recursive descent
-    Expression written in normal format, for example, 1 + 3 * (4 + 5).
-    Arguments for sin, cos, ln must be in brackets (sin (12), for example).
-    To get program, run 'make rec_desc'.
+### Second part. Programming language parsing
+#### Program Structure
+    Program must be a set of functions, Function is declared as 
+    'function fun_name(param1_name, param2_name,...) {
+        function_body;
+    }'
+    Params number may be zero. (function f() { ... }).
+
+    The next operators are allowed:
+##### If
+    if (condition) { ...} else { ... }
+    or
+    if (condition) { ... }
+##### While
+    while (condition) { ... }
+##### Return
+    return ( ... );
+##### For
+    for (do_before; check_each_iteration; do_after_iteration) { ... }
+
+##### Function call
+    func_name(first_param, second_param, ...);
+
+##### NB!
+    return expression MUST be in brackets;
+    Non-if, while or for statement in any place must be ended by ';';
+
+#### How to see a parsed program?   
+    To get the result program, run 'make rec_desc'.
     Then './rec_desc input_file show' will calculate expression (and if show == 1, 
             show it as picture)
+#### Program example
+    '
+    function fib(n) {
+        if (n < 2) {
+            return (1);
+        }
+        return (n * fib(n - 1));
+    }
 
+    function main() {
+        n = 5;
+        res = f(n);
+        print(res);
+        return (0);
+    }
+    '
 ## Starting
     Run 'make tree; cd Testing', then you have executable file tree, 
     which requires three input parameter: 

@@ -446,6 +446,8 @@ GetIf(struct Env *env) {
             return NULL;
         }
         env->current_ind++;
+    } else {
+        env->error = OK;
     }
     return root;
 }
@@ -497,6 +499,38 @@ GetWhile(struct Env *env) {
 }
 
 Node *
+GetReturn(struct Env *env) {
+    CHECK_ENV(env);
+
+    skip_spaces(env);
+    NEED_WORD("return", env);
+    if (env->error) {
+        return NULL;
+    }
+    env->current_ind += strlen("return");
+    Node *root = new Node(RETURN);
+    skip_spaces(env);
+    REQUIRE('(', env);
+    env->current_ind++;
+    if (env->error) {
+        rec_del(root);
+        return NULL;
+    }
+    
+    Node *tmp = GetExpression(env);
+    if (env->error) {
+        rec_del(tmp);
+        rec_del(root);
+        return NULL;
+    }
+    root->add_child(tmp);
+    skip_spaces(env);
+    REQUIRE(')', env);
+    env->current_ind++;
+    return root;
+}
+
+Node *
 GetStatement(struct Env *env) {
     CHECK_ENV(env);
 
@@ -516,6 +550,18 @@ GetStatement(struct Env *env) {
     rec_del(root);
     env->current_ind = old_ind;
     env->error = OK;
+    
+    root = GetReturn(env);
+    skip_spaces(env);
+    REQUIRE(';', env);
+    env->current_ind++;
+    if (env->error == OK) {
+        return root;
+    }
+    rec_del(root);
+    env->current_ind = old_ind;
+    env->error = OK;
+
     root = GetExpression(env);
     skip_spaces(env);
     REQUIRE(';', env);

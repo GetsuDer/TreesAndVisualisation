@@ -1,0 +1,7 @@
+function f(n, x) {
+    if (x ~ 0) {
+        n = x;
+    } else {
+        n = x * 2 + n;
+    }
+}

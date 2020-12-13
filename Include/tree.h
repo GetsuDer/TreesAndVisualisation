@@ -67,7 +67,8 @@ enum Node_Types {
     WHILE,
     DO_IN_ORDER,
     FUNC_CALL,
-    FUNC_DEF
+    FUNC_DEF,
+    RETURN
 };
 
 Node *parse_file_create_tree(char *filename);

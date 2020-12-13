@@ -97,6 +97,11 @@ Node::Node(int _operation) {
         case FUNC_DEF:
             strncpy(name, "?", name_len);
             break;
+        case RETURN:
+            name_len = 6;
+            name = (char *)realloc(name, name_len * sizeof(char));
+            strncpy(name, "return", name_len);
+            break;
         default:
             name_len = 0;
             free(name);
@@ -240,6 +245,9 @@ Node::visualize_tree_rec(int fd) {
                 break;
             case FUNC_DEF:
                 dprintf(fd, "\"pink\"");
+                break;
+            case RETURN:
+                dprintf(fd, "\"red\"");
                 break;
             default:
                 dprintf(fd, "\"grey\"");

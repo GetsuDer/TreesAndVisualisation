@@ -1,0 +1,13 @@
+function fib(n) {
+    if (n < 2) {
+        return (1);
+    }
+    return (n * fib(n - 1));
+}
+
+function main() {
+    n = 5;
+    res = f(n);
+    print(res);
+    return (0);
+}
