@@ -3,6 +3,8 @@ Implementation of unbalanced N-ary trees and ability to visualize them by using 
 Result:
 ![alt text](https://github.com/GetsuDer/TreesAndVisualisation/blob/main/formula.jpg)
 ![alt text](https://github.com/GetsuDer/TreesAndVisualisation/blob/main/graph.png)
+![alt_text](https://github.com/GetsuDer/TreesAndVisualisation/blob/main/fib.png)
+
 ## Description
 ### First part. Full_Parenthesis
     Expression written in format ((constant1) op (constant2))
