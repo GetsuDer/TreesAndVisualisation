@@ -254,8 +254,13 @@ Node::visualize_tree_rec(int fd) {
             case RETURN:
                 dprintf(fd, "\"red\"");
                 break;
+            case FOR:
+            case WHILE:
+            case IF:
+                dprintf(fd, "\"lightgrey\"");
+                break;
             default:
-                dprintf(fd, "\"grey\"");
+                dprintf(fd, "\"darkgrey\"");
                 break;
         }
         dprintf(fd, "];\n");

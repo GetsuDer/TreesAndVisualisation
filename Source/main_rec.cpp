@@ -53,7 +53,7 @@ main(int argc, char **argv) {
     create_png(argv[1], val, show);
     create_pdf(argv[1], val, 0);
 
-    rec_del(var);
+    rec_del(val);
 
     return 0;
 }
