@@ -1,0 +1,3 @@
+[submodule "CpuAsmDisasmModels"]
+	path = CpuAsmDisasmModels
+	url = https://github.com/GetsuDer/CpuAsmDisasmModels
